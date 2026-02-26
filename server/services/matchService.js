@@ -81,9 +81,10 @@ function getStatus(score) {
 /**
  * Analisa todas as vagas ainda sem score: filtro por keyword e, se passar, classifica com Ollama.
  * Atualiza database.json com score, justificativa e status.
+ * @param {function} [onProgress] - callback(event) chamado a cada vaga processada
  * @returns {Promise<{ processed: number, results: Array }>}
  */
-async function runMatch() {
+async function runMatch(onProgress) {
   const db = await readDatabase();
   const resumeText = (db.resume && db.resume.text) || '';
   if (!resumeText.trim()) {
@@ -93,38 +94,48 @@ async function runMatch() {
   const jobs = db.jobs || [];
   const toProcess = jobs.filter((j) => j.score == null);
   const results = [];
+  const total = toProcess.length;
 
-  for (const job of toProcess) {
+  const emit = (data) => { if (typeof onProgress === 'function') onProgress(data); };
+
+  for (let i = 0; i < toProcess.length; i++) {
+    const job = toProcess[i];
     const jobText = [job.title, job.company, job.description].filter(Boolean).join(' ');
     const sim = keywordSimilarity(resumeText, jobText);
-    console.log(`[Match] Vaga "${job.title}" @ ${job.company} → similaridade: ${(sim * 100).toFixed(1)}%`);
+
+    emit({ type: 'analyzing', index: i, total, jobId: job.id, title: job.title, company: job.company });
 
     if (sim < KEYWORD_THRESHOLD) {
       job.score = 0;
       job.justificativa = `Pré-filtro: similaridade de ${(sim * 100).toFixed(1)}% abaixo do mínimo (${(KEYWORD_THRESHOLD * 100).toFixed(0)}%).`;
       job.status = 'descartado';
-      results.push({ id: job.id, score: 0, status: 'descartado', justificativa: job.justificativa });
+      const r = { id: job.id, score: 0, status: 'descartado', justificativa: job.justificativa };
+      results.push(r);
+      emit({ type: 'result', index: i, total, ...r });
       continue;
     }
 
     try {
-      console.log(`[Match] Enviando para Ollama: "${job.title}"...`);
+      emit({ type: 'ollama', index: i, total, jobId: job.id, title: job.title, company: job.company });
       const { score, justificativa } = await ollamaService.classifyMatch(
         job.title,
         job.description,
         resumeText
       );
-      console.log(`[Match] Ollama retornou score=${score} para "${job.title}"`);
       job.score = score;
       job.justificativa = justificativa;
       job.status = getStatus(score);
-      results.push({ id: job.id, score, status: job.status, justificativa });
+      const r = { id: job.id, score, status: job.status, justificativa };
+      results.push(r);
+      emit({ type: 'result', index: i, total, ...r });
     } catch (err) {
       console.error(`[Match] Erro Ollama para "${job.title}":`, err.message);
       job.score = null;
       job.justificativa = err.message || 'Erro na classificação.';
       job.status = 'erro';
-      results.push({ id: job.id, score: null, status: 'erro', justificativa: job.justificativa });
+      const r = { id: job.id, score: null, status: 'erro', justificativa: job.justificativa };
+      results.push(r);
+      emit({ type: 'result', index: i, total, ...r });
     }
   }
 

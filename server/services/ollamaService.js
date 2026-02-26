@@ -3,9 +3,65 @@
  * Modelo: mistral:7b-instruct-q4_0
  */
 const axios = require('axios');
+const { exec, spawn } = require('child_process');
 
 const OLLAMA_URL = process.env.OLLAMA_URL || 'http://localhost:11434';
 const MODEL = 'mistral:7b-instruct-q4_0';
+
+/**
+ * Verifica se o Ollama está rodando e se o modelo está disponível.
+ * @returns {Promise<{ running: boolean, modelReady: boolean, models: string[] }>}
+ */
+async function checkStatus() {
+  let running = false;
+  let modelReady = false;
+  let models = [];
+  try {
+    const res = await axios.get(`${OLLAMA_URL}/api/tags`, { timeout: 5000 });
+    running = true;
+    models = (res.data.models || []).map((m) => m.name);
+    modelReady = models.some((n) => n.startsWith(MODEL.split(':')[0]));
+  } catch (_) {}
+  return { running, modelReady, models };
+}
+
+/**
+ * Inicia o ollama serve em background e, se necessário, faz pull do modelo.
+ * @returns {Promise<{ started: boolean, pulled: boolean, error?: string }>}
+ */
+async function ensureRunning() {
+  let status = await checkStatus();
+  let started = false;
+  let pulled = false;
+
+  if (!status.running) {
+    await new Promise((resolve) => {
+      const child = spawn('ollama', ['serve'], {
+        detached: true,
+        stdio: 'ignore'
+      });
+      child.unref();
+      setTimeout(resolve, 3000);
+    });
+    status = await checkStatus();
+    if (!status.running) {
+      return { started: false, pulled: false, error: 'Não foi possível iniciar o Ollama. Verifique se está instalado (https://ollama.ai).' };
+    }
+    started = true;
+  }
+
+  if (!status.modelReady) {
+    await new Promise((resolve, reject) => {
+      exec(`ollama pull ${MODEL}`, { timeout: 300000 }, (err) => {
+        if (err) reject(new Error(`Erro ao baixar modelo: ${err.message}`));
+        else resolve();
+      });
+    });
+    pulled = true;
+  }
+
+  return { started, pulled };
+}
 
 /**
  * Chama a API generate do Ollama.
@@ -97,5 +153,7 @@ Carta:`;
 module.exports = {
   generate,
   classifyMatch,
-  generateProposal
+  generateProposal,
+  checkStatus,
+  ensureRunning
 };

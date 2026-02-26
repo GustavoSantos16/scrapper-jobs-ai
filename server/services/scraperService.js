@@ -36,6 +36,15 @@ function randomDelay(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+const EMAIL_REGEX = /[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}/g;
+
+function extractEmails(text) {
+  if (!text) return [];
+  const matches = text.match(EMAIL_REGEX) || [];
+  const dominated = ['example.com', 'email.com', 'test.com', 'sentry.io', 'linkedin.com'];
+  return [...new Set(matches)].filter((e) => !dominated.some((d) => e.endsWith(d)));
+}
+
 /**
  * Inicia o scraping. Abre o LinkedIn Jobs, aguarda o usuário fazer login
  * e depois coleta até MAX_JOBS vagas da página de busca atual.
@@ -125,6 +134,22 @@ async function runScraper(searchUrl) {
             description = await descEl.evaluate((n) => n.innerText || n.textContent || '').catch(() => '');
           }
 
+          let posterEmail = '';
+          try {
+            const posterSel = 'div.jobs-poster__name a, a.jobs-unified-top-card__subtitle-primary-grouping--link, a[href*="/in/"]';
+            const posterEl = await page.$(posterSel);
+            if (posterEl) {
+              const posterText = await posterEl.evaluate((n) => n.textContent || '').catch(() => '');
+              const posterEmails = extractEmails(posterText);
+              if (posterEmails.length) posterEmail = posterEmails[0];
+            }
+          } catch (_) {}
+
+          if (!posterEmail) {
+            const descEmails = extractEmails(description);
+            if (descEmails.length) posterEmail = descEmails[0];
+          }
+
           const id = jobId || `job-${Date.now()}-${jobs.length}`;
           if (!jobs.some((j) => j.link === link)) {
             jobs.push({
@@ -133,6 +158,7 @@ async function runScraper(searchUrl) {
               company: (company || '').trim(),
               description: description.trim().slice(0, 5000),
               link: link.trim(),
+              email: posterEmail,
               scrapedAt: new Date().toISOString(),
               score: null,
               justificativa: null,

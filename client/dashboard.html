@@ -18,6 +18,12 @@
     <section class="card">
       <h2>Ações em lote</h2>
       <button type="button" id="btnMatch">Analisar vagas (match com currículo)</button>
+      <div id="matchProgress" class="progress-box" style="display:none;">
+        <div class="progress-bar-wrap">
+          <div class="progress-bar" id="matchBar" style="width:0%"></div>
+        </div>
+        <p id="matchProgressText" class="status"></p>
+      </div>
       <p id="matchStatus" class="status"></p>
     </section>
 
@@ -36,6 +42,7 @@
               <th>Justificativa</th>
               <th>Proposta</th>
               <th>E-mail</th>
+              <th>Detalhes</th>
             </tr>
           </thead>
           <tbody id="jobsTable">
@@ -43,9 +50,14 @@
         </table>
       </div>
       <div class="actions">
-        <label>E-mail para envio: <input type="email" id="emailTo" placeholder="recrutador@empresa.com"></label>
         <button type="button" id="btnGenerateProposals">Gerar proposta (selecionadas)</button>
         <button type="button" id="btnSendSelected">Enviar selecionadas</button>
+      </div>
+      <div id="proposalProgress" class="progress-box" style="display:none;">
+        <div class="progress-bar-wrap">
+          <div class="progress-bar" id="proposalBar" style="width:0%"></div>
+        </div>
+        <p id="proposalProgressText" class="status"></p>
       </div>
       <p id="actionStatus" class="status"></p>
     </section>
@@ -69,6 +81,36 @@
       </div>
     </section>
   </div>
+
+  <!-- Modal de detalhes da vaga -->
+  <div class="modal-overlay" id="jobModal">
+    <div class="modal">
+      <button class="modal-close" id="modalClose">&times;</button>
+      <h2 id="modalTitle"></h2>
+      <div class="modal-meta">
+        <span id="modalCompany"></span>
+        <span class="modal-score" id="modalScore"></span>
+        <span class="modal-status" id="modalStatusBadge"></span>
+      </div>
+      <div class="modal-section">
+        <h3>Descrição da vaga</h3>
+        <div id="modalDescription" class="modal-description"></div>
+      </div>
+      <div class="modal-section">
+        <h3>Justificativa da IA</h3>
+        <p id="modalJustificativa"></p>
+      </div>
+      <div class="modal-section">
+        <h3>Proposta gerada</h3>
+        <p id="modalProposal"></p>
+      </div>
+      <div class="modal-section modal-footer-info">
+        <span>E-mail: <strong id="modalEmail"></strong></span>
+        <a id="modalLink" href="#" target="_blank" rel="noopener">Abrir no LinkedIn</a>
+      </div>
+    </div>
+  </div>
+
   <script src="/js/dashboard.js"></script>
 </body>
 </html>

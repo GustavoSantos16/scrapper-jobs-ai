@@ -33,16 +33,24 @@ async function generateForJob(jobId) {
 /**
  * Gera propostas para várias vagas (em sequência para não sobrecarregar o Ollama).
  * @param {string[]} jobIds
+ * @param {function} [onProgress] - callback(event) chamado a cada vaga
  * @returns {Promise<Array<{ jobId: string, proposal: string }>>}
  */
-async function generateForJobs(jobIds) {
+async function generateForJobs(jobIds, onProgress) {
   const results = [];
-  for (const id of jobIds) {
+  const emit = (data) => { if (typeof onProgress === 'function') onProgress(data); };
+  const total = jobIds.length;
+
+  for (let i = 0; i < jobIds.length; i++) {
+    const id = jobIds[i];
+    emit({ type: 'generating', index: i, total, jobId: id });
     try {
       const { proposal } = await generateForJob(id);
       results.push({ jobId: id, proposal });
+      emit({ type: 'result', index: i, total, jobId: id, proposal });
     } catch (err) {
       results.push({ jobId: id, error: err.message });
+      emit({ type: 'result', index: i, total, jobId: id, error: err.message });
     }
   }
   return results;
