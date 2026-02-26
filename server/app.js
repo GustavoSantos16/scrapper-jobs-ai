@@ -26,7 +26,7 @@ app.use('/api/ollama', ollamaRoutes);
 
 // Servir frontend estático
 const clientDir = path.join(__dirname, '..', 'client');
-app.use(express.static(clientDir));
+app.use(express.static(clientDir, { etag: false, maxAge: 0 }));
 
 app.get('/', (_req, res) => {
   res.sendFile(path.join(clientDir, 'index.html'));

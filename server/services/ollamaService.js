@@ -76,7 +76,8 @@ async function generate(prompt, options = {}) {
       {
         model: MODEL,
         prompt,
-        stream: false
+        stream: false,
+        ...(options.ollama || {})
       },
       { timeout: 120000 }
     );
@@ -126,7 +127,7 @@ JSON:`;
 }
 
 /**
- * Gera proposta personalizada (máx. 150 palavras).
+ * Gera proposta personalizada (máx. 140 palavras).
  * @param {string} jobTitle
  * @param {string} company
  * @param {string} jobDescription
@@ -134,20 +135,52 @@ JSON:`;
  * @returns {Promise<string>}
  */
 async function generateProposal(jobTitle, company, jobDescription, resumeText) {
-  const prompt = `Gere uma carta de apresentação profissional e personalizada para a vaga abaixo. Máximo 150 palavras. Linguagem direta e profissional. Baseie nas competências do currículo e na descrição da vaga. Responda apenas com o texto da carta, sem título nem "Carta:" ou similar.
+  const prompt = `You are a senior career copywriter.
 
-Vaga: ${jobTitle} na empresa ${company}
-Descrição: ${(jobDescription || '').slice(0, 1500)}
+Write a concise and persuasive cover letter.
 
-Currículo (resumo): ${(resumeText || '').slice(0, 1200)}
+Rules:
+- Maximum 140 words
+- No greetings (do not write "Dear Hiring Manager")
+- No generic phrases (avoid "I am excited to apply")
+- Start directly with a strong professional positioning statement
+- Focus on impact and business value
+- Do not list technologies without context
+- Use short, clear paragraphs
+- Do not repeat the resume literally
+- Output only the letter text, no labels or headings
 
-Carta:`;
-  const text = await generate(prompt);
-  const words = text.trim().split(/\s+/);
+Job Title: ${jobTitle}
+Company: ${company}
+Job Description:
+${(jobDescription || '').slice(0, 1500)}
+
+Resume Summary:
+${(resumeText || '').slice(0, 1200)}`;
+
+  const raw = await generate(prompt, {
+    ollama: {
+      options: {
+        temperature: 0.7,
+        top_p: 0.9,
+        num_predict: 300,
+        stop: ['\n\n\n', '---', 'Job Title:', 'Resume Summary:']
+      }
+    }
+  });
+
+  let text = raw.trim()
+    .replace(/^(cover letter|carta|letter|subject|here is|here's)[:\s]*/i, '')
+    .replace(/^["']+|["']+$/g, '')
+    .replace(/\n{3,}/g, '\n\n');
+
+  const words = text.split(/\s+/);
   if (words.length > 150) {
-    return words.slice(0, 150).join(' ');
+    const truncated = words.slice(0, 150).join(' ');
+    const lastPeriod = truncated.lastIndexOf('.');
+    text = lastPeriod > truncated.length * 0.6 ? truncated.slice(0, lastPeriod + 1) : truncated;
   }
-  return text.trim();
+  return text;
 }
 
 module.exports = {

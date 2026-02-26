@@ -75,7 +75,7 @@
   function loadJobs() {
     fetch('/api/jobs')
       .then((r) => r.json())
-      .then((jobs) => renderJobs(jobs))
+      .then((jobs) => renderJobs(sortJobsByScore(jobs)))
       .catch(() => {
         jobsTable.innerHTML = '<tr><td colspan="9">Erro ao carregar vagas.</td></tr>';
       });
