@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Job AI Automation - Dashboard</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Dashboard - Vagas e Propostas</h1>
+      <nav class="links">
+        <a href="/">Voltar ao início</a>
+      </nav>
+    </header>
+
+    <section class="card">
+      <h2>Ações em lote</h2>
+      <button type="button" id="btnMatch">Analisar vagas (match com currículo)</button>
+      <p id="matchStatus" class="status"></p>
+    </section>
+
+    <section class="card">
+      <h2>Vagas</h2>
+      <p id="emailQueueStatus" class="status"></p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th><input type="checkbox" id="checkAll" title="Selecionar todas"></th>
+              <th>Título</th>
+              <th>Empresa</th>
+              <th>Score</th>
+              <th>Status</th>
+              <th>Justificativa</th>
+              <th>Proposta</th>
+              <th>E-mail</th>
+            </tr>
+          </thead>
+          <tbody id="jobsTable">
+          </tbody>
+        </table>
+      </div>
+      <div class="actions">
+        <label>E-mail para envio: <input type="email" id="emailTo" placeholder="recrutador@empresa.com"></label>
+        <button type="button" id="btnGenerateProposals">Gerar proposta (selecionadas)</button>
+        <button type="button" id="btnSendSelected">Enviar selecionadas</button>
+      </div>
+      <p id="actionStatus" class="status"></p>
+    </section>
+
+    <section class="card" id="history">
+      <h2>Histórico</h2>
+      <p>E-mails enviados e ações recentes.</p>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Data</th>
+              <th>Tipo</th>
+              <th>Vaga / Empresa</th>
+              <th>Destino</th>
+            </tr>
+          </thead>
+          <tbody id="historyTable">
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </div>
+  <script src="/js/dashboard.js"></script>
+</body>
+</html>

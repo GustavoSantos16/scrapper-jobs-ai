@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Job AI Automation - Início</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Job AI Automation</h1>
+      <p>Upload do currículo e busca de vagas no LinkedIn</p>
+    </header>
+
+    <section class="card">
+      <h2>Currículo</h2>
+      <p>Envie seu currículo em PDF ou DOCX para análise de vagas.</p>
+      <form id="formResume" enctype="multipart/form-data">
+        <input type="file" id="fileResume" name="resume" accept=".pdf,.docx,.doc" required>
+        <button type="submit" id="btnUpload">Enviar currículo</button>
+      </form>
+      <p id="resumeStatus" class="status"></p>
+    </section>
+
+    <section class="card">
+      <h2>Buscar vagas (LinkedIn)</h2>
+      <p>O navegador abrirá visível. Faça login no LinkedIn e navegue até a página de vagas desejada. O sistema coletará até 20 vagas.</p>
+      <label for="searchUrl">URL da página de vagas (opcional):</label>
+      <input type="url" id="searchUrl" placeholder="https://www.linkedin.com/jobs/search/...">
+      <button type="button" id="btnScraper">Iniciar busca de vagas</button>
+      <p id="scraperStatus" class="status"></p>
+    </section>
+
+    <nav class="links">
+      <a href="/dashboard">Ir para o Dashboard (vagas e propostas)</a>
+      <a href="/dashboard#history">Ver histórico</a>
+    </nav>
+  </div>
+  <script src="/js/index.js"></script>
+</body>
+</html>
