@@ -10,6 +10,7 @@ lerna-debug.log*
 # Dependency directories
 node_modules/
 
+
 # Build output
 dist/
 build/
@@ -50,3 +51,4 @@ Thumbs.db
 .npm/
 .yarn/
 .pnp.*
+/storage/browser-profile/

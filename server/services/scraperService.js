@@ -108,38 +108,58 @@ function readDescriptionFromPanel(page) {
   });
 }
 
-async function scrollJobListToBottom(page) {
-  const listSelector = 'div.jobs-search-results-list, div.scaffold-layout__list > div';
-  const listEl = await page.$(listSelector);
-  if (!listEl) return;
+const SCROLL_CONTAINER_SELECTORS = [
+  'div.jobs-search-results-list',
+  'div.scaffold-layout__list-container',
+  'div.scaffold-layout__list > div',
+  'ul.scaffold-layout__list-container'
+];
 
-  let prevHeight = 0;
-  let attempts = 0;
-  const MAX_SCROLL_ATTEMPTS = 15;
+async function scrollJobList(page) {
+  const containerSel = await page.evaluate((selectors) => {
+    for (const sel of selectors) {
+      const el = document.querySelector(sel);
+      if (el && el.scrollHeight > el.clientHeight) return sel;
+    }
+    return null;
+  }, SCROLL_CONTAINER_SELECTORS);
 
-  while (attempts < MAX_SCROLL_ATTEMPTS) {
-    const currentHeight = await page.evaluate(
-      (sel) => {
-        const el = document.querySelector(sel);
-        if (!el) return 0;
-        el.scrollTop = el.scrollHeight;
-        return el.scrollHeight;
-      },
-      listSelector
-    );
+  const STEP = 600;
+  const MAX_SCROLLS = 25;
 
-    if (currentHeight === prevHeight) break;
-    prevHeight = currentHeight;
-    attempts++;
-    await new Promise((r) => setTimeout(r, randomDelay(800, 1500)));
+  if (containerSel) {
+    for (let i = 0; i < MAX_SCROLLS; i++) {
+      const { atBottom } = await page.evaluate(
+        (sel, step) => {
+          const el = document.querySelector(sel);
+          if (!el) return { atBottom: true };
+          el.scrollBy({ top: step, behavior: 'smooth' });
+          return { atBottom: el.scrollTop + el.clientHeight >= el.scrollHeight - 10 };
+        },
+        containerSel,
+        STEP
+      );
+      await new Promise((r) => setTimeout(r, randomDelay(400, 900)));
+      if (atBottom) break;
+    }
+  } else {
+    for (let i = 0; i < MAX_SCROLLS; i++) {
+      const atBottom = await page.evaluate((step) => {
+        window.scrollBy({ top: step, behavior: 'smooth' });
+        return window.innerHeight + window.scrollY >= document.body.scrollHeight - 10;
+      }, STEP);
+      await new Promise((r) => setTimeout(r, randomDelay(400, 900)));
+      if (atBottom) break;
+    }
   }
+
+  await new Promise((r) => setTimeout(r, 1000));
 }
 
 async function collectVisibleJobs(page, jobs, seenLinks) {
   let added = 0;
 
-  await scrollJobListToBottom(page);
-  await new Promise((r) => setTimeout(r, 1000));
+  await scrollJobList(page);
 
   let cardsData = [];
   try {
@@ -147,6 +167,8 @@ async function collectVisibleJobs(page, jobs, seenLinks) {
   } catch (e) {
     return added;
   }
+
+  console.log(`[Scraper] Cards encontrados na página: ${cardsData.length}`);
 
   for (const item of cardsData) {
     const { jobId, title, company, link } = item;
@@ -184,6 +206,80 @@ async function collectVisibleJobs(page, jobs, seenLinks) {
   }
 
   return added;
+}
+
+async function scrollPaginationIntoView(page) {
+  await page.evaluate(() => {
+    const el = document.querySelector(
+      'div.jobs-search-results-list__pagination, ul.artdeco-pagination__pages, nav[aria-label*="aginat"]'
+    );
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  });
+  await new Promise((r) => setTimeout(r, 1000));
+}
+
+async function getVisibleCardIds(page) {
+  return page.evaluate(() => {
+    const cards = document.querySelectorAll('li[data-occludable-job-id], div[data-job-id]');
+    return Array.from(cards).slice(0, 5).map(
+      (c) => c.getAttribute('data-occludable-job-id') || c.getAttribute('data-job-id')
+    );
+  });
+}
+
+async function clickNextPage(page, targetPageNum) {
+  await scrollPaginationIntoView(page);
+
+  const clickedByNumber = await page.evaluate((num) => {
+    const buttons = document.querySelectorAll(
+      'li.artdeco-pagination__indicator--number button'
+    );
+    for (const btn of buttons) {
+      const text = (btn.querySelector('span') || btn).textContent.trim();
+      if (text === String(num)) {
+        btn.click();
+        return true;
+      }
+    }
+    return false;
+  }, targetPageNum);
+
+  if (clickedByNumber) return true;
+
+  const nextBtnSelectors = [
+    'button[aria-label="View next page"]',
+    'button[aria-label="Next"]',
+    'button.artdeco-pagination__button--next',
+    'button.jobs-search-pagination__button--next'
+  ];
+  for (const sel of nextBtnSelectors) {
+    const btn = await page.$(sel);
+    if (!btn) continue;
+    const isDisabled = await page
+      .evaluate((b) => b.disabled || b.getAttribute('aria-disabled') === 'true', btn)
+      .catch(() => true);
+    if (isDisabled) continue;
+    await btn.click();
+    return true;
+  }
+
+  return false;
+}
+
+async function waitForCardsToChange(page, oldCardIds) {
+  await page
+    .waitForFunction(
+      (oldIds) => {
+        const cards = document.querySelectorAll('li[data-occludable-job-id], div[data-job-id]');
+        if (cards.length === 0) return false;
+        const firstId =
+          cards[0].getAttribute('data-occludable-job-id') || cards[0].getAttribute('data-job-id');
+        return !oldIds.includes(firstId);
+      },
+      { timeout: 15000 },
+      oldCardIds
+    )
+    .catch(() => {});
 }
 
 /**
@@ -230,33 +326,37 @@ async function runScraper(searchUrl) {
 
     const jobs = [];
     const seenLinks = new Set();
-    let pageIndex = 0;
     const MAX_PAGES = 10;
-    const JOBS_PER_PAGE = 25;
+    let emptyPages = 0;
 
-    while (pageIndex < MAX_PAGES && jobs.length < MAX_JOBS) {
+    for (let pageIndex = 0; pageIndex < MAX_PAGES && jobs.length < MAX_JOBS; pageIndex++) {
+      if (pageIndex > 0) {
+        const cardIdsBefore = await getVisibleCardIds(page);
+        console.log(`[Scraper] Navegando para página ${pageIndex + 1}...`);
+
+        const navigated = await clickNextPage(page, pageIndex + 1);
+        if (!navigated) {
+          console.log('[Scraper] Nenhum botão de paginação encontrado. Parando.');
+          break;
+        }
+
+        await waitForCardsToChange(page, cardIdsBefore);
+        await new Promise((r) => setTimeout(r, randomDelay(3000, 6000)));
+      }
+
       await page.bringToFront().catch(() => {});
       const beforeCount = jobs.length;
       await collectVisibleJobs(page, jobs, seenLinks);
       const addedThisPage = jobs.length - beforeCount;
 
-      console.log(`[Scraper] Página ${pageIndex + 1}: coletadas ${addedThisPage} vagas (total: ${jobs.length})`);
+      console.log(`[Scraper] Página ${pageIndex + 1}: +${addedThisPage} vagas (total: ${jobs.length})`);
 
-      if (jobs.length >= MAX_JOBS) break;
-      if (addedThisPage === 0 && pageIndex > 0) break;
-
-      pageIndex++;
-
-      const currentUrl = new URL(page.url());
-      currentUrl.searchParams.set('start', String(pageIndex * JOBS_PER_PAGE));
-      const nextPageUrl = currentUrl.toString();
-
-      try {
-        await page.goto(nextPageUrl, { waitUntil: 'domcontentloaded', timeout: 60000 });
-      } catch (_) {
-        break;
+      if (addedThisPage === 0) {
+        emptyPages++;
+        if (emptyPages >= 2) break;
+      } else {
+        emptyPages = 0;
       }
-      await new Promise((r) => setTimeout(r, randomDelay(SCROLL_DELAY_MIN, SCROLL_DELAY_MAX)));
     }
 
     const db = await readDatabase();
