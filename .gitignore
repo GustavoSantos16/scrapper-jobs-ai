@@ -51,4 +51,4 @@ Thumbs.db
 .npm/
 .yarn/
 .pnp.*
-/storage/browser-profile/
+server/storage/browser-profile/
