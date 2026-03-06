@@ -48,25 +48,69 @@
     btnUpload.disabled = false;
   });
 
-  btnScraper.addEventListener('click', async () => {
+  const scraperProgress = document.getElementById('scraperProgress');
+  const scraperBar = document.getElementById('scraperBar');
+  const scraperProgressText = document.getElementById('scraperProgressText');
+
+  btnScraper.addEventListener('click', () => {
     btnScraper.disabled = true;
-    setStatus(scraperStatus, 'Abrindo navegador e coletando vagas. Faça login no LinkedIn se necessário...', false);
-    try {
-      const res = await fetch('/api/scraper/run', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ searchUrl: searchUrl.value.trim() || undefined })
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Erro no scraper');
-      setStatus(
-        scraperStatus,
-        'Coletadas ' + data.collected + ' vagas. Total no sistema: ' + data.total,
-        false
-      );
-    } catch (err) {
-      setStatus(scraperStatus, err.message || 'Erro ao buscar vagas.', true);
-    }
-    btnScraper.disabled = false;
+    setStatus(scraperStatus, '', false);
+    scraperProgress.style.display = 'block';
+    scraperBar.style.width = '0%';
+    scraperProgressText.textContent = 'Iniciando coleta de vagas, aguarde...';
+    scraperProgressText.className = 'status';
+
+    const urlParam = searchUrl.value.trim();
+    const streamUrl = '/api/scraper/run-stream' + (urlParam ? '?searchUrl=' + encodeURIComponent(urlParam) : '');
+    const evtSource = new EventSource(streamUrl);
+
+    evtSource.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+
+      if (data.type === 'status') {
+        scraperProgressText.textContent = data.message;
+      }
+
+      if (data.type === 'login') {
+        scraperBar.classList.add('login-wait');
+        scraperProgressText.textContent = data.message;
+      }
+
+      if (data.type === 'page') {
+        scraperBar.classList.remove('login-wait');
+        const pct = Math.round((data.page / data.totalPages) * 100);
+        scraperBar.style.width = pct + '%';
+        scraperProgressText.textContent = 'Coletando página ' + data.page + '... (' + data.collected + ' vagas encontradas)';
+      }
+
+      if (data.type === 'progress') {
+        const pct = Math.round((data.page / 10) * 100);
+        scraperBar.style.width = pct + '%';
+        scraperProgressText.textContent = 'Página ' + data.page + ': +' + data.added + ' vagas (total: ' + data.collected + ')';
+      }
+
+      if (data.type === 'done') {
+        scraperBar.style.width = '100%';
+        scraperProgressText.textContent = 'Concluído! ' + data.collected + ' novas vagas coletadas. Total no sistema: ' + data.total;
+        scraperProgressText.className = 'status success';
+        evtSource.close();
+        btnScraper.disabled = false;
+        setTimeout(() => { scraperProgress.style.display = 'none'; }, 5000);
+      }
+
+      if (data.type === 'error') {
+        setStatus(scraperStatus, data.error, true);
+        evtSource.close();
+        btnScraper.disabled = false;
+        scraperProgress.style.display = 'none';
+      }
+    };
+
+    evtSource.onerror = () => {
+      evtSource.close();
+      btnScraper.disabled = false;
+      scraperProgress.style.display = 'none';
+      setStatus(scraperStatus, 'Conexão perdida durante a coleta.', true);
+    };
   });
 })();

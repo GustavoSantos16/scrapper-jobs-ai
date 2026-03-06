@@ -1,10 +1,10 @@
 /**
  * Scraper de vagas do LinkedIn com Puppeteer.
- * - headless: false (navegador visível)
+ * - headless: true (navegador invisível)
  * - Reuso de sessão (cache/cookies) com userDataDir
- * - Login manual apenas quando necessário
  * - Scroll progressivo com delay aleatório 2–4s
  * - Coleta até esgotar resultados visíveis
+ * - Emite eventos de progresso via callback (SSE)
  */
 const puppeteer = require('puppeteer');
 const fs = require('fs');
@@ -13,7 +13,7 @@ const { readDatabase, writeDatabase } = require('./storageService');
 
 const SCROLL_DELAY_MIN = 1500;
 const SCROLL_DELAY_MAX = 3000;
-const MAX_JOBS = 1000;
+const MAX_JOBS = 10;
 const LOGIN_WAIT_TIMEOUT_MS = 240000;
 const PROFILE_DIR = path.join(__dirname, '..', 'storage', 'browser-profile');
 
@@ -337,16 +337,18 @@ function buildPageUrl(baseUrl, startOffset) {
 }
 
 /**
- * Inicia o scraping. Abre o LinkedIn Jobs, aguarda o usuário fazer login
- * e depois coleta vagas da página de busca atual até esgotar os resultados.
- * @param {string} [searchUrl] - URL da página de vagas do LinkedIn (opcional; se não informada, usa página padrão de vagas)
+ * Inicia o scraping em modo headless.
+ * @param {string} [searchUrl] - URL da página de vagas do LinkedIn (opcional)
+ * @param {function} [onProgress] - callback(data) para emitir eventos de progresso (SSE)
  * @returns {Promise<{ collected: number, jobs: Array }>}
  */
-async function runScraper(searchUrl) {
+async function runScraper(searchUrl, onProgress) {
+  const emit = typeof onProgress === 'function' ? onProgress : () => {};
+
   fs.mkdirSync(PROFILE_DIR, { recursive: true });
   const executablePath = process.env.PUPPETEER_EXECUTABLE_PATH || getExecutablePath();
   const launchOptions = {
-    headless: false,
+    headless: true,
     args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
     defaultViewport: { width: 1280, height: 800 },
     userDataDir: PROFILE_DIR
@@ -354,10 +356,12 @@ async function runScraper(searchUrl) {
   if (executablePath) {
     launchOptions.executablePath = executablePath;
   }
-  const browser = await puppeteer.launch(launchOptions);
+
+  emit({ type: 'status', message: 'Iniciando navegador...' });
+  let browser = await puppeteer.launch(launchOptions);
 
   try {
-    const page = await browser.newPage();
+    let page = await browser.newPage();
     await page.setUserAgent(
       'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
     );
@@ -365,11 +369,34 @@ async function runScraper(searchUrl) {
     const url = isLinkedInJobsUrl(searchUrl)
       ? searchUrl
       : 'https://www.linkedin.com/jobs/search/?keywords=developer';
+
+    emit({ type: 'status', message: 'Acessando LinkedIn...' });
     await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 90000 });
 
-    const loggedIn = await ensureLoggedIn(page);
-    if (!loggedIn) {
-      throw new Error('Tempo esgotado aguardando login no LinkedIn. Tente novamente e conclua o login em até 4 minutos.');
+    emit({ type: 'status', message: 'Verificando sessão de login...' });
+    let loggedIn = await checkLoginStatus(page);
+
+    if (loggedIn !== 'logged_in') {
+      console.log('[Scraper] Sem sessão ativa. Reabrindo navegador visível para login manual...');
+      emit({ type: 'login', message: 'Login necessário. Abrindo navegador para login manual...' });
+      await browser.close();
+
+      launchOptions.headless = false;
+      browser = await puppeteer.launch(launchOptions);
+      page = await browser.newPage();
+      await page.setUserAgent(
+        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+      );
+      await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 90000 });
+
+      const loginOk = await ensureLoggedIn(page);
+      if (!loginOk) {
+        throw new Error('Tempo esgotado aguardando login no LinkedIn. Tente novamente e conclua o login em até 4 minutos.');
+      }
+
+      emit({ type: 'status', message: 'Login realizado! Continuando coleta...' });
+    } else {
+      console.log('[Scraper] Sessão ativa detectada. Continuando em modo headless...');
     }
 
     const currentUrl = page.url();
@@ -378,6 +405,7 @@ async function runScraper(searchUrl) {
       await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 90000 });
     }
 
+    emit({ type: 'status', message: 'Aguardando cards de vagas...' });
     await page.waitForSelector(
       'li[data-occludable-job-id], div[data-job-id], div.job-search-card',
       { timeout: 15000 }
@@ -408,12 +436,15 @@ async function runScraper(searchUrl) {
         await new Promise((r) => setTimeout(r, randomDelay(2000, 4000)));
       }
 
+      emit({ type: 'page', page: pageIndex + 1, totalPages: MAX_PAGES, collected: jobs.length });
+
       await page.bringToFront().catch(() => {});
       const beforeCount = jobs.length;
       await collectVisibleJobs(page, jobs, seenLinks);
       const addedThisPage = jobs.length - beforeCount;
 
       console.log(`[Scraper] Página ${pageIndex + 1}: +${addedThisPage} vagas (total: ${jobs.length})`);
+      emit({ type: 'progress', page: pageIndex + 1, added: addedThisPage, collected: jobs.length });
 
       if (addedThisPage === 0) {
         emptyPages++;
@@ -423,6 +454,7 @@ async function runScraper(searchUrl) {
       }
     }
 
+    emit({ type: 'status', message: 'Salvando vagas no banco de dados...' });
     const db = await readDatabase();
     const existingIds = new Set((db.jobs || []).map((j) => j.link));
     const newJobs = jobs.filter((j) => !existingIds.has(j.link));

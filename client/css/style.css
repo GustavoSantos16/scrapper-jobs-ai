@@ -108,6 +108,21 @@ tr:hover { background: #fafafa; }
   border-radius: 4px;
   transition: width 0.4s ease;
 }
+.progress-bar.scraper-bar {
+  background: linear-gradient(90deg, #0a66c2, #00b4d8, #0a66c2);
+  background-size: 200% 100%;
+  animation: scraperShimmer 1.8s ease-in-out infinite;
+}
+@keyframes scraperShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+.progress-bar.login-wait {
+  width: 100% !important;
+  background: linear-gradient(90deg, #ef6c00, #ffa726, #ef6c00);
+  background-size: 200% 100%;
+  animation: scraperShimmer 1.2s ease-in-out infinite;
+}
 /* Row analyzing highlight */
 .row-analyzing {
   background: #e3f2fd !important;
