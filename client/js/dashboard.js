@@ -7,6 +7,8 @@
   const matchBar = document.getElementById('matchBar');
   const matchProgressText = document.getElementById('matchProgressText');
   const actionStatus = document.getElementById('actionStatus');
+  const jobsCount = document.getElementById('jobsCount');
+  const appliedJobsCount = document.getElementById('appliedJobsCount');
 
   const modal = document.getElementById('jobModal');
   const modalClose = document.getElementById('modalClose');
@@ -85,9 +87,13 @@
     const pendingJobs = jobs.filter((j) => !j.applied);
     const appliedJobs = jobs.filter((j) => !!j.applied);
 
+    jobsCount.textContent = `(${pendingJobs.length})`;
+
     jobsTable.innerHTML = pendingJobs.length === 0
       ? '<tr><td colspan="7">Nenhuma vaga pendente. Busque vagas na página inicial.</td></tr>'
       : pendingJobs.map(buildPendingRow).join('');
+
+    appliedJobsCount.textContent = `(${appliedJobs.length})`;
 
     appliedJobsTable.innerHTML = appliedJobs.length === 0
       ? '<tr><td colspan="7">Nenhuma vaga marcada como candidata.</td></tr>'

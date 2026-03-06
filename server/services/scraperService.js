@@ -13,7 +13,7 @@ const { readDatabase, writeDatabase } = require('./storageService');
 
 const SCROLL_DELAY_MIN = 1500;
 const SCROLL_DELAY_MAX = 3000;
-const MAX_JOBS = 10;
+const MAX_JOBS = 1000;
 const LOGIN_WAIT_TIMEOUT_MS = 240000;
 const PROFILE_DIR = path.join(__dirname, '..', 'storage', 'browser-profile');
 
