@@ -150,7 +150,7 @@
     modalScore.className = 'modal-score ' + getScoreClass(job.score);
     modalStatusBadge.textContent = job.status || '';
     modalStatusBadge.className = 'modal-status badge-' + (job.status || 'none');
-    modalDescription.textContent = job.description || 'Sem descrição disponível.';
+    modalDescription.innerHTML = job.description || 'Sem descrição disponível.';
     modalJustificativa.textContent = job.justificativa || 'Ainda não analisado.';
     modalAppliedInfo.textContent = job.applied
       ? 'Candidatura marcada em: ' + formatAppliedAt(job.appliedAt)

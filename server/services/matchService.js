@@ -56,8 +56,12 @@ const SENIORITY_PATTERNS = [
   { key: 'lead', patterns: ['lead', 'staff', 'principal', 'specialist', 'especialista'] }
 ];
 
+function stripHtml(text) {
+  return (text || '').replace(/<[^>]*>/g, ' ');
+}
+
 function normalizeText(text) {
-  return (text || '')
+  return stripHtml(text)
     .toLowerCase()
     .normalize('NFD')
     .replace(/\p{Diacritic}/gu, '')

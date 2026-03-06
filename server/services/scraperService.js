@@ -13,7 +13,7 @@ const { readDatabase, writeDatabase } = require('./storageService');
 
 const SCROLL_DELAY_MIN = 1500;
 const SCROLL_DELAY_MAX = 3000;
-const MAX_JOBS = 100;
+const MAX_JOBS = 1000;
 const LOGIN_WAIT_TIMEOUT_MS = 240000;
 const PROFILE_DIR = path.join(__dirname, '..', 'storage', 'browser-profile');
 
@@ -182,7 +182,32 @@ function readDescriptionFromPanel(page) {
     if (!el) return '';
     const clone = el.cloneNode(true);
     clone.querySelectorAll('.visually-hidden, .a11y-text').forEach((n) => n.remove());
-    return (clone.innerText || clone.textContent || '').trim();
+
+    const ALLOWED_TAGS = new Set([
+      'P','BR','UL','OL','LI','STRONG','EM','B','I',
+      'H1','H2','H3','H4','H5','H6','SPAN','A','DIV'
+    ]);
+
+    function sanitize(node) {
+      for (const child of [...node.childNodes]) {
+        if (child.nodeType === Node.TEXT_NODE) continue;
+        if (child.nodeType !== Node.ELEMENT_NODE) { child.remove(); continue; }
+
+        if (!ALLOWED_TAGS.has(child.tagName)) {
+          while (child.firstChild) node.insertBefore(child.firstChild, child);
+          child.remove();
+        } else {
+          for (const attr of [...child.attributes]) {
+            if (child.tagName === 'A' && attr.name === 'href') continue;
+            child.removeAttribute(attr.name);
+          }
+          sanitize(child);
+        }
+      }
+    }
+
+    sanitize(clone);
+    return clone.innerHTML.trim();
   });
 }
 
