@@ -49,13 +49,91 @@ function isLinkedInJobsUrl(url) {
   }
 }
 
+async function checkLoginStatus(page) {
+  try {
+    const url = page.url();
+
+    const notLoggedInUrlPatterns = ['/login', '/signup', '/authwall', '/checkpoint'];
+    if (notLoggedInUrlPatterns.some((p) => url.includes(p))) {
+      return 'not_logged_in';
+    }
+
+    const loggedInUrlPatterns = ['/feed', '/mynetwork', '/messaging', '/notifications'];
+    const onAuthenticatedPage = loggedInUrlPatterns.some((p) => url.includes(p));
+
+    const domStatus = await page.evaluate(() => {
+      const loggedInSelectors = [
+        'img.global-nav__me-photo',
+        '.global-nav__me',
+        'div.global-nav__me-content',
+        'nav.global-nav',
+        '#global-nav',
+        'img.feed-identity-module__member-photo',
+        '.scaffold-layout__sidebar',
+        'header.msg-overlay-bubble-header',
+        '[data-control-name="identity_welcome_message"]',
+        'img.presence-entity__image',
+        '.search-global-typeahead'
+      ];
+      for (const sel of loggedInSelectors) {
+        if (document.querySelector(sel)) return 'logged_in';
+      }
+
+      const notLoggedInSelectors = [
+        'form.login__form',
+        '#login-form',
+        'form[action*="login-submit"]',
+        'form[action*="uas/login"]',
+        'a.nav__button-primary[href*="login"]',
+        '.nav__button-secondary[href*="signup"]',
+        'button[data-modal="login-modal"]'
+      ];
+      for (const sel of notLoggedInSelectors) {
+        if (document.querySelector(sel)) return 'not_logged_in';
+      }
+
+      return 'unknown';
+    });
+
+    if (domStatus === 'logged_in') return 'logged_in';
+    if (domStatus === 'not_logged_in') return 'not_logged_in';
+
+    if (onAuthenticatedPage) return 'logged_in';
+
+    return 'unknown';
+  } catch (_) {
+    return 'navigating';
+  }
+}
+
 async function ensureLoggedIn(page, timeoutMs = LOGIN_WAIT_TIMEOUT_MS) {
   const startedAt = Date.now();
+
+  const initialStatus = await checkLoginStatus(page);
+  if (initialStatus === 'logged_in') {
+    console.log('[Scraper] Sessão ativa detectada. Continuando...');
+    return true;
+  }
+
+  console.log('[Scraper] Login necessário. Faça login no navegador que foi aberto...');
+
   while (Date.now() - startedAt < timeoutMs) {
-    const current = page.url();
-    if (current.includes('/jobs')) return true;
+    const status = await checkLoginStatus(page);
+    if (status === 'logged_in') {
+      console.log('[Scraper] Login detectado com sucesso!');
+      await new Promise((r) => setTimeout(r, 3000));
+      return true;
+    }
+
+    const elapsed = Math.round((Date.now() - startedAt) / 1000);
+    const remaining = Math.round((timeoutMs - (Date.now() - startedAt)) / 1000);
+    if (elapsed % 10 === 0) {
+      console.log(`[Scraper] Aguardando login... status="${status}" url="${page.url()}" (${remaining}s restantes)`);
+    }
+
     await new Promise((r) => setTimeout(r, 2000));
   }
+
   return false;
 }
 
@@ -168,11 +246,11 @@ async function collectVisibleJobs(page, jobs, seenLinks) {
     return added;
   }
 
-  console.log(`[Scraper] Cards encontrados na página: ${cardsData.length}`);
+  const newCards = cardsData.filter((c) => !seenLinks.has(c.link));
+  console.log(`[Scraper] Cards encontrados: ${cardsData.length} | Novos: ${newCards.length}`);
 
-  for (const item of cardsData) {
+  for (const item of newCards) {
     const { jobId, title, company, link } = item;
-    if (seenLinks.has(link)) continue;
 
     let description = '';
     try {
@@ -180,12 +258,29 @@ async function collectVisibleJobs(page, jobs, seenLinks) {
         ? await page.$(`li[data-occludable-job-id="${jobId}"], div[data-job-id="${jobId}"]`)
         : null;
       if (cardEl) {
+        await page.evaluate((el) => el.scrollIntoView({ behavior: 'smooth', block: 'center' }), cardEl);
+        await new Promise((r) => setTimeout(r, 500));
+
         await cardEl.click();
-        await page.waitForSelector('#job-details', { timeout: 3000 }).catch(() => {});
-        await new Promise((r) => setTimeout(r, 800));
+
+        await page.waitForFunction(
+          () => {
+            const el = document.querySelector('#job-details, div[class*="jobs-description-content__text"]');
+            if (!el) return false;
+            const text = (el.innerText || '').trim();
+            return text.length > 50;
+          },
+          { timeout: 5000 }
+        ).catch(() => {});
+
+        await new Promise((r) => setTimeout(r, 500));
         description = await readDescriptionFromPanel(page);
       }
     } catch (_) {}
+
+    if (description && description.length < 30) {
+      description = '';
+    }
 
     const id = jobId || `job-${Date.now()}-${jobs.length}`;
     jobs.push({
@@ -208,78 +303,12 @@ async function collectVisibleJobs(page, jobs, seenLinks) {
   return added;
 }
 
-async function scrollPaginationIntoView(page) {
-  await page.evaluate(() => {
-    const el = document.querySelector(
-      'div.jobs-search-results-list__pagination, ul.artdeco-pagination__pages, nav[aria-label*="aginat"]'
-    );
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  });
-  await new Promise((r) => setTimeout(r, 1000));
-}
+const LINKEDIN_PAGE_SIZE = 25;
 
-async function getVisibleCardIds(page) {
-  return page.evaluate(() => {
-    const cards = document.querySelectorAll('li[data-occludable-job-id], div[data-job-id]');
-    return Array.from(cards).slice(0, 5).map(
-      (c) => c.getAttribute('data-occludable-job-id') || c.getAttribute('data-job-id')
-    );
-  });
-}
-
-async function clickNextPage(page, targetPageNum) {
-  await scrollPaginationIntoView(page);
-
-  const clickedByNumber = await page.evaluate((num) => {
-    const buttons = document.querySelectorAll(
-      'li.artdeco-pagination__indicator--number button'
-    );
-    for (const btn of buttons) {
-      const text = (btn.querySelector('span') || btn).textContent.trim();
-      if (text === String(num)) {
-        btn.click();
-        return true;
-      }
-    }
-    return false;
-  }, targetPageNum);
-
-  if (clickedByNumber) return true;
-
-  const nextBtnSelectors = [
-    'button[aria-label="View next page"]',
-    'button[aria-label="Next"]',
-    'button.artdeco-pagination__button--next',
-    'button.jobs-search-pagination__button--next'
-  ];
-  for (const sel of nextBtnSelectors) {
-    const btn = await page.$(sel);
-    if (!btn) continue;
-    const isDisabled = await page
-      .evaluate((b) => b.disabled || b.getAttribute('aria-disabled') === 'true', btn)
-      .catch(() => true);
-    if (isDisabled) continue;
-    await btn.click();
-    return true;
-  }
-
-  return false;
-}
-
-async function waitForCardsToChange(page, oldCardIds) {
-  await page
-    .waitForFunction(
-      (oldIds) => {
-        const cards = document.querySelectorAll('li[data-occludable-job-id], div[data-job-id]');
-        if (cards.length === 0) return false;
-        const firstId =
-          cards[0].getAttribute('data-occludable-job-id') || cards[0].getAttribute('data-job-id');
-        return !oldIds.includes(firstId);
-      },
-      { timeout: 15000 },
-      oldCardIds
-    )
-    .catch(() => {});
+function buildPageUrl(baseUrl, startOffset) {
+  const u = new URL(baseUrl);
+  u.searchParams.set('start', String(startOffset));
+  return u.toString();
 }
 
 /**
@@ -313,35 +342,45 @@ async function runScraper(searchUrl) {
       : 'https://www.linkedin.com/jobs/search/?keywords=developer';
     await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 90000 });
 
-    // Se não houver sessão ativa, aguarda login manual.
     const loggedIn = await ensureLoggedIn(page);
     if (!loggedIn) {
       throw new Error('Tempo esgotado aguardando login no LinkedIn. Tente novamente e conclua o login em até 4 minutos.');
     }
-    // Garante navegação final para a URL desejada após login redirecionar.
-    if (page.url() !== url) {
+
+    const currentUrl = page.url();
+    if (!currentUrl.includes('/jobs/search')) {
+      console.log('[Scraper] Redirecionando para a URL de busca após login...');
       await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 90000 });
     }
+
+    await page.waitForSelector(
+      'li[data-occludable-job-id], div[data-job-id], div.job-search-card',
+      { timeout: 15000 }
+    ).catch(() => {
+      console.log('[Scraper] Aviso: cards de vagas não encontrados imediatamente, tentando continuar...');
+    });
     await new Promise((r) => setTimeout(r, 2500));
 
     const jobs = [];
     const seenLinks = new Set();
     const MAX_PAGES = 10;
     let emptyPages = 0;
+    const baseUrl = page.url();
 
     for (let pageIndex = 0; pageIndex < MAX_PAGES && jobs.length < MAX_JOBS; pageIndex++) {
       if (pageIndex > 0) {
-        const cardIdsBefore = await getVisibleCardIds(page);
-        console.log(`[Scraper] Navegando para página ${pageIndex + 1}...`);
+        const startOffset = pageIndex * LINKEDIN_PAGE_SIZE;
+        const nextUrl = buildPageUrl(baseUrl, startOffset);
+        console.log(`[Scraper] Navegando para página ${pageIndex + 1} (start=${startOffset})...`);
 
-        const navigated = await clickNextPage(page, pageIndex + 1);
-        if (!navigated) {
-          console.log('[Scraper] Nenhum botão de paginação encontrado. Parando.');
-          break;
-        }
+        await page.goto(nextUrl, { waitUntil: 'domcontentloaded', timeout: 60000 });
 
-        await waitForCardsToChange(page, cardIdsBefore);
-        await new Promise((r) => setTimeout(r, randomDelay(3000, 6000)));
+        await page.waitForSelector(
+          'li[data-occludable-job-id], div[data-job-id], div.job-search-card',
+          { timeout: 10000 }
+        ).catch(() => {});
+
+        await new Promise((r) => setTimeout(r, randomDelay(2000, 4000)));
       }
 
       await page.bringToFront().catch(() => {});
