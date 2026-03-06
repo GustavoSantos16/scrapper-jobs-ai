@@ -294,3 +294,57 @@ tr:hover { background: #fafafa; }
 .modal-footer-info a {
   color: #0a66c2;
 }
+
+/* Scraper banner (global, fixed no topo) */
+.scraper-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  background: #0a66c2;
+  color: #fff;
+  font-size: 0.85rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+.scraper-banner-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.scraper-banner-bar-wrap {
+  width: 120px;
+  height: 6px;
+  background: rgba(255,255,255,0.3);
+  border-radius: 3px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.scraper-banner-bar {
+  height: 100%;
+  width: 0%;
+  background: #fff;
+  border-radius: 3px;
+  transition: width 0.4s ease;
+}
+.scraper-banner-bar.login-wait {
+  width: 100% !important;
+  background: linear-gradient(90deg, #ffa726, #fff, #ffa726);
+  background-size: 200% 100%;
+  animation: scraperShimmer 1.2s ease-in-out infinite;
+}
+.scraper-banner-text {
+  flex: 1;
+}
+.scraper-banner-done {
+  background: #2e7d32;
+}
+.scraper-banner-error {
+  background: #c62828;
+}
+body.has-scraper-banner {
+  padding-top: 2.5rem;
+}

@@ -303,6 +303,13 @@
     }
   }
 
+  // Recarregar vagas quando o scraper terminar (roda em background)
+  window.addEventListener('scraper-event', function (e) {
+    if (e.detail.type === 'done') {
+      loadJobs();
+    }
+  });
+
   // --- Init ---
   loadJobs();
 })();
