@@ -9,7 +9,7 @@
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 const path = require('path');
-const { readDatabase, writeDatabase } = require('./storageService');
+const { readDatabase, writeDatabase, normalizeJobLink } = require('./storageService');
 
 const SCROLL_DELAY_MIN = 1500;
 const SCROLL_DELAY_MAX = 3000;
@@ -271,7 +271,13 @@ async function collectVisibleJobs(page, jobs, seenLinks) {
     return added;
   }
 
-  const newCards = cardsData.filter((c) => !seenLinks.has(c.link));
+  const newCards = cardsData.filter((c) => {
+    const normalizedLink = normalizeJobLink(c.link);
+    if (!normalizedLink) return false;
+    if (seenLinks.has(normalizedLink)) return false;
+    c.link = normalizedLink;
+    return true;
+  });
   console.log(`[Scraper] Cards encontrados: ${cardsData.length} | Novos: ${newCards.length}`);
 
   for (const item of newCards) {
@@ -313,7 +319,7 @@ async function collectVisibleJobs(page, jobs, seenLinks) {
       title: title.trim(),
       company: (company || '').trim(),
       description: (description || '').slice(0, 8000),
-      link: link.trim(),
+      link: normalizeJobLink(link),
       scrapedAt: new Date().toISOString(),
       score: null,
       justificativa: null,
@@ -321,7 +327,7 @@ async function collectVisibleJobs(page, jobs, seenLinks) {
       applied: false,
       appliedAt: null
     });
-    seenLinks.add(link);
+    seenLinks.add(normalizeJobLink(link));
     added++;
   }
 
@@ -456,8 +462,19 @@ async function runScraper(searchUrl, onProgress) {
 
     emit({ type: 'status', message: 'Salvando vagas no banco de dados...' });
     const db = await readDatabase();
-    const existingIds = new Set((db.jobs || []).map((j) => j.link));
-    const newJobs = jobs.filter((j) => !existingIds.has(j.link));
+    const existingIds = new Set(
+      (db.jobs || [])
+        .map((j) => normalizeJobLink(j.link))
+        .filter(Boolean)
+    );
+    const newJobs = jobs.filter((j) => {
+      const normalizedLink = normalizeJobLink(j.link);
+      if (!normalizedLink) return false;
+      if (existingIds.has(normalizedLink)) return false;
+      j.link = normalizedLink;
+      existingIds.add(normalizedLink);
+      return true;
+    });
     db.jobs = (db.jobs || []).concat(newJobs);
     await writeDatabase(db);
 
