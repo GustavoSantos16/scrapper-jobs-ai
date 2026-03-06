@@ -5,9 +5,7 @@ const path = require('path');
 const resumeRoutes = require('./routes/resumeRoutes');
 const scraperRoutes = require('./routes/scraperRoutes');
 const jobRoutes = require('./routes/jobRoutes');
-const emailRoutes = require('./routes/emailRoutes');
 const historyRoutes = require('./routes/historyRoutes');
-const ollamaRoutes = require('./routes/ollamaRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -20,9 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/api/resume', resumeRoutes);
 app.use('/api/scraper', scraperRoutes);
 app.use('/api/jobs', jobRoutes);
-app.use('/api/emails', emailRoutes);
 app.use('/api/history', historyRoutes);
-app.use('/api/ollama', ollamaRoutes);
 
 // Servir frontend estático
 const clientDir = path.join(__dirname, '..', 'client');

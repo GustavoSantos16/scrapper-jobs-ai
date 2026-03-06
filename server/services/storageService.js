@@ -12,11 +12,7 @@ async function readDatabase() {
       const initial = {
         resume: null,
         jobs: [],
-        history: [],
-        emailStats: {
-          currentDay: null,
-          sentToday: 0
-        }
+        history: []
       };
       await writeDatabase(initial);
       return initial;

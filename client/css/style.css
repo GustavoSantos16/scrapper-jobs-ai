@@ -86,7 +86,6 @@ tr:hover { background: #fafafa; }
 .score-aprovado { color: #0a0; font-weight: 700; }
 .score-talvez { color: #a60; font-weight: 700; }
 .score-descartado { color: #a00; font-weight: 700; }
-.proposal-preview { max-width: 200px; display: inline-block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .actions { margin-top: 1rem; display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
 .actions label { margin: 0; }
 .actions input[type="email"] { max-width: 260px; margin: 0; }
@@ -109,15 +108,6 @@ tr:hover { background: #fafafa; }
   border-radius: 4px;
   transition: width 0.4s ease;
 }
-.status.ollama-working {
-  color: #0a66c2;
-  animation: pulse 1.2s infinite;
-}
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
-}
-
 /* Row analyzing highlight */
 .row-analyzing {
   background: #e3f2fd !important;
@@ -135,6 +125,29 @@ tr:hover { background: #fafafa; }
   background: #555;
 }
 .btn-details:hover { background: #333; }
+.btn-apply {
+  padding: 0.25rem 0.6rem;
+  font-size: 0.8rem;
+  background: #2e7d32;
+}
+.btn-apply:hover { background: #1b5e20; }
+.btn-unapply {
+  padding: 0.25rem 0.6rem;
+  font-size: 0.8rem;
+  background: #ef6c00;
+}
+.btn-unapply:hover { background: #e65100; }
+.btn-delete {
+  padding: 0.25rem 0.6rem;
+  font-size: 0.8rem;
+  background: #c62828;
+}
+.btn-delete:hover { background: #b71c1c; }
+.action-buttons {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+}
 
 /* Modal */
 .modal-overlay {

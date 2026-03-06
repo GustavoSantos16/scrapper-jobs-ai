@@ -9,7 +9,7 @@
 <body>
   <div class="container">
     <header>
-      <h1>Dashboard - Vagas e Propostas</h1>
+      <h1>Dashboard - Compatibilidade de Vagas</h1>
       <nav class="links">
         <a href="/">Voltar ao início</a>
       </nav>
@@ -28,20 +28,17 @@
     </section>
 
     <section class="card">
-      <h2>Vagas</h2>
-      <p id="emailQueueStatus" class="status"></p>
+      <h2>Vagas disponíveis</h2>
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th><input type="checkbox" id="checkAll" title="Selecionar todas"></th>
               <th>Título</th>
               <th>Empresa</th>
               <th>Score</th>
               <th>Status</th>
               <th>Justificativa</th>
-              <th>Proposta</th>
-              <th>E-mail</th>
+              <th>Ações</th>
               <th>Detalhes</th>
             </tr>
           </thead>
@@ -49,33 +46,25 @@
           </tbody>
         </table>
       </div>
-      <div class="actions">
-        <button type="button" id="btnGenerateProposals">Gerar proposta (selecionadas)</button>
-        <button type="button" id="btnSendSelected">Enviar selecionadas</button>
-      </div>
-      <div id="proposalProgress" class="progress-box" style="display:none;">
-        <div class="progress-bar-wrap">
-          <div class="progress-bar" id="proposalBar" style="width:0%"></div>
-        </div>
-        <p id="proposalProgressText" class="status"></p>
-      </div>
       <p id="actionStatus" class="status"></p>
     </section>
 
-    <section class="card" id="history">
-      <h2>Histórico</h2>
-      <p>E-mails enviados e ações recentes.</p>
+    <section class="card">
+      <h2>Vagas que já me candidatei</h2>
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
-              <th>Data</th>
-              <th>Tipo</th>
-              <th>Vaga / Empresa</th>
-              <th>Destino</th>
+              <th>Título</th>
+              <th>Empresa</th>
+              <th>Score</th>
+              <th>Status</th>
+              <th>Data da candidatura</th>
+              <th>Ações</th>
+              <th>Detalhes</th>
             </tr>
           </thead>
-          <tbody id="historyTable">
+          <tbody id="appliedJobsTable">
           </tbody>
         </table>
       </div>
@@ -100,12 +89,8 @@
         <h3>Justificativa da IA</h3>
         <p id="modalJustificativa"></p>
       </div>
-      <div class="modal-section">
-        <h3>Proposta gerada</h3>
-        <p id="modalProposal"></p>
-      </div>
       <div class="modal-section modal-footer-info">
-        <span>E-mail: <strong id="modalEmail"></strong></span>
+        <span id="modalAppliedInfo"></span>
         <a id="modalLink" href="#" target="_blank" rel="noopener">Abrir no LinkedIn</a>
       </div>
     </div>

@@ -1,0 +1,8 @@
+2026/03/06-13:35:46.181 5e64a9 Reusing MANIFEST /Users/gustavo/Documents/GitHub/scrapper-jobs-ai/server/storage/browser-profile/Default/Local Storage/leveldb/MANIFEST-000001
+2026/03/06-13:35:46.184 5e64a9 Recovering log #3
+2026/03/06-13:35:46.184 5e64a9 Level-0 table #3: started
+2026/03/06-13:35:46.191 5e64a9 Level-0 table #3: 25163 bytes OK
+2026/03/06-13:35:46.192 5e64a9 Recovering log #4
+2026/03/06-13:35:46.192 5e64a9 Reusing old log /Users/gustavo/Documents/GitHub/scrapper-jobs-ai/server/storage/browser-profile/Default/Local Storage/leveldb/000004.log 
+2026/03/06-13:35:46.195 5e64a9 Delete type=0 #3
+2026/03/06-13:35:46.195 5e64a9 Delete type=2 #5
