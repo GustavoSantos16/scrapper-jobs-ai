@@ -422,7 +422,7 @@ async function runScraper(searchUrl, onProgress) {
 
     const jobs = [];
     const seenLinks = new Set();
-    const MAX_PAGES = 10;
+    const MAX_PAGES = 20;
     let emptyPages = 0;
     const baseUrl = page.url();
 

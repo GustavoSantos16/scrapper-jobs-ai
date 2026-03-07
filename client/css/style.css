@@ -294,6 +294,10 @@ tr:hover { background: #fafafa; }
 .modal-footer-info a {
   color: #0a66c2;
 }
+.modal-actions {
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
 
 /* Scraper banner (global, fixed no topo) */
 .scraper-banner {

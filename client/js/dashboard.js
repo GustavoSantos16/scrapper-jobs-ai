@@ -20,6 +20,8 @@
   const modalJustificativa = document.getElementById('modalJustificativa');
   const modalAppliedInfo = document.getElementById('modalAppliedInfo');
   const modalLink = document.getElementById('modalLink');
+  const modalApplyBtn = document.getElementById('modalApplyBtn');
+  const modalDeleteBtn = document.getElementById('modalDeleteBtn');
 
   let allJobs = [];
 
@@ -162,6 +164,10 @@
       ? 'Candidatura marcada em: ' + formatAppliedAt(job.appliedAt)
       : 'Vaga ainda não marcada como candidatura.';
     modalLink.href = job.link || '#';
+    modalApplyBtn.dataset.id = job.id;
+    modalDeleteBtn.dataset.id = job.id;
+    modalApplyBtn.disabled = !!job.applied;
+    modalApplyBtn.textContent = job.applied ? 'Já candidatei' : 'Já me candidatei';
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
   }
@@ -177,6 +183,20 @@
   });
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeModal();
+  });
+
+  modalApplyBtn.addEventListener('click', async () => {
+    const jobId = modalApplyBtn.dataset.id;
+    if (!jobId) return;
+    closeModal();
+    await setApplied(jobId, true);
+  });
+
+  modalDeleteBtn.addEventListener('click', async () => {
+    const jobId = modalDeleteBtn.dataset.id;
+    if (!jobId) return;
+    closeModal();
+    await deleteJob(jobId);
   });
 
   async function setApplied(jobId, applied) {
