@@ -44,19 +44,6 @@
       "appliedAt": null
     },
     {
-      "id": "4368900366",
-      "title": "Frontend Developer",
-      "company": "Go Offer",
-      "description": "<h2>\n              Sobre a vaga\n            </h2>\n\n            <div>\n                <p>\n                  <span><p>Frontend Engineer (Intern)</p></span><span><p><span><br></span></p></span><span><p><span><strong>Short-term unpaid remote internship for students.<span> </span></strong></span></p></span><span><p><span><br></span></p></span><span><p>Start your frontend career here. You'll be placed on our product team with a mentor, work on user-facing features for our platform, and learn how to build interfaces that users interact with.</p></span><span><p><span><br></span></p></span><span><p><span><strong>About GoOffer</strong></span></p></span><span><p>Go Offer is an AI-powered SaaS platform that helps professionals land jobs in the US market.</p></span><span><p>Platform combines AI automation, systematic job search methodologies, and career coaching to transform job hunting into a data-driven process.</p></span><span><p><span><br></span></p></span><span><p><span><strong>What you could do as a project:</strong></span><span> </span>Create web interfaces, implement designs, build interactive features. Work on projects that go live and impact how users experience the platform.</p></span><span><p><span><br></span></p></span><span><p><span><strong>What you'll learn:</strong></span><span> </span>AI-powered frontend development - Lovable for rapid project creation, ChatGPT and Claude for code assistance, HeyGen for creating AI avatars, 11Labs for voice integration, Cursor for building components.</p></span><span><p><span><br></span></p></span><span><p><span><strong>What you'll get:</strong></span><span> </span>Hands-on experience in a startup environment, completed projects for your portfolio, a strong resume and LinkedIn profile optimized for the job search, and the skills to start your career.</p></span>\n                </p>\n            </div>",
-      "link": "https://www.linkedin.com/jobs/view/4368900366",
-      "scrapedAt": "2026-03-06T19:41:56.392Z",
-      "score": 67,
-      "justificativa": "Cobertura de título: 100% | Skills técnicas em comum: 1/1 | Similaridade textual: 3% | Senioridade: perfil acima do esperado (mid) | Penalidade aplicada: -7",
-      "status": "talvez",
-      "applied": false,
-      "appliedAt": null
-    },
-    {
       "id": "4378186906",
       "title": "100% Remote Frontend Developer (Angular / AWS)",
       "company": "Summit Human Capital",
@@ -65,19 +52,6 @@
       "scrapedAt": "2026-03-06T19:41:58.633Z",
       "score": 51,
       "justificativa": "Cobertura de título: 50% | Skills técnicas em comum: 4/4 | Similaridade textual: 7% | Senioridade: senioridade distante (mid vs lead) | Penalidade aplicada: -7",
-      "status": "talvez",
-      "applied": false,
-      "appliedAt": null
-    },
-    {
-      "id": "4380577516",
-      "title": "Angular Developer",
-      "company": "Kforce Inc",
-      "description": "<h2>\n              Sobre a vaga\n            </h2>\n\n            <div>\n                <p>\n                  <span><strong>Responsibilities<span><br></span><span><br></span></strong></span>Kforce has a client that is seeking an Angular Developer in Dallas, TX. Summary: We are seeking a strong Angular UI Developer to design and build a modern Angular-based user interface for an enterprise application within a large financial services environment. This role is focused primarily on front-end development, with opportunities to collaborate closely with backend and data teams. Responsibilities:<span><br></span><span><br></span><span>      <ul><li><span> </span>Design and build a new Angular UI application</li><li><span> </span>Develop reusable, maintainable UI components using Angular</li><li><span> </span>Collaborate with backend developers and stakeholders to integrate APIs and data services</li><li><span> </span>Implement data-driven UI elements, including tables and charts</li><li><span> </span>Ensure UI performance, usability, and consistency across the application</li><li><span> </span>Participate in design and technical discussions to shape the overall UI approach</li><li><span> </span>Support testing, debugging, and iterative improvements of the application<span><br></span><span><br></span></li></ul>\n</span><span><strong>Requirements<span><br></span><span><br></span></strong></span><span>      <ul><li><span> </span>Strong hands-on experience with Angular (building real applications, not just minor enhancements)</li><li><span> </span>Experience consuming APIs and working with data in UI applications</li><li><span> </span>Solid understanding of HTML, CSS, and TypeScript</li><li><span> </span>Ability to work independently and deliver UI features end-to-end</li><li><span> </span>Comfortable working in an enterprise/financial services environment<span><br></span><span><br></span></li></ul>\n</span>Preferred / Nice-to-Have:<span><br></span><span><br></span><span>      <ul><li><span> </span>Experience working with a Java backend</li><li><span> </span>Experience implementing charts and visualizations (e.g., Highcharts or similar libraries)</li><li><span> </span>Prior experience building dashboards or data-heavy UI applications</li><li><span> </span>Exposure to data modeling concepts<span><br></span><span><br></span></li></ul>\n</span>The pay range is the lowest to highest compensation we reasonably in good faith believe we would pay at posting for this role. We may ultimately pay more or less than this range. Employee pay is based on factors like relevant education, qualifications, certifications, experience, skills, seniority, location, performance, union contract and business needs. This range may be modified in the future.<span><br></span><span><br></span>We offer comprehensive benefits including medical/dental/vision insurance, HSA, FSA, 401(k), and life, disability &amp; ADD insurance to eligible employees. Salaried personnel receive paid time off. Hourly employees are not eligible for paid time off unless required by law. Hourly employees on a Service Contract Act project are eligible for paid sick leave.<span><br></span><span><br></span>Note: Pay is not considered compensation until it is earned, vested and determinable. The amount and availability of any compensation remains in Kforce's sole discretion unless and until paid and may be modified in its discretion consistent with the law.<span><br></span><span><br></span>This job is not eligible for bonuses, incentives or commissions.<span><br></span><span><br></span>Kforce is an Equal Opportunity/Affirmative Action Employer. All qualified applicants will receive consideration for employment without regard to race, color, religion, sex, pregnancy, sexual orientation, gender identity, national origin, age, protected veteran status, or disability status.<span><br></span><span><br></span>By clicking “Apply Today” you agree to receive calls, AI-generated calls, text messages or emails from Kforce and its affiliates, and service providers. Note that if you choose to communicate with Kforce via text messaging the frequency may vary, and message and data rates may apply. Carriers are not liable for delayed or undelivered messages. You will always have the right to cease communicating via text by using key words such as STOP.\n                </p>\n            </div>",
-      "link": "https://www.linkedin.com/jobs/view/4380577516",
-      "scrapedAt": "2026-03-06T19:42:00.870Z",
-      "score": 64,
-      "justificativa": "Cobertura de título: 100% | Skills técnicas em comum: 3/4 | Similaridade textual: 12% | Senioridade: perfil um nível abaixo (mid vs senior)",
       "status": "talvez",
       "applied": false,
       "appliedAt": null
@@ -92,8 +66,8 @@
       "score": 64,
       "justificativa": "Cobertura de título: 100% | Skills técnicas em comum: 5/5 | Similaridade textual: 6% | Senioridade: senioridade sem indicação explícita | Penalidade aplicada: -7",
       "status": "talvez",
-      "applied": false,
-      "appliedAt": null
+      "applied": true,
+      "appliedAt": "2026-03-25T16:49:46.882Z"
     },
     {
       "id": "4379954583",
@@ -317,19 +291,6 @@
       "appliedAt": null
     },
     {
-      "id": "4379168533",
-      "title": "React/JavaScript Engineer (Frontend) | Remote",
-      "company": "Crossing Hurdles",
-      "description": "<h2>\n              Sobre a vaga\n            </h2>\n\n            <div>\n                <p>\n                  <span><p><span><strong>Position:</strong></span><span> </span>Software Engineer (Front-end)</p></span><span><p><span><strong>Type:</strong></span><span> </span>Hourly contract</p></span><span><p><span><strong>Compensation:</strong></span><span> </span>$70–$80/hour</p></span><span><p><span><strong>Location:</strong></span><span> </span>Remote</p></span><span><p><span><strong>Commitment:</strong></span><span> </span>10–40 hours/week</p></span><span><p><span><br></span></p></span><span><p><span><strong>Role Responsibilities</strong></span></p></span><span>      <ul><li>Write realistic, self-contained prompts for client-side web applications, games, tools, and simulations.</li><li>Create precise, binary evaluation rubrics tagged by verification type.</li><li>Ensure rubric items are pass/fail and verifiable through screenshot and code inspection.</li><li>Develop high-quality datasets focused on UI behavior, interactivity, robustness, and state management.</li><li>Apply frontend engineering expertise to evaluate correctness and user experience.</li><li>Collaborate asynchronously with research and review teams.</li></ul>\n</span><span><p><span><br></span></p></span><span><p><span><strong>Requirements</strong></span></p></span><span>      <ul><li>Professional experience in frontend or full-stack development.</li><li>Strong proficiency in JavaScript, TypeScript, React, or vanilla JS.</li><li>Ability to write clear technical specifications and structured evaluation criteria.</li><li>Strong analytical thinking and attention to detail.</li><li>Comfortable working independently in a remote, deliverables-driven environment.</li><li>Bachelor’s degree in Software Engineering, Computer Science, or related field preferred.</li></ul>\n</span><span><p><span><br></span></p></span><span><p><span><strong>Application Process (Takes 20 Min)</strong></span></p></span><span>      <ul><li>Upload resume</li><li>Interview (15 min)</li><li>Submit form</li></ul>\n</span>\n                </p>\n                <br>\n                <h3>Experiência e competências desejadas</h3>\n                <p>\n                  Research, Attention to Detail\n                </p>\n            </div>",
-      "link": "https://www.linkedin.com/jobs/view/4379168533",
-      "scrapedAt": "2026-03-06T19:42:55.658Z",
-      "score": 64,
-      "justificativa": "Cobertura de título: 60% | Skills técnicas em comum: 4/4 | Similaridade textual: 8% | Senioridade: senioridade sem indicação explícita",
-      "status": "talvez",
-      "applied": false,
-      "appliedAt": null
-    },
-    {
       "id": "4380012795",
       "title": "Web Frontend Engineer",
       "company": "Insight Global",
@@ -377,19 +338,6 @@
       "scrapedAt": "2026-03-06T19:43:04.559Z",
       "score": 58,
       "justificativa": "Cobertura de título: 75% | Skills técnicas em comum: 5/7 | Similaridade textual: 13% | Senioridade: perfil um nível abaixo (mid vs senior)",
-      "status": "talvez",
-      "applied": false,
-      "appliedAt": null
-    },
-    {
-      "id": "4380291322",
-      "title": "REACT NATIVE DEVELOPER",
-      "company": "Visionary Innovative Technology Solutions LLC",
-      "description": "<h2>\n              Sobre a vaga\n            </h2>\n\n            <div>\n                <p>\n                  <span><p>Must haves:</p></span><span><p><span> </span>React Native Experience</p></span><span><p>Mobile</p></span><span><p><span> </span>Bluetooth experience</p></span>\n                </p>\n            </div>",
-      "link": "https://www.linkedin.com/jobs/view/4380291322",
-      "scrapedAt": "2026-03-06T19:43:06.761Z",
-      "score": 64,
-      "justificativa": "Cobertura de título: 100% | Skills técnicas em comum: 2/2 | Similaridade textual: 3% | Senioridade: senioridade sem indicação explícita | Penalidade aplicada: -7",
       "status": "talvez",
       "applied": false,
       "appliedAt": null
@@ -1201,19 +1149,6 @@
       "appliedAt": null
     },
     {
-      "id": "4376828065",
-      "title": "Software Developer",
-      "company": "VRK IT Vision Inc.",
-      "description": "<h2>\n              Sobre a vaga\n            </h2>\n\n            <div>\n                <p>\n                  Hi,<span><br></span><span><br></span><span><strong>Role/Title: Software Developer<span><br></span><span><br></span></strong></span><span><strong>Location: REMOTE<span><br></span><span><br></span></strong></span><span><strong>Key Responsibilities<span><br></span><span><br></span></strong></span><span>      <ul><li>Design, develop, and maintain scalable full-stack applications using Java for backend and React for frontend.<span> </span></li><li>Build and optimize RESTful APIs and integrate third-party services.<span> </span></li><li>Develop and manage SQL databases, ensuring data integrity and performance.<span> </span></li><li>Implement AI-driven features and leverage machine learning models where applicable.<span> </span></li><li>Deploy, monitor, and maintain applications on Google Cloud Platform (GCP).<span> </span></li><li>Collaborate with cross-functional teams to develop to requirements and deliver high-quality solutions.<span> </span></li><li>Ensure application security, performance, and reliability through best practices.<span> </span></li><li>Participate in code reviews, testing, and continuous integration/continuous deployment (CI/CD) processes.<span> </span><span><br></span><span><br></span></li></ul>\n</span><span><strong>Required Skills &amp; Qualifications<span><br></span><span><br></span></strong></span><span>      <ul><li>Backend Development: Strong proficiency in Java and related frameworks (Spring Boot preferred).<span> </span></li><li>Frontend Development: Expertise in React.js, HTML, CSS, and JavaScript.<span> </span></li><li>Database Management: Hands-on experience with SQL (MySQL, PostgreSQL, or similar).<span> </span></li><li>API Development: Proven ability to design and consume RESTful APIs.<span> </span></li><li>Cloud Platforms: Experience with GCP services (Compute Engine, Cloud Functions, BigQuery, etc.).<span> </span></li><li>AI/ML Integration: Familiarity with AI concepts and ability to integrate ML models into applications.<span> </span></li><li>Familiarity with OAuth2 authentication and authorization for secure user access.<span> </span></li><li>Knowledge of CI/CD pipelines and DevOps practices.<span> </span></li><li>Familiarity with security best practices for web applications.<span> </span></li><li>Exposure to microservices architecture.<span> </span></li><li>Strong understanding of software architecture, design patterns, and best practices.<span> </span></li><li>Excellent problem-solving skills and ability to work in an agile environment.<span> </span><span><br></span><span><br></span></li></ul>\n</span>Thanks &amp; Regards<span><br></span><span><br></span>Veer. T | VRKIT Vision Inc<span><br></span><span><br></span>Contact : - 732-860-7306| Email: veer@vrkitvision.com\n                </p>\n                <br>\n                <h3>Experiência e competências desejadas</h3>\n                <p>\n                  java, SQL, JavaScript, HTML, CSS, reactjs, google cloud, API, gcp, bigquery, Deployment, Authentication, Best Practices, DEV OPS, Continuous Integration/Delivery, Mysql, Problem-Solving, Design Patterns, Microservice, Data Integrity, Spring Boot, Postgresql, Machine Learning, User Access, Compute Engine, Database Management, Software Architecture\n                </p>\n            </div>",
-      "link": "https://www.linkedin.com/jobs/view/4376828065",
-      "scrapedAt": "2026-03-06T19:46:01.490Z",
-      "score": 67,
-      "justificativa": "Cobertura de título: 100% | Skills técnicas em comum: 6/7 | Similaridade textual: 16% | Senioridade: senioridade sem indicação explícita",
-      "status": "talvez",
-      "applied": false,
-      "appliedAt": null
-    },
-    {
       "id": "4373137077",
       "title": "Software Engineer",
       "company": "Noteefy 🔔",
@@ -1314,8 +1249,8 @@
       "score": 33,
       "justificativa": "Cobertura de título: 33% | Skills técnicas em comum: 2/3 | Similaridade textual: 6% | Senioridade: senioridade distante (mid vs lead) | Penalidade aplicada: -7",
       "status": "descartado",
-      "applied": false,
-      "appliedAt": null
+      "applied": true,
+      "appliedAt": "2026-03-25T16:48:47.166Z"
     },
     {
       "id": "4374876389",
@@ -1340,8 +1275,8 @@
       "score": 32,
       "justificativa": "Cobertura de título: 25% | Skills técnicas em comum: 4/5 | Similaridade textual: 6% | Senioridade: senioridade distante (mid vs lead) | Penalidade aplicada: -12",
       "status": "descartado",
-      "applied": false,
-      "appliedAt": null
+      "applied": true,
+      "appliedAt": "2026-03-25T16:47:59.393Z"
     },
     {
       "id": "4381659613",
@@ -3199,8 +3134,8 @@
       "score": 32,
       "justificativa": "Cobertura de título: 25% | Skills técnicas em comum: 4/5 | Similaridade textual: 6% | Senioridade: senioridade distante (mid vs lead) | Penalidade aplicada: -12",
       "status": "descartado",
-      "applied": false,
-      "appliedAt": null
+      "applied": true,
+      "appliedAt": "2026-03-25T16:47:25.265Z"
     },
     {
       "id": "4370445285",
@@ -3875,8 +3810,8 @@
       "score": 31,
       "justificativa": "Cobertura de título: 20% | Skills técnicas em comum: 4/5 | Similaridade textual: 6% | Senioridade: senioridade distante (mid vs lead) | Penalidade aplicada: -12",
       "status": "descartado",
-      "applied": false,
-      "appliedAt": null
+      "applied": true,
+      "appliedAt": "2026-03-25T16:47:01.736Z"
     },
     {
       "id": "4338924836",
@@ -4854,19 +4789,6 @@
       "appliedAt": null
     },
     {
-      "id": "4368789721",
-      "title": "Back End Developer",
-      "company": "Go Offer",
-      "description": "<h2>\n              Sobre a vaga\n            </h2>\n\n            <div>\n                <p>\n                  <span><p>Backend Engineer (Intern)</p></span><span><p><span><br></span></p></span><span><p><span><strong>Short-term unpaid remote internship for students.<span> </span></strong></span></p></span><span><p><span><br></span></p></span><span><p>This internship is designed for anyone looking to build a career in backend development. You'll join our backend team with a mentor who will guide you through the program and help you understand server-side architecture in a commercial startup.</p></span><span><p><span><br></span></p></span><span><p><span><strong>About GoOffer</strong></span></p></span><span><p>Go Offer is an AI-powered SaaS platform that helps professionals land jobs in the US market.</p></span><span><p>Platform combines AI automation, systematic job search methodologies, and career coaching to transform job hunting into a data-driven process.</p></span><span><p><span><br></span></p></span><span><p><span><strong>What you'll do:</strong></span><span> </span>Develop APIs, work with databases, build server logic for our AI platform. You'll be part of the team creating the infrastructure that powers Go Offer's automation systems.</p></span><span><p><span><br></span></p></span><span><p><span><strong>What you'll learn:</strong></span><span> </span>AI tools for backend development - compare ChatGPT, Claude, Perplexity, and Gemini, use Claude Code for development recommendations, build databases with Cursor, create AI email automation, work with N8N for workflow automation, and understand how AI integrates into backend systems.</p></span><span><p><span><br></span></p></span><span><p><span><strong>What you'll get:</strong></span><span> </span>Projects you built from scratch, experience working in a startup, a resume and LinkedIn that stand out, and the knowledge to launch your career in the US market.</p></span>\n                </p>\n            </div>",
-      "link": "https://www.linkedin.com/jobs/view/4368789721",
-      "scrapedAt": "2026-03-06T20:10:03.702Z",
-      "score": 67,
-      "justificativa": "Cobertura de título: 100% | Skills técnicas em comum: 1/1 | Similaridade textual: 3% | Senioridade: perfil acima do esperado (mid) | Penalidade aplicada: -7",
-      "status": "talvez",
-      "applied": false,
-      "appliedAt": null
-    },
-    {
       "id": "4374577652",
       "title": "Senior Software Engineer Remote | Up to $150/hr",
       "company": "Call For Referral",
@@ -4941,8 +4863,8 @@
       "score": 67,
       "justificativa": "Cobertura de título: 75% | Skills técnicas em comum: 5/5 | Similaridade textual: 12% | Senioridade: senioridade sem indicação explícita",
       "status": "talvez",
-      "applied": false,
-      "appliedAt": null
+      "applied": true,
+      "appliedAt": "2026-03-25T16:38:45.516Z"
     },
     {
       "id": "4355949941",
@@ -5344,8 +5266,8 @@
       "score": 67,
       "justificativa": "Cobertura de título: 75% | Skills técnicas em comum: 5/5 | Similaridade textual: 12% | Senioridade: senioridade sem indicação explícita",
       "status": "talvez",
-      "applied": false,
-      "appliedAt": null
+      "applied": true,
+      "appliedAt": "2026-03-25T16:38:56.941Z"
     },
     {
       "id": "4376903499",
@@ -5357,19 +5279,6 @@
       "score": 60,
       "justificativa": "Cobertura de título: 67% | Skills técnicas em comum: 2/2 | Similaridade textual: 6% | Senioridade: perfil acima do esperado (mid) | Penalidade aplicada: -7",
       "status": "talvez",
-      "applied": false,
-      "appliedAt": null
-    },
-    {
-      "id": "4356566566",
-      "title": "Full Stack Engineer",
-      "company": "TechDoQuest",
-      "description": "<h2>\n              Sobre a vaga\n            </h2>\n\n            <div>\n                <p>\n                  <span><p>• API creation and consumption</p></span><span><p>• Java/Node JS/Python</p></span><span><p>• JavaScript (particularly front end)</p></span><span><p>• Databases (esp. SQL, Postgres), HTML, )CSS</p></span><span><p>• K8S Certificates/SSL/Auth</p></span><span><p><span><br></span></p></span><span><p>IT request processes</p></span><span><p>• Testing frameworks</p></span><span><p>• vra/vro - Aria Automation- VCF Automation</p></span><span><p>• SNOW Platform Development</p></span><span><p>• Cloud experience in laaS/Paas/Caas</p></span><span><p><span><br></span></p></span><span><p>Interpersonal Skills</p></span><span><p><span><br></span></p></span><span><p>• Customer Facing Skills, services oriented</p></span><span><p>• Self-Motivated, able to succeed with limited directional oversight</p></span><span><p>• Strong Communication skills</p></span><span><p>• Ability to influence at all levels</p></span><span><p>• Self-Directed Learner / Desire to learn new technologies</p></span><span><p>• Positive team player, keen to get stuck in to get the job done committed to excellent customer service</p></span><span><p>• Advanced English Level</p></span><span><p>• Able to work under pressure</p></span><span><p>• Ability to adapt quickly and lead change</p></span><span><p>• Work effectively in a team-based organization</p></span><span><p>• Multitasking and ability to work in a high-pressured environment</p></span>\n                </p>\n            </div>",
-      "link": "https://www.linkedin.com/jobs/view/4356566566",
-      "scrapedAt": "2026-03-06T20:12:19.099Z",
-      "score": 33,
-      "justificativa": "Cobertura de título: 0% | Skills técnicas em comum: 6/8 | Similaridade textual: 10% | Senioridade: senioridade distante (mid vs lead) | Penalidade aplicada: -5",
-      "status": "descartado",
       "applied": false,
       "appliedAt": null
     },
@@ -5526,19 +5435,6 @@
       "score": 56,
       "justificativa": "Cobertura de título: 80% | Skills técnicas em comum: 7/9 | Similaridade textual: 16% | Senioridade: senioridade distante (mid vs lead)",
       "status": "talvez",
-      "applied": false,
-      "appliedAt": null
-    },
-    {
-      "id": "4380277417",
-      "title": "Senior Electron / Supabase Engineer [32955]",
-      "company": "Stealth Startup",
-      "description": "<h2>\n              Sobre a vaga\n            </h2>\n\n            <div>\n                <p>\n                  <span><p><span><strong>About the Role</strong></span></p></span><span><p>We are building a<span> </span><span><strong>high-performance desktop application</strong></span>, similar in ambition and UX to Cluely. This product sits at the intersection of<span> </span><span><strong>real-time data, AI-assisted workflows, and quantitative finance</strong></span>, and is designed for professional traders, researchers, and analysts.</p></span><span><p>We’re looking for a<span> </span><span><strong>Senior Electron / Supabase Engineer</strong></span><span> </span>to own major parts of the desktop application stack and help shape the technical direction of the product from an early stage.</p></span><span><p><span><strong>What You’ll Do</strong></span></p></span><span>      <ul><li>Build and maintain a<span> </span><span><strong>cross-platform desktop application using Electron</strong></span></li><li>Design and implement<span> </span><span><strong>secure, scalable backend features using Supabase</strong></span></li><li>Integrate real-time data pipelines, background processes, and local system access</li><li>Collaborate closely with quants, product designers, and founders to ship features fast</li><li>Optimize performance, memory usage, and reliability for production-grade users</li><li>Own features end-to-end: architecture, implementation, testing, and deployment</li></ul>\n</span><span><p><span><strong>Required Skills &amp; Experience</strong></span></p></span><span>      <ul><li>Strong experience with<span> </span><span><strong>Electron</strong></span><span> </span>in production desktop applications</li><li>Solid backend experience with<span> </span><span><strong>Supabase</strong></span><span> </span>(Postgres, Auth, Realtime, Storage)</li><li>Proficiency in<span> </span><span><strong>TypeScript / JavaScript</strong></span></li><li>Experience building<span> </span><span><strong>real-time or data-intensive applications</strong></span></li><li>Strong understanding of security, authentication, and local system integrations</li><li>Ability to work independently in a fast-moving startup environment</li></ul>\n</span><span><p><span><strong>Nice to Have</strong></span></p></span><span>      <ul><li>Experience with<span> </span><span><strong>financial, trading, or quant-focused tools</strong></span></li><li>Familiarity with<span> </span><span><strong>local-first or offline-first architectures</strong></span></li><li>Experience integrating<span> </span><span><strong>AI/ML features</strong></span><span> </span>into end-user applications</li><li>Knowledge of performance optimization for desktop apps</li><li>Startup or early-stage product experience</li></ul>\n</span><span><p><span><strong>Why Join</strong></span></p></span><span>      <ul><li>Work on a<span> </span><span><strong>mission-critical tool</strong></span></li><li><span><strong>100% remote</strong></span>, async-friendly culture</li><li>Competitive base salary ($100k–$200k) with strong growth upside</li><li>High ownership, real impact, and minimal bureaucracy</li><li>Opportunity to shape the core product and engineering culture from the ground up</li></ul>\n</span>\n                </p>\n            </div>",
-      "link": "https://www.linkedin.com/jobs/view/4380277417",
-      "scrapedAt": "2026-03-06T20:12:55.106Z",
-      "score": 33,
-      "justificativa": "Cobertura de título: 0% | Skills técnicas em comum: 4/5 | Similaridade textual: 7% | Senioridade: perfil um nível abaixo (mid vs senior) | Penalidade aplicada: -12",
-      "status": "descartado",
       "applied": false,
       "appliedAt": null
     },
@@ -5816,19 +5712,6 @@
       "appliedAt": null
     },
     {
-      "id": "4380271829",
-      "title": "Senior Electron / Supabase Engineer [32959]",
-      "company": "Stealth Startup",
-      "description": "<h2>\n              Sobre a vaga\n            </h2>\n\n            <div>\n                <p>\n                  <span><p><span><strong>About the Role</strong></span></p></span><span><p>We are building a<span> </span><span><strong>high-performance desktop application</strong></span>, similar in ambition and UX to Cluely. This product sits at the intersection of<span> </span><span><strong>real-time data, AI-assisted workflows, and quantitative finance</strong></span>, and is designed for professional traders, researchers, and analysts.</p></span><span><p>We’re looking for a<span> </span><span><strong>Senior Electron / Supabase Engineer</strong></span><span> </span>to own major parts of the desktop application stack and help shape the technical direction of the product from an early stage.</p></span><span><p><span><strong>What You’ll Do</strong></span></p></span><span>      <ul><li>Build and maintain a<span> </span><span><strong>cross-platform desktop application using Electron</strong></span></li><li>Design and implement<span> </span><span><strong>secure, scalable backend features using Supabase</strong></span></li><li>Integrate real-time data pipelines, background processes, and local system access</li><li>Collaborate closely with quants, product designers, and founders to ship features fast</li><li>Optimize performance, memory usage, and reliability for production-grade users</li><li>Own features end-to-end: architecture, implementation, testing, and deployment</li></ul>\n</span><span><p><span><strong>Required Skills &amp; Experience</strong></span></p></span><span>      <ul><li>Strong experience with<span> </span><span><strong>Electron</strong></span><span> </span>in production desktop applications</li><li>Solid backend experience with<span> </span><span><strong>Supabase</strong></span><span> </span>(Postgres, Auth, Realtime, Storage)</li><li>Proficiency in<span> </span><span><strong>TypeScript / JavaScript</strong></span></li><li>Experience building<span> </span><span><strong>real-time or data-intensive applications</strong></span></li><li>Strong understanding of security, authentication, and local system integrations</li><li>Ability to work independently in a fast-moving startup environment</li></ul>\n</span><span><p><span><strong>Nice to Have</strong></span></p></span><span>      <ul><li>Experience with<span> </span><span><strong>financial, trading, or quant-focused tools</strong></span></li><li>Familiarity with<span> </span><span><strong>local-first or offline-first architectures</strong></span></li><li>Experience integrating<span> </span><span><strong>AI/ML features</strong></span><span> </span>into end-user applications</li><li>Knowledge of performance optimization for desktop apps</li><li>Startup or early-stage product experience</li></ul>\n</span><span><p><span><strong>Why Join</strong></span></p></span><span>      <ul><li>Work on a<span> </span><span><strong>mission-critical tool</strong></span></li><li><span><strong>100% remote</strong></span>, async-friendly culture</li><li>Competitive base salary ($100k–$200k) with strong growth upside</li><li>High ownership, real impact, and minimal bureaucracy</li><li>Opportunity to shape the core product and engineering culture from the ground up</li></ul>\n</span>\n                </p>\n            </div>",
-      "link": "https://www.linkedin.com/jobs/view/4380271829",
-      "scrapedAt": "2026-03-06T20:14:03.079Z",
-      "score": 33,
-      "justificativa": "Cobertura de título: 0% | Skills técnicas em comum: 4/5 | Similaridade textual: 7% | Senioridade: perfil um nível abaixo (mid vs senior) | Penalidade aplicada: -12",
-      "status": "descartado",
-      "applied": false,
-      "appliedAt": null
-    },
-    {
       "id": "4365339118",
       "title": "Senior Software Engineer, AI",
       "company": "Synack",
@@ -5837,19 +5720,6 @@
       "scrapedAt": "2026-03-06T20:14:05.313Z",
       "score": 41,
       "justificativa": "Cobertura de título: 33% | Skills técnicas em comum: 4/6 | Similaridade textual: 12% | Senioridade: senioridade distante (mid vs lead)",
-      "status": "descartado",
-      "applied": false,
-      "appliedAt": null
-    },
-    {
-      "id": "4378292107",
-      "title": "Web Developer",
-      "company": "Connect For Purpose",
-      "description": "<h2>\n              Sobre a vaga\n            </h2>\n\n            <div>\n                <p>\n                  <span><p><span><strong>Company Description</strong></span></p></span><span><p>Connect For Purpose is a global community of Muslim Talent dedicated to solving worldwide challenges in alignment with Islamic Principles. Our mission is to lead the solutions for the world’s current and emerging challenges through the collaboration of talented individuals.</p></span><span><p><span><br></span></p></span><span><p><span><strong>Role Description</strong></span></p></span><span><p>This is a volunteer remote role for a Web Developer at Connect For Purpose. The Web Developer will be responsible for back-end and front-end web development, programming, and web design tasks to support the organization's mission and vision.</p></span><span><p><span><br></span></p></span><span><p><span><strong>Qualifications</strong></span></p></span><span>      <ul><li>Back-End Web Development and Front-End Development skills</li><li>Programming and Web Development experience</li><li>Web Design skills</li><li>Proficiency in Word Press</li><li>Ability to work remotely and independently</li><li>Strong problem-solving and analytical skills</li><li>Experience with Islamic Principles and values is a plus</li><li>Bachelor's degree in Computer Science, Web Development, or related field</li></ul>\n</span>\n                </p>\n            </div>",
-      "link": "https://www.linkedin.com/jobs/view/4378292107",
-      "scrapedAt": "2026-03-06T20:14:08.131Z",
-      "score": 32,
-      "justificativa": "Cobertura de título: 100% | Skills técnicas em comum: 0/0 | Similaridade textual: 7% | Senioridade: senioridade distante (mid vs lead) | Penalidade aplicada: -7",
       "status": "descartado",
       "applied": false,
       "appliedAt": null
@@ -6050,19 +5920,6 @@
       "appliedAt": null
     },
     {
-      "id": "4380278620",
-      "title": "Senior Electron / Supabase Engineer [32957]",
-      "company": "Stealth Startup",
-      "description": "<h2>\n              Sobre a vaga\n            </h2>\n\n            <div>\n                <p>\n                  <span><p><span><strong>About the Role</strong></span></p></span><span><p>We are building a<span> </span><span><strong>high-performance desktop application</strong></span>, similar in ambition and UX to Cluely. This product sits at the intersection of<span> </span><span><strong>real-time data, AI-assisted workflows, and quantitative finance</strong></span>, and is designed for professional traders, researchers, and analysts.</p></span><span><p>We’re looking for a<span> </span><span><strong>Senior Electron / Supabase Engineer</strong></span><span> </span>to own major parts of the desktop application stack and help shape the technical direction of the product from an early stage.</p></span><span><p><span><strong>What You’ll Do</strong></span></p></span><span>      <ul><li>Build and maintain a<span> </span><span><strong>cross-platform desktop application using Electron</strong></span></li><li>Design and implement<span> </span><span><strong>secure, scalable backend features using Supabase</strong></span></li><li>Integrate real-time data pipelines, background processes, and local system access</li><li>Collaborate closely with quants, product designers, and founders to ship features fast</li><li>Optimize performance, memory usage, and reliability for production-grade users</li><li>Own features end-to-end: architecture, implementation, testing, and deployment</li></ul>\n</span><span><p><span><strong>Required Skills &amp; Experience</strong></span></p></span><span>      <ul><li>Strong experience with<span> </span><span><strong>Electron</strong></span><span> </span>in production desktop applications</li><li>Solid backend experience with<span> </span><span><strong>Supabase</strong></span><span> </span>(Postgres, Auth, Realtime, Storage)</li><li>Proficiency in<span> </span><span><strong>TypeScript / JavaScript</strong></span></li><li>Experience building<span> </span><span><strong>real-time or data-intensive applications</strong></span></li><li>Strong understanding of security, authentication, and local system integrations</li><li>Ability to work independently in a fast-moving startup environment</li></ul>\n</span><span><p><span><strong>Nice to Have</strong></span></p></span><span>      <ul><li>Experience with<span> </span><span><strong>financial, trading, or quant-focused tools</strong></span></li><li>Familiarity with<span> </span><span><strong>local-first or offline-first architectures</strong></span></li><li>Experience integrating<span> </span><span><strong>AI/ML features</strong></span><span> </span>into end-user applications</li><li>Knowledge of performance optimization for desktop apps</li><li>Startup or early-stage product experience</li></ul>\n</span><span><p><span><strong>Why Join</strong></span></p></span><span>      <ul><li>Work on a<span> </span><span><strong>mission-critical tool</strong></span></li><li><span><strong>100% remote</strong></span>, async-friendly culture</li><li>Competitive base salary ($100k–$200k) with strong growth upside</li><li>High ownership, real impact, and minimal bureaucracy</li><li>Opportunity to shape the core product and engineering culture from the ground up</li></ul>\n</span>\n                </p>\n            </div>",
-      "link": "https://www.linkedin.com/jobs/view/4380278620",
-      "scrapedAt": "2026-03-06T20:14:56.602Z",
-      "score": 33,
-      "justificativa": "Cobertura de título: 0% | Skills técnicas em comum: 4/5 | Similaridade textual: 7% | Senioridade: perfil um nível abaixo (mid vs senior) | Penalidade aplicada: -12",
-      "status": "descartado",
-      "applied": false,
-      "appliedAt": null
-    },
-    {
       "id": "4381659589",
       "title": "Full Stack Senior Software Engineer",
       "company": "Aldoa",
@@ -6240,19 +6097,6 @@
       "scrapedAt": "2026-03-06T20:15:43.619Z",
       "score": 62,
       "justificativa": "Cobertura de título: 67% | Skills técnicas em comum: 5/5 | Similaridade textual: 10% | Senioridade: senioridade distante (mid vs lead)",
-      "status": "talvez",
-      "applied": false,
-      "appliedAt": null
-    },
-    {
-      "id": "4373213585",
-      "title": "Full-Stack Developer",
-      "company": "Elder Research",
-      "description": "<h2>\n              Sobre a vaga\n            </h2>\n\n            <div>\n                <p>\n                  <span><strong>Full Stack Developer<span><br></span><span><br></span></strong></span><span><strong>General Information<span><br></span><span><br></span></strong></span><span><strong>Requisition #<span> </span></strong></span>667<span><br></span><span><br></span><span><strong>Locations</strong></span><span> </span>Remote<span><br></span><span><br></span><span><strong>Posting Date</strong></span><span> </span>02-14-2026<span><br></span><span><br></span><span><strong>Security Clearance Required</strong></span><span> </span>- Must be a US Citizen and be able to obtain and maintain a Public Trust<span><br></span><span><br></span><span><strong>Work Type</strong></span><span> </span>Remote<span><br></span><span><br></span><span><strong>Time Type</strong></span><span> </span>Full time<span><br></span><span><br></span><span><strong>Description &amp; Requirements<span><br></span><span><br></span></strong></span>Elder Research Inc., a wholly owned subsidiary of MANTECH international Corporation seeks a motivated, career and customer-oriented Full-Stack Developer to join our team. This is a remote position.<span><br></span><span><br></span>The Full-stack Developer is responsible for designing and implementing enterprise-level backend and frontend solutions within CPSC’s modernized Azure-based data ecosystem. This role emphasizes scalability, security, and integration with advanced analytics and data-sharing tools. This role integrates analytical and AI solutions within existing system architectures and workflows.<span><br></span><span><br></span><span><strong>Experience<span><br></span><span><br></span></strong></span><span><strong>Minimum Qualifications:<span><br></span><span><br></span></strong></span><span>      <ul><li>2+ years of professional software development experience, with 2+ years building backend systems at scale.<span><br></span><span><br></span></li></ul>\n</span><span><strong>Technical Skills</strong></span><span> </span><span><br></span><span><br></span><span>      <ul><li>Solid understanding of data warehousing and ETL/ELT patterns.</li><li>Deep hands-on experience with Microsoft Azure, including:</li><span>      <ul><li>Azure Data Lake Storage (ADLS Gen2) – data organization, security, performance tuning.</li><li>Azure Synapse Analytics – SQL pools, Spark pools, data warehousing, performance optimization.</li><li>Azure Data Factory (ADF) – complex pipelines, triggers, parameterization, monitoring, and error handling.</li><li>Self-hosted Integration Runtime – setup, scaling, networking, security, and troubleshooting.</li></ul>\n</span><li>Strong expertise in SQL and Java.</li><li>Familiarity with Azure networking (VNET, private endpoints, firewalls).</li><li>Knowledge of medallion architecture.</li><li>Proficiency with Azure DevOps for CI/CD pipelines (YAML), build/release automation, repo management, branching strategies, and code reviews.<span><br></span></li></ul>\n</span><span><strong>Preferred Qualifications<span><br></span><span><br></span></strong></span><span>      <ul><li>Advanced knowledge of Azure networking and security.</li><li>Experience with CI/CD and DevOps practices.<span><br></span><span><br></span></li></ul>\n</span><span><strong>Clearance Requirements<span><br></span><span><br></span></strong></span><span>      <ul><li>Must be a US Citizen and be able to obtain and maintain a Public Trust<span><br></span><span><br></span></li></ul>\n</span><span><strong>Physical Requirements<span><br></span><span><br></span></strong></span><span>      <ul><li>The person in this position must be able to remain in a stationary position 50% of the time. Occasionally move about inside the office to access file cabinets, office machinery, or to communicate with co-workers, management, and customers, via email, phone, and or virtual communication, which may involve delivering presentations.<span><br></span><span><br></span></li></ul>\n</span><span><strong>About Elder Research, Inc - People Centered. Data Driven<span><br></span><span><br></span></strong></span><span><em>Elder Research considers all qualified applicants for employment without regard to disability or veteran status or any other status protected under any federal, state, or local law or regulation.<span><br></span><span><br></span></em></span><span><em>If you need a reasonable accommodation to apply for a position with Elder Research, please email us at careers@elderresearch.com and provide your name and contact information.</em></span>\n                </p>\n            </div>",
-      "link": "https://www.linkedin.com/jobs/view/4373213585",
-      "scrapedAt": "2026-03-06T20:15:45.835Z",
-      "score": 65,
-      "justificativa": "Cobertura de título: 50% | Skills técnicas em comum: 4/4 | Similaridade textual: 11% | Senioridade: perfil acima do esperado (mid)",
       "status": "talvez",
       "applied": false,
       "appliedAt": null
@@ -6474,19 +6318,6 @@
       "scrapedAt": "2026-03-06T20:16:26.171Z",
       "score": 47,
       "justificativa": "Cobertura de título: 0% | Skills técnicas em comum: 5/5 | Similaridade textual: 9% | Senioridade: senioridade sem indicação explícita | Penalidade aplicada: -5",
-      "status": "descartado",
-      "applied": false,
-      "appliedAt": null
-    },
-    {
-      "id": "4380669062",
-      "title": "Software Engineer Intern (Open Source)",
-      "company": "Deepiri",
-      "description": "<h2>\n              Sobre a vaga\n            </h2>\n\n            <div>\n                <p>\n                  <span><p><span><strong>Overview</strong></span></p></span><span><p>We are seeking Software Intern to support the testing and validation of FastAPI-based microservices powering an AI platform. This role focuses on ensuring reliability, correctness, and observability across API endpoints that integrate with large language models, orchestration services, and distributed infrastructure.</p></span><span><p><span><br></span></p></span><span><p>This is a low-time-commitment, unpaid volunteer role intended for individuals looking to gain hands-on experience with real-world AI systems, backend APIs, and collaborative engineering workflows.Key Responsibilities</p></span><span>      <ul><li>Test FastAPI endpoints for correctness, stability, and schema compliance</li><li>Validate request and response payloads using Pydantic models</li><li>Verify correct HTTP status codes, error handling, and edge-case behavior</li><li>Perform manual and basic automated API testing using tools such as Postman, curl, or pytest</li><li>Test AI-related endpoints integrating with LLMs (Ollama, OpenAI, LangChain, RAG pipelines)</li><li>Validate system behavior during partial failures, timeouts, and degraded conditions</li><li>Perform basic performance and responsiveness checks on API endpoints</li><li>Review logs to ensure errors are observable and traceable</li><li>Document bugs clearly with reproducible steps and expected behavior</li><li>Collaborate asynchronously with engineers via GitHub issues and pull requests</li></ul>\n</span><span><p><span><br></span></p></span><span><p><span><strong>GPU &amp; Local Environment Expectations</strong></span></p></span><span><p>While there are no strict hardware requirements, contributors are strongly encouraged to have access to a capable GPU to effectively test local AI models.</p></span><span><p><span><br></span></p></span><span><p><span><strong>Recommended (not required):</strong></span></p></span><span>      <ul><li>NVIDIA GPU with at least 8 GB VRAM (RTX 2070 / RTX 3060 or equivalent)</li><li>Ability to run local LLMs via Ollama or similar runtimes</li><li>CUDA-capable environment for basic model inference testing</li></ul>\n</span><span><p><span><br></span></p></span><span><p>Contributors without a GPU may still participate, but access to local model inference is a significant advantage for testing AI-related endpoints and workflows.</p></span><span><p><span><br></span></p></span><span><p><span><strong>Required Qualifications</strong></span></p></span><span>      <ul><li>Basic understanding of REST APIs and HTTP concepts</li><li>Familiarity with Python, FastAPI, and Docker</li><li>Proficiency in Git basics</li><li>Understanding of JSON request/response structures</li><li>Comfort testing APIs manually</li><li>Ability to reason about edge cases and failure scenarios</li><li>Ability to use AI to unblock themselves</li></ul>\n</span><span><p><span><br></span></p></span><span><p><span><strong>Preferred Qualifications</strong></span></p></span><span>      <ul><li>Experience with pytest or automated API testing</li><li>Familiarity with Pydantic, OpenAPI, or Swagger</li><li>Basic experience with Docker or containerized environments</li><li>Exposure to AI/ML systems or LLM-based APIs</li><li>Experience reviewing logs and debugging backend behavior</li></ul>\n</span><span><p><span><br></span></p></span><span><p><span><strong>What You’ll Gain</strong></span></p></span><span>      <ul><li>Hands-on experience testing production-style FastAPI services</li><li>Exposure to AI system failures / reliability challenges</li><li>Experience with working in the SDLC</li><li>Experience working with LLM-powered APIs and local model runtimes</li><li>Real-world public Git collaboration (issues, PRs, code reviews, QA testing)</li><li>Public representation and endorsements from peers and organizers</li><li>Resume reviews and mock interviews</li><li>Practical understanding of QA in distributed AI systems</li></ul>\n</span><span><p><span><br></span></p></span>\n                </p>\n            </div>",
-      "link": "https://www.linkedin.com/jobs/view/4380669062",
-      "scrapedAt": "2026-03-06T20:16:28.390Z",
-      "score": 31,
-      "justificativa": "Cobertura de título: 20% | Skills técnicas em comum: 4/6 | Similaridade textual: 6% | Senioridade: perfil acima do esperado (mid) | Penalidade aplicada: -12",
       "status": "descartado",
       "applied": false,
       "appliedAt": null
@@ -7036,20 +6867,8 @@
       "status": "talvez",
       "applied": false,
       "appliedAt": null
-    },
-    {
-      "id": "4380457658",
-      "title": "Software Engineer - Rust/Docker/AWS",
-      "company": "SATOKIE",
-      "description": "<h2>\n              Sobre a vaga\n            </h2>\n\n            <div>\n                <p>\n                  <span><p><span><strong>Company Description</strong></span></p></span><span><p>Founded in 2022 and headquartered in Houston, Texas, Satokie is a leader in data center operations and facility infrastructure management. We specialize in designing, building, and operating large-scale industrial facilities with a strong focus on energy optimization.</p></span><span><p>Satokie operates as both a developer of facilities and a trusted third-party operations service provider, managing large-scale infrastructure across multiple states including Texas, Oklahoma, and Mississippi. Our energy-first approach drives efficiency, sustainability, and long-term growth in the rapidly evolving digital asset industry.</p></span><span><p>We are committed to building infrastructure that supports the Bitcoin network while providing clients with the most trustworthy and optimized hosting facilities available.</p></span><span><p><span><br></span></p></span><span><p><span><strong>Role Description</strong></span></p></span><span><p>This is a 3 month contract role for a Software Engineer - Rust permanently remote with some infrequent travel. The intent would be to hire the chose engineer at the end of the contract period if performance metrics are met. The Software Engineer will be responsible for developing, implementing, and maintaining back-end monitoring services and software solutions. Day-to-day tasks include programming in Rust, ensuring robust and efficient code, and collaborating with other team members to design and optimize software. Additional responsibilities include troubleshooting and resolving software issues, and following industry best practices in software development and teaching other developers.</p></span><span><p><span><br></span></p></span><span><p><span><strong>Qualifications</strong></span></p></span><span>      <ul><li>Strong understanding of Computer Science fundamentals</li><li>Proficiency in Rust development</li><li>Proficiency in Docker deployments, especially on Windows and Linux systems</li><li>Proficiency in AWS and cloud deployments with Rust</li><li>Experience with Kafka</li><li>Experience with Back-End Web Development and Software Development</li><li>Excellent problem-solving skills and attention to detail</li><li>Strong communication skills and ability to work collaboratively in a team environment</li><li>Strong ability and willingness to teach other developers</li></ul>\n</span><span><p><span><br></span></p></span><span><p><span><strong>Nice to Haves</strong></span></p></span><span>      <ul><li>Experience in Bitcoin mining (not blockchain or other crypto-currencies)</li><li>Experience in telemetry a nd system monitoring services</li></ul>\n</span><span><p><span><br></span></p></span><span><p><span><strong>Industry</strong></span></p></span><span><p>Electric Power Generation</p></span><span><p><span><br></span></p></span><span><p><span><strong>Employment</strong></span></p></span><span><p>Contract with intent to hire if performance metrics are met</p></span>\n                </p>\n            </div>",
-      "link": "https://www.linkedin.com/jobs/view/4380457658",
-      "scrapedAt": "2026-03-06T20:18:48.020Z",
-      "score": 33,
-      "justificativa": "Cobertura de título: 20% | Skills técnicas em comum: 2/3 | Similaridade textual: 10% | Senioridade: senioridade distante (mid vs lead) | Penalidade aplicada: -5",
-      "status": "descartado",
-      "applied": false,
-      "appliedAt": null
     }
   ],
-  "history": []
+  "history": [],
+  "profile": null
 }
