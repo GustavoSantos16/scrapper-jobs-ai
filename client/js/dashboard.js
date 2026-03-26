@@ -23,7 +23,23 @@
   const modalApplyBtn = document.getElementById('modalApplyBtn');
   const modalDeleteBtn = document.getElementById('modalDeleteBtn');
 
+  // Bulk actions
+  const bulkActionsBar = document.getElementById('bulkActionsBar');
+  const bulkActionsBarApplied = document.getElementById('bulkActionsBarApplied');
+  const bulkSelectedCount = document.getElementById('bulkSelectedCount');
+  const bulkSelectedCountApplied = document.getElementById('bulkSelectedCountApplied');
+  const selectAllJobs = document.getElementById('selectAllJobs');
+  const selectAllApplied = document.getElementById('selectAllApplied');
+  const btnBulkMarkApplied = document.getElementById('btnBulkMarkApplied');
+  const btnBulkDelete = document.getElementById('btnBulkDelete');
+  const btnBulkUnmark = document.getElementById('btnBulkUnmark');
+  const btnBulkDeleteApplied = document.getElementById('btnBulkDeleteApplied');
+  const btnClearSelection = document.getElementById('btnClearSelection');
+  const btnClearSelectionApplied = document.getElementById('btnClearSelectionApplied');
+
   let allJobs = [];
+  let selectedJobIds = new Set();
+  let selectedAppliedIds = new Set();
 
   function escapeHtml(s) {
     if (!s) return '';
@@ -55,8 +71,10 @@
   function buildPendingRow(j) {
     const scoreClass = getScoreClass(j.score);
     const scoreText = j.score != null ? j.score : '-';
+    const isSelected = selectedJobIds.has(j.id);
     return (
-      '<tr data-id="' + j.id + '">' +
+      '<tr data-id="' + j.id + '" data-selected="' + isSelected + '">' +
+      '<td><input type="checkbox" class="job-checkbox" data-id="' + j.id + '" ' + (isSelected ? 'checked' : '') + '></td>' +
       '<td class="job-title"><a href="' + escapeHtml(j.link || '#') + '" target="_blank" rel="noopener">' + escapeHtml(j.title) + '</a></td>' +
       '<td>' + escapeHtml(j.company || '-') + '</td>' +
       '<td class="' + scoreClass + '">' + scoreText + '</td>' +
@@ -71,8 +89,10 @@
   function buildAppliedRow(j) {
     const scoreClass = getScoreClass(j.score);
     const scoreText = j.score != null ? j.score : '-';
+    const isSelected = selectedAppliedIds.has(j.id);
     return (
-      '<tr data-id="' + j.id + '">' +
+      '<tr data-id="' + j.id + '" data-selected="' + isSelected + '">' +
+      '<td><input type="checkbox" class="applied-checkbox" data-id="' + j.id + '" ' + (isSelected ? 'checked' : '') + '></td>' +
       '<td class="job-title"><a href="' + escapeHtml(j.link || '#') + '" target="_blank" rel="noopener">' + escapeHtml(j.title) + '</a></td>' +
       '<td>' + escapeHtml(j.company || '-') + '</td>' +
       '<td class="' + scoreClass + '">' + scoreText + '</td>' +
@@ -92,14 +112,92 @@
     jobsCount.textContent = `(${pendingJobs.length})`;
 
     jobsTable.innerHTML = pendingJobs.length === 0
-      ? '<tr><td colspan="7">Nenhuma vaga pendente. Busque vagas na página inicial.</td></tr>'
+      ? '<tr><td colspan="8">Nenhuma vaga pendente. Busque vagas na página inicial.</td></tr>'
       : pendingJobs.map(buildPendingRow).join('');
 
     appliedJobsCount.textContent = `(${appliedJobs.length})`;
 
     appliedJobsTable.innerHTML = appliedJobs.length === 0
-      ? '<tr><td colspan="7">Nenhuma vaga marcada como candidata.</td></tr>'
+      ? '<tr><td colspan="8">Nenhuma vaga marcada como candidata.</td></tr>'
       : appliedJobs.map(buildAppliedRow).join('');
+
+    updateBulkActionsUI();
+    attachCheckboxListeners();
+  }
+
+  function updateBulkActionsUI() {
+    const pendingCount = selectedJobIds.size;
+    const appliedCount = selectedAppliedIds.size;
+
+    if (pendingCount > 0) {
+      bulkActionsBar.style.display = 'flex';
+      bulkSelectedCount.textContent = pendingCount + ' vaga(s) selecionada(s)';
+    } else {
+      bulkActionsBar.style.display = 'none';
+    }
+
+    if (appliedCount > 0) {
+      bulkActionsBarApplied.style.display = 'flex';
+      bulkSelectedCountApplied.textContent = appliedCount + ' vaga(s) selecionada(s)';
+    } else {
+      bulkActionsBarApplied.style.display = 'none';
+    }
+
+    const pendingJobs = allJobs.filter((j) => !j.applied);
+    const appliedJobs = allJobs.filter((j) => !!j.applied);
+    selectAllJobs.checked = pendingCount > 0 && pendingCount === pendingJobs.length;
+    selectAllJobs.indeterminate = pendingCount > 0 && pendingCount < pendingJobs.length;
+
+    selectAllApplied.checked = appliedCount > 0 && appliedCount === appliedJobs.length;
+    selectAllApplied.indeterminate = appliedCount > 0 && appliedCount < appliedJobs.length;
+  }
+
+  function attachCheckboxListeners() {
+    jobsTable.querySelectorAll('.job-checkbox').forEach((checkbox) => {
+      checkbox.addEventListener('change', (e) => {
+        const jobId = e.target.dataset.id;
+        if (e.target.checked) {
+          selectedJobIds.add(jobId);
+        } else {
+          selectedJobIds.delete(jobId);
+        }
+        updateSelectedRows();
+        updateBulkActionsUI();
+      });
+    });
+
+    appliedJobsTable.querySelectorAll('.applied-checkbox').forEach((checkbox) => {
+      checkbox.addEventListener('change', (e) => {
+        const jobId = e.target.dataset.id;
+        if (e.target.checked) {
+          selectedAppliedIds.add(jobId);
+        } else {
+          selectedAppliedIds.delete(jobId);
+        }
+        updateSelectedRows();
+        updateBulkActionsUI();
+      });
+    });
+  }
+
+  function updateSelectedRows() {
+    jobsTable.querySelectorAll('tr').forEach((row) => {
+      const jobId = row.dataset.id;
+      if (jobId && selectedJobIds.has(jobId)) {
+        row.dataset.selected = 'true';
+      } else {
+        row.dataset.selected = 'false';
+      }
+    });
+
+    appliedJobsTable.querySelectorAll('tr').forEach((row) => {
+      const jobId = row.dataset.id;
+      if (jobId && selectedAppliedIds.has(jobId)) {
+        row.dataset.selected = 'true';
+      } else {
+        row.dataset.selected = 'false';
+      }
+    });
   }
 
   function loadJobs() {
@@ -107,8 +205,8 @@
       .then((r) => r.json())
       .then((jobs) => renderJobs(sortJobsByScore(jobs)))
       .catch(() => {
-        jobsTable.innerHTML = '<tr><td colspan="7">Erro ao carregar vagas.</td></tr>';
-        appliedJobsTable.innerHTML = '<tr><td colspan="7">Erro ao carregar vagas.</td></tr>';
+        jobsTable.innerHTML = '<tr><td colspan="8">Erro ao carregar vagas.</td></tr>';
+        appliedJobsTable.innerHTML = '<tr><td colspan="8">Erro ao carregar vagas.</td></tr>';
       });
   }
 
@@ -150,6 +248,86 @@
 
   jobsTable.addEventListener('click', onTableClick);
   appliedJobsTable.addEventListener('click', onTableClick);
+
+  // Select All listeners
+  selectAllJobs.addEventListener('change', (e) => {
+    const pendingJobs = allJobs.filter((j) => !j.applied);
+    if (e.target.checked) {
+      pendingJobs.forEach((j) => selectedJobIds.add(j.id));
+    } else {
+      pendingJobs.forEach((j) => selectedJobIds.delete(j.id));
+    }
+    updateBulkActionsUI();
+    jobsTable.querySelectorAll('.job-checkbox').forEach((cb) => {
+      cb.checked = e.target.checked;
+    });
+    updateSelectedRows();
+  });
+
+  selectAllApplied.addEventListener('change', (e) => {
+    const appliedJobs = allJobs.filter((j) => !!j.applied);
+    if (e.target.checked) {
+      appliedJobs.forEach((j) => selectedAppliedIds.add(j.id));
+    } else {
+      appliedJobs.forEach((j) => selectedAppliedIds.delete(j.id));
+    }
+    updateBulkActionsUI();
+    appliedJobsTable.querySelectorAll('.applied-checkbox').forEach((cb) => {
+      cb.checked = e.target.checked;
+    });
+    updateSelectedRows();
+  });
+
+  // Bulk action buttons
+  btnBulkMarkApplied.addEventListener('click', async () => {
+    const ids = Array.from(selectedJobIds);
+    if (ids.length === 0) return;
+    if (!confirm(`Marcar ${ids.length} vaga(s) como já candidatado?`)) return;
+    await executeBulkAction(ids, true);
+  });
+
+  btnBulkDelete.addEventListener('click', async () => {
+    const ids = Array.from(selectedJobIds);
+    if (ids.length === 0) return;
+    if (!confirm(`Excluir ${ids.length} vaga(s)? Esta ação é irreversível.`)) return;
+    await executeBulkDelete(ids);
+  });
+
+  btnBulkUnmark.addEventListener('click', async () => {
+    const ids = Array.from(selectedAppliedIds);
+    if (ids.length === 0) return;
+    if (!confirm(`Mover ${ids.length} vaga(s) para pendentes?`)) return;
+    await executeBulkAction(ids, false);
+  });
+
+  btnBulkDeleteApplied.addEventListener('click', async () => {
+    const ids = Array.from(selectedAppliedIds);
+    if (ids.length === 0) return;
+    if (!confirm(`Excluir ${ids.length} vaga(s)? Esta ação é irreversível.`)) return;
+    await executeBulkDelete(ids);
+  });
+
+  btnClearSelection.addEventListener('click', () => {
+    selectedJobIds.clear();
+    selectAllJobs.checked = false;
+    selectAllJobs.indeterminate = false;
+    updateBulkActionsUI();
+    jobsTable.querySelectorAll('.job-checkbox').forEach((cb) => {
+      cb.checked = false;
+    });
+    updateSelectedRows();
+  });
+
+  btnClearSelectionApplied.addEventListener('click', () => {
+    selectedAppliedIds.clear();
+    selectAllApplied.checked = false;
+    selectAllApplied.indeterminate = false;
+    updateBulkActionsUI();
+    appliedJobsTable.querySelectorAll('.applied-checkbox').forEach((cb) => {
+      cb.checked = false;
+    });
+    updateSelectedRows();
+  });
 
   function openModal(job) {
     modalTitle.textContent = job.title || '';
@@ -226,6 +404,62 @@
     } catch (err) {
       setStatus(actionStatus, err.message || 'Erro.', true);
     }
+  }
+
+  async function executeBulkAction(jobIds, applied) {
+    setStatus(actionStatus, 'Processando...', false);
+    let successful = 0;
+    let failed = 0;
+
+    for (const jobId of jobIds) {
+      try {
+        const res = await fetch('/api/jobs/' + encodeURIComponent(jobId) + '/applied', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ applied })
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          failed++;
+        } else {
+          successful++;
+        }
+      } catch (err) {
+        failed++;
+      }
+    }
+
+    selectedJobIds.clear();
+    selectedAppliedIds.clear();
+    const msg = `${successful} vaga(s) processada(s)` + (failed > 0 ? `, ${failed} erro(s)` : '');
+    setStatus(actionStatus, msg, failed > 0);
+    loadJobs();
+  }
+
+  async function executeBulkDelete(jobIds) {
+    setStatus(actionStatus, 'Processando...', false);
+    let successful = 0;
+    let failed = 0;
+
+    for (const jobId of jobIds) {
+      try {
+        const res = await fetch('/api/jobs/' + encodeURIComponent(jobId), { method: 'DELETE' });
+        const data = await res.json();
+        if (!res.ok) {
+          failed++;
+        } else {
+          successful++;
+        }
+      } catch (err) {
+        failed++;
+      }
+    }
+
+    selectedJobIds.clear();
+    selectedAppliedIds.clear();
+    const msg = `${successful} vaga(s) excluída(s)` + (failed > 0 ? `, ${failed} erro(s)` : '');
+    setStatus(actionStatus, msg, failed > 0);
+    loadJobs();
   }
 
   // --- Match with SSE ---
@@ -309,9 +543,9 @@
     const row = document.querySelector('tr[data-id="' + jobId + '"]');
     if (!row) return;
     const cells = row.querySelectorAll('td');
-    const scoreCellIndex = 2;
-    const statusCellIndex = 3;
-    const justificationCellIndex = row.parentElement && row.parentElement.id === 'appliedJobsTable' ? null : 4;
+    const scoreCellIndex = 3;
+    const statusCellIndex = 4;
+    const justificationCellIndex = row.parentElement && row.parentElement.id === 'appliedJobsTable' ? null : 5;
     if (cells.length <= statusCellIndex) return;
     cells[scoreCellIndex].className = getScoreClass(score);
     cells[scoreCellIndex].textContent = score != null ? score : '-';

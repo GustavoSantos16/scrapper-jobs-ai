@@ -29,10 +29,19 @@
 
     <section class="card">
       <h2>Vagas disponíveis <span id="jobsCount" style="font-size:.85em;color:#888"></span></h2>
+      <div id="bulkActionsBar" class="bulk-actions-bar" style="display:none;margin-bottom:1rem;">
+        <span id="bulkSelectedCount"></span>
+        <div class="bulk-actions-buttons">
+          <button type="button" id="btnBulkMarkApplied" class="btn-apply">Marcar como candidatado</button>
+          <button type="button" id="btnBulkDelete" class="btn-delete">Excluir selecionadas</button>
+          <button type="button" id="btnClearSelection">Limpar seleção</button>
+        </div>
+      </div>
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
+              <th><input type="checkbox" id="selectAllJobs" title="Selecionar todos"></th>
               <th>Título</th>
               <th>Empresa</th>
               <th>Score</th>
@@ -51,10 +60,19 @@
 
     <section class="card">
       <h2>Vagas que já me candidatei <span id="appliedJobsCount" style="font-size:.85em;color:#888"></span></h2>
+      <div id="bulkActionsBarApplied" class="bulk-actions-bar" style="display:none;margin-bottom:1rem;">
+        <span id="bulkSelectedCountApplied"></span>
+        <div class="bulk-actions-buttons">
+          <button type="button" id="btnBulkUnmark" class="btn-unapply">Mover para pendentes</button>
+          <button type="button" id="btnBulkDeleteApplied" class="btn-delete">Excluir selecionadas</button>
+          <button type="button" id="btnClearSelectionApplied">Limpar seleção</button>
+        </div>
+      </div>
       <div class="table-wrap">
         <table>
           <thead>
             <tr>
+              <th><input type="checkbox" id="selectAllApplied" title="Selecionar todos"></th>
               <th>Título</th>
               <th>Empresa</th>
               <th>Score</th>
