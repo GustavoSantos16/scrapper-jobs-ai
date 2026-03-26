@@ -77,7 +77,7 @@
       '<td><input type="checkbox" class="job-checkbox" data-id="' + j.id + '" ' + (isSelected ? 'checked' : '') + '></td>' +
       '<td class="job-title"><a href="' + escapeHtml(j.link || '#') + '" target="_blank" rel="noopener">' + escapeHtml(j.title) + '</a></td>' +
       '<td>' + escapeHtml(j.company || '-') + '</td>' +
-      '<td class="' + scoreClass + '">' + scoreText + '</td>' +
+      '<td>' + (scoreClass ? '<span class="' + scoreClass + '">' + scoreText + '</span>' : scoreText) + '</td>' +
       '<td>' + escapeHtml(j.status || '-') + '</td>' +
       '<td>' + escapeHtml((j.justificativa || '').slice(0, 90)) + '</td>' +
       '<td><div class="action-buttons"><button class="btn-apply" data-id="' + j.id + '">Já me candidatei</button><button class="btn-delete" data-id="' + j.id + '">Excluir</button></div></td>' +
@@ -95,7 +95,7 @@
       '<td><input type="checkbox" class="applied-checkbox" data-id="' + j.id + '" ' + (isSelected ? 'checked' : '') + '></td>' +
       '<td class="job-title"><a href="' + escapeHtml(j.link || '#') + '" target="_blank" rel="noopener">' + escapeHtml(j.title) + '</a></td>' +
       '<td>' + escapeHtml(j.company || '-') + '</td>' +
-      '<td class="' + scoreClass + '">' + scoreText + '</td>' +
+      '<td>' + (scoreClass ? '<span class="' + scoreClass + '">' + scoreText + '</span>' : scoreText) + '</td>' +
       '<td>' + escapeHtml(j.status || '-') + '</td>' +
       '<td>' + escapeHtml(formatAppliedAt(j.appliedAt)) + '</td>' +
       '<td><div class="action-buttons"><button class="btn-unapply" data-id="' + j.id + '">Mover para pendentes</button><button class="btn-delete" data-id="' + j.id + '">Excluir</button></div></td>' +
