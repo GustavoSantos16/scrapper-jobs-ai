@@ -38,14 +38,14 @@ function subscribe(fn) {
 /**
  * Inicia o scraper em background. Retorna false se já estiver rodando.
  */
-function start(searchUrl) {
+function start(searchUrl, maxPages) {
   if (state.running) return false;
 
   state.running = true;
   state.events = [];
 
   scraperService
-    .runScraper(searchUrl, emit)
+    .runScraper(searchUrl, { maxPages }, emit)
     .then((result) => {
       emit({ type: 'done', collected: result.collected, total: result.total });
       state.running = false;

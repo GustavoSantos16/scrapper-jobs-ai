@@ -99,7 +99,7 @@
     };
   }
 
-  function startScraper(searchUrl) {
+  function startScraper(searchUrl, maxPages) {
     if (_running) return;
     _running = true;
 
@@ -108,9 +108,10 @@
     bannerBar.classList.remove('login-wait');
     bannerText.textContent = 'Iniciando coleta de vagas...';
 
-    var url =
-      '/api/scraper/run-stream' +
-      (searchUrl ? '?searchUrl=' + encodeURIComponent(searchUrl) : '');
+    var params = [];
+    if (searchUrl) params.push('searchUrl=' + encodeURIComponent(searchUrl));
+    if (maxPages) params.push('maxPages=' + encodeURIComponent(maxPages));
+    var url = '/api/scraper/run-stream' + (params.length ? '?' + params.join('&') : '');
     closeSource();
     evtSource = new EventSource(url);
     evtSource.onmessage = function (event) {

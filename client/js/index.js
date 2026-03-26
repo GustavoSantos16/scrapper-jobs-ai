@@ -4,8 +4,45 @@
   const btnUpload = document.getElementById('btnUpload');
   const resumeStatus = document.getElementById('resumeStatus');
   const searchUrl = document.getElementById('searchUrl');
+  const maxPages = document.getElementById('maxPages');
   const btnScraper = document.getElementById('btnScraper');
   const scraperStatus = document.getElementById('scraperStatus');
+  function isValidLinkedInJobsUrl(value) {
+    if (!value) return false;
+    try {
+      const parsed = new URL(value);
+      return parsed.hostname.includes('linkedin.com') && parsed.pathname.includes('/jobs');
+    } catch (_) {
+      return false;
+    }
+  }
+
+  function updateScraperButtonState() {
+    const valid = isValidLinkedInJobsUrl(searchUrl.value.trim());
+    const running = window.scraperBanner && window.scraperBanner.isRunning();
+    btnScraper.disabled = !valid || !!running;
+    if (!valid) {
+      scraperStatus.textContent = 'Informe uma URL válida do LinkedIn Jobs.';
+      scraperStatus.className = 'status';
+    } else {
+      scraperStatus.textContent = '';
+      scraperStatus.className = 'status';
+    }
+  }
+
+  function initMaxPagesSelector() {
+    if (!maxPages) return;
+    let html = '';
+    for (let i = 1; i <= 20; i++) {
+      html += '<option value="' + i + '"' + (i === 20 ? ' selected' : '') + '>' + i + '</option>';
+    }
+    maxPages.innerHTML = html;
+  }
+
+  initMaxPagesSelector();
+  updateScraperButtonState();
+  searchUrl.addEventListener('input', updateScraperButtonState);
+
 
   function setStatus(el, text, isError) {
     el.textContent = text;
@@ -84,12 +121,14 @@
       scraperProgressText.textContent = 'Concluído! ' + data.collected + ' novas vagas coletadas. Total no sistema: ' + data.total;
       scraperProgressText.className = 'status success';
       btnScraper.disabled = false;
+      updateScraperButtonState();
       setTimeout(() => { scraperProgress.style.display = 'none'; }, 5000);
     }
 
     if (data.type === 'error') {
       setStatus(scraperStatus, data.error, true);
       btnScraper.disabled = false;
+      updateScraperButtonState();
       scraperProgress.style.display = 'none';
     }
   });
@@ -105,7 +144,12 @@
     scraperProgressText.className = 'status';
 
     const urlParam = searchUrl.value.trim();
-    window.scraperBanner.start(urlParam || '');
+    if (!isValidLinkedInJobsUrl(urlParam)) {
+      setStatus(scraperStatus, 'URL inválida. Use uma URL de vagas do linkedin.com/jobs.', true);
+      btnScraper.disabled = false;
+      return;
+    }
+    window.scraperBanner.start(urlParam, Number(maxPages && maxPages.value ? maxPages.value : 20));
   });
 
   fetch('/api/scraper/status')
@@ -117,6 +161,8 @@
         scraperBar.style.width = '0%';
         scraperProgressText.textContent = 'Scraper em execução...';
         scraperProgressText.className = 'status';
+      } else {
+        updateScraperButtonState();
       }
     })
     .catch(() => {});

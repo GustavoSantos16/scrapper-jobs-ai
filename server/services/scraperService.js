@@ -11,8 +11,6 @@ const fs = require('fs');
 const path = require('path');
 const { readDatabase, writeDatabase, normalizeJobLink } = require('./storageService');
 
-const SCROLL_DELAY_MIN = 1500;
-const SCROLL_DELAY_MAX = 3000;
 const MAX_JOBS = 1000;
 const LOGIN_WAIT_TIMEOUT_MS = 240000;
 const PROFILE_DIR = path.join(__dirname, '..', 'storage', 'browser-profile');
@@ -344,17 +342,25 @@ function buildPageUrl(baseUrl, startOffset) {
 
 /**
  * Inicia o scraping em modo headless.
- * @param {string} [searchUrl] - URL da página de vagas do LinkedIn (opcional)
+ * @param {string} [searchUrl] - URL da página de vagas do LinkedIn
+ * @param {{ maxPages?: number }} [options]
  * @param {function} [onProgress] - callback(data) para emitir eventos de progresso (SSE)
  * @returns {Promise<{ collected: number, jobs: Array }>}
  */
-async function runScraper(searchUrl, onProgress) {
+async function runScraper(searchUrl, options, onProgress) {
+  if (typeof options === 'function') {
+    onProgress = options;
+    options = {};
+  }
+  const safeMaxPages = Number.isInteger(options && options.maxPages)
+    ? Math.min(20, Math.max(1, options.maxPages))
+    : 20;
   const emit = typeof onProgress === 'function' ? onProgress : () => {};
 
   fs.mkdirSync(PROFILE_DIR, { recursive: true });
   const executablePath = process.env.PUPPETEER_EXECUTABLE_PATH || getExecutablePath();
   const launchOptions = {
-    headless: true,
+    headless: false,
     args: ['--no-sandbox', '--disable-setuid-sandbox', '--disable-dev-shm-usage'],
     defaultViewport: { width: 1280, height: 800 },
     userDataDir: PROFILE_DIR
@@ -372,9 +378,10 @@ async function runScraper(searchUrl, onProgress) {
       'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
     );
 
-    const url = isLinkedInJobsUrl(searchUrl)
-      ? searchUrl
-      : 'https://www.linkedin.com/jobs/search/?keywords=developer';
+    if (!isLinkedInJobsUrl(searchUrl)) {
+      throw new Error('A URL de busca deve ser válida e conter linkedin.com/jobs.');
+    }
+    const url = searchUrl;
 
     emit({ type: 'status', message: 'Acessando LinkedIn...' });
     await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 90000 });
@@ -422,7 +429,7 @@ async function runScraper(searchUrl, onProgress) {
 
     const jobs = [];
     const seenLinks = new Set();
-    const MAX_PAGES = 20;
+    const MAX_PAGES = safeMaxPages;
     let emptyPages = 0;
     const baseUrl = page.url();
 

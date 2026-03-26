@@ -15,7 +15,9 @@ const router = express.Router();
 router.post('/run', async (req, res) => {
   try {
     const searchUrl = req.body && req.body.searchUrl ? req.body.searchUrl : undefined;
-    const result = await scraperService.runScraper(searchUrl);
+    const rawMaxPages = req.body && req.body.maxPages != null ? Number(req.body.maxPages) : 20;
+    const maxPages = Number.isInteger(rawMaxPages) ? Math.min(20, Math.max(1, rawMaxPages)) : 20;
+    const result = await scraperService.runScraper(searchUrl, { maxPages });
     res.json({ success: true, ...result });
   } catch (err) {
     console.error('Erro no scraper:', err);
@@ -87,8 +89,10 @@ router.get('/events', (req, res) => {
 router.get('/run-stream', (req, res) => {
   const send = setupSSE(res);
   const searchUrl = req.query.searchUrl || undefined;
+  const rawMaxPages = req.query.maxPages != null ? Number(req.query.maxPages) : 20;
+  const maxPages = Number.isInteger(rawMaxPages) ? Math.min(20, Math.max(1, rawMaxPages)) : 20;
 
-  scraperState.start(searchUrl);
+  scraperState.start(searchUrl, maxPages);
 
   for (const evt of scraperState.getEvents()) {
     send(evt);
