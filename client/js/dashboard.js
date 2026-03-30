@@ -37,6 +37,59 @@
   const btnClearSelection = document.getElementById('btnClearSelection');
   const btnClearSelectionApplied = document.getElementById('btnClearSelectionApplied');
 
+  // Confirm modal
+  const confirmOverlay = document.getElementById('confirmOverlay');
+  const confirmIcon = document.getElementById('confirmIcon');
+  const confirmTitle = document.getElementById('confirmTitle');
+  const confirmMsg = document.getElementById('confirmMsg');
+  const confirmOkBtn = document.getElementById('confirmOkBtn');
+  const confirmCancelBtn = document.getElementById('confirmCancelBtn');
+  let confirmResolve = null;
+
+  const CONFIRM_ICONS = {
+    danger: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="3 6 5 6 21 6"></polyline>
+      <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"></path>
+      <line x1="10" y1="11" x2="10" y2="17"></line>
+      <line x1="14" y1="11" x2="14" y2="17"></line>
+    </svg>`,
+    primary: `<svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M22 11.08V12a10 10 0 11-5.93-9.14"></path>
+      <polyline points="22 4 12 14.01 9 11.01"></polyline>
+    </svg>`
+  };
+
+  function showConfirm({ title, message, confirmText, variant }) {
+    confirmIcon.className = 'confirm-icon ' + variant;
+    confirmIcon.innerHTML = CONFIRM_ICONS[variant];
+    confirmTitle.textContent = title;
+    confirmMsg.textContent = message;
+    confirmOkBtn.textContent = confirmText;
+    confirmOkBtn.className = 'confirm-ok ' + variant;
+    confirmOverlay.classList.add('active');
+    confirmOkBtn.focus();
+    return new Promise(resolve => { confirmResolve = resolve; });
+  }
+
+  function showConfirmDelete(message) {
+    return showConfirm({ title: 'Excluir vaga', message, confirmText: 'Excluir', variant: 'danger' });
+  }
+
+  function closeConfirm(result) {
+    confirmOverlay.classList.remove('active');
+    if (confirmResolve) { confirmResolve(result); confirmResolve = null; }
+  }
+
+  confirmOkBtn.addEventListener('click', () => closeConfirm(true));
+  confirmCancelBtn.addEventListener('click', () => closeConfirm(false));
+  confirmOverlay.addEventListener('click', (e) => {
+    if (e.target === confirmOverlay) closeConfirm(false);
+  });
+  confirmOverlay.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); closeConfirm(true); }
+    if (e.key === 'Escape') closeConfirm(false);
+  });
+
   let allJobs = [];
   let selectedJobIds = new Set();
   let selectedAppliedIds = new Set();
@@ -282,28 +335,42 @@
   btnBulkMarkApplied.addEventListener('click', async () => {
     const ids = Array.from(selectedJobIds);
     if (ids.length === 0) return;
-    if (!confirm(`Marcar ${ids.length} vaga(s) como já candidatado?`)) return;
+    const confirmed = await showConfirm({
+      title: 'Marcar como candidatado',
+      message: `Marcar ${ids.length} vaga(s) como já candidatado?`,
+      confirmText: 'Confirmar',
+      variant: 'primary'
+    });
+    if (!confirmed) return;
     await executeBulkAction(ids, true);
   });
 
   btnBulkDelete.addEventListener('click', async () => {
     const ids = Array.from(selectedJobIds);
     if (ids.length === 0) return;
-    if (!confirm(`Excluir ${ids.length} vaga(s)? Esta ação é irreversível.`)) return;
+    const confirmed = await showConfirmDelete(`Excluir ${ids.length} vaga(s)? Esta ação é irreversível.`);
+    if (!confirmed) return;
     await executeBulkDelete(ids);
   });
 
   btnBulkUnmark.addEventListener('click', async () => {
     const ids = Array.from(selectedAppliedIds);
     if (ids.length === 0) return;
-    if (!confirm(`Mover ${ids.length} vaga(s) para pendentes?`)) return;
+    const confirmed = await showConfirm({
+      title: 'Mover para pendentes',
+      message: `Mover ${ids.length} vaga(s) de volta para pendentes?`,
+      confirmText: 'Confirmar',
+      variant: 'primary'
+    });
+    if (!confirmed) return;
     await executeBulkAction(ids, false);
   });
 
   btnBulkDeleteApplied.addEventListener('click', async () => {
     const ids = Array.from(selectedAppliedIds);
     if (ids.length === 0) return;
-    if (!confirm(`Excluir ${ids.length} vaga(s)? Esta ação é irreversível.`)) return;
+    const confirmed = await showConfirmDelete(`Excluir ${ids.length} vaga(s)? Esta ação é irreversível.`);
+    if (!confirmed) return;
     await executeBulkDelete(ids);
   });
 
@@ -394,7 +461,8 @@
   }
 
   async function deleteJob(jobId) {
-    if (!confirm('Tem certeza que deseja excluir esta vaga?')) return;
+    const confirmed = await showConfirmDelete('Tem certeza que deseja excluir esta vaga? Esta ação não pode ser desfeita.');
+    if (!confirmed) return;
     try {
       const res = await fetch('/api/jobs/' + encodeURIComponent(jobId), { method: 'DELETE' });
       const data = await res.json();
