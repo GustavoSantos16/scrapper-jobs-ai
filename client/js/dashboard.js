@@ -254,13 +254,13 @@
   }
 
   function loadJobs() {
-    fetch('/api/jobs')
-      .then((r) => r.json())
-      .then((jobs) => renderJobs(sortJobsByScore(jobs)))
-      .catch(() => {
-        jobsTable.innerHTML = '<tr><td colspan="8">Erro ao carregar vagas.</td></tr>';
-        appliedJobsTable.innerHTML = '<tr><td colspan="8">Erro ao carregar vagas.</td></tr>';
-      });
+    try {
+      const jobs = window.scraperStorage ? window.scraperStorage.getJobs() : [];
+      renderJobs(sortJobsByScore(jobs));
+    } catch (_) {
+      jobsTable.innerHTML = '<tr><td colspan="8">Erro ao carregar vagas.</td></tr>';
+      appliedJobsTable.innerHTML = '<tr><td colspan="8">Erro ao carregar vagas.</td></tr>';
+    }
   }
 
   function sortJobsByScore(jobs) {
@@ -342,7 +342,7 @@
       variant: 'primary'
     });
     if (!confirmed) return;
-    await executeBulkAction(ids, true);
+    executeBulkAction(ids, true);
   });
 
   btnBulkDelete.addEventListener('click', async () => {
@@ -350,7 +350,7 @@
     if (ids.length === 0) return;
     const confirmed = await showConfirmDelete(`Excluir ${ids.length} vaga(s)? Esta ação é irreversível.`);
     if (!confirmed) return;
-    await executeBulkDelete(ids);
+    executeBulkDelete(ids);
   });
 
   btnBulkUnmark.addEventListener('click', async () => {
@@ -363,7 +363,7 @@
       variant: 'primary'
     });
     if (!confirmed) return;
-    await executeBulkAction(ids, false);
+    executeBulkAction(ids, false);
   });
 
   btnBulkDeleteApplied.addEventListener('click', async () => {
@@ -371,7 +371,7 @@
     if (ids.length === 0) return;
     const confirmed = await showConfirmDelete(`Excluir ${ids.length} vaga(s)? Esta ação é irreversível.`);
     if (!confirmed) return;
-    await executeBulkDelete(ids);
+    executeBulkDelete(ids);
   });
 
   btnClearSelection.addEventListener('click', () => {
@@ -434,7 +434,7 @@
     const jobId = modalApplyBtn.dataset.id;
     if (!jobId) return;
     closeModal();
-    await setApplied(jobId, true);
+    setApplied(jobId, true);
   });
 
   modalDeleteBtn.addEventListener('click', async () => {
@@ -444,107 +444,79 @@
     await deleteJob(jobId);
   });
 
-  async function setApplied(jobId, applied) {
-    try {
-      const res = await fetch('/api/jobs/' + encodeURIComponent(jobId) + '/applied', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ applied })
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Erro ao atualizar vaga');
-      setStatus(actionStatus, applied ? 'Vaga movida para "já me candidatei".' : 'Vaga movida para pendentes.', false);
-      loadJobs();
-    } catch (err) {
-      setStatus(actionStatus, err.message || 'Erro.', true);
-    }
+  function setApplied(jobId, applied) {
+    if (!window.scraperStorage) return;
+    window.scraperStorage.updateJob(jobId, {
+      applied,
+      appliedAt: applied ? new Date().toISOString() : null
+    });
+    setStatus(actionStatus, applied ? 'Vaga movida para "já me candidatei".' : 'Vaga movida para pendentes.', false);
+    loadJobs();
   }
 
   async function deleteJob(jobId) {
     const confirmed = await showConfirmDelete('Tem certeza que deseja excluir esta vaga? Esta ação não pode ser desfeita.');
     if (!confirmed) return;
-    try {
-      const res = await fetch('/api/jobs/' + encodeURIComponent(jobId), { method: 'DELETE' });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Erro ao excluir vaga');
-      setStatus(actionStatus, 'Vaga excluída.', false);
-      loadJobs();
-    } catch (err) {
-      setStatus(actionStatus, err.message || 'Erro.', true);
-    }
-  }
-
-  async function executeBulkAction(jobIds, applied) {
-    setStatus(actionStatus, 'Processando...', false);
-    let successful = 0;
-    let failed = 0;
-
-    for (const jobId of jobIds) {
-      try {
-        const res = await fetch('/api/jobs/' + encodeURIComponent(jobId) + '/applied', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ applied })
-        });
-        const data = await res.json();
-        if (!res.ok) {
-          failed++;
-        } else {
-          successful++;
-        }
-      } catch (err) {
-        failed++;
-      }
-    }
-
-    selectedJobIds.clear();
-    selectedAppliedIds.clear();
-    const msg = `${successful} vaga(s) processada(s)` + (failed > 0 ? `, ${failed} erro(s)` : '');
-    setStatus(actionStatus, msg, failed > 0);
+    if (window.scraperStorage) window.scraperStorage.deleteJob(jobId);
+    setStatus(actionStatus, 'Vaga excluída.', false);
     loadJobs();
   }
 
-  async function executeBulkDelete(jobIds) {
-    setStatus(actionStatus, 'Processando...', false);
-    let successful = 0;
-    let failed = 0;
-
+  function executeBulkAction(jobIds, applied) {
+    if (!window.scraperStorage) return;
+    const appliedAt = applied ? new Date().toISOString() : null;
     for (const jobId of jobIds) {
-      try {
-        const res = await fetch('/api/jobs/' + encodeURIComponent(jobId), { method: 'DELETE' });
-        const data = await res.json();
-        if (!res.ok) {
-          failed++;
-        } else {
-          successful++;
-        }
-      } catch (err) {
-        failed++;
-      }
+      window.scraperStorage.updateJob(jobId, { applied, appliedAt });
     }
-
     selectedJobIds.clear();
     selectedAppliedIds.clear();
-    const msg = `${successful} vaga(s) excluída(s)` + (failed > 0 ? `, ${failed} erro(s)` : '');
-    setStatus(actionStatus, msg, failed > 0);
+    setStatus(actionStatus, `${jobIds.length} vaga(s) processada(s)`, false);
     loadJobs();
   }
 
-  // --- Match with SSE ---
-  btnMatch.addEventListener('click', () => {
+  function executeBulkDelete(jobIds) {
+    if (!window.scraperStorage) return;
+    for (const jobId of jobIds) {
+      window.scraperStorage.deleteJob(jobId);
+    }
+    selectedJobIds.clear();
+    selectedAppliedIds.clear();
+    setStatus(actionStatus, `${jobIds.length} vaga(s) excluída(s)`, false);
+    loadJobs();
+  }
+
+  // --- Match with SSE via fetch POST + ReadableStream ---
+  btnMatch.addEventListener('click', async () => {
     btnMatch.disabled = true;
     setStatus(matchStatus, '', false);
     matchProgress.style.display = 'block';
     matchBar.style.width = '0%';
     matchProgressText.textContent = 'Iniciando análise...';
-
     highlightRow(null);
 
-    const evtSource = new EventSource('/api/jobs/match-stream');
+    const jobs = window.scraperStorage ? window.scraperStorage.getJobs() : [];
+    const resume = window.scraperStorage ? window.scraperStorage.getResume() : null;
+    const resumeText = (resume && resume.text) || '';
 
-    evtSource.onmessage = (event) => {
-      const data = JSON.parse(event.data);
+    let response;
+    try {
+      response = await fetch('/api/jobs/match-stream', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ jobs, resumeText })
+      });
+    } catch (err) {
+      setStatus(matchStatus, 'Erro de conexão.', true);
+      btnMatch.disabled = false;
+      matchProgress.style.display = 'none';
+      return;
+    }
 
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let buffer = '';
+
+    function handleMatchEvent(data) {
       if (data.type === 'analyzing') {
         const pct = Math.round(((data.index) / data.total) * 100);
         matchBar.style.width = pct + '%';
@@ -555,6 +527,9 @@
       if (data.type === 'result') {
         const pct = Math.round(((data.index + 1) / data.total) * 100);
         matchBar.style.width = pct + '%';
+        if (window.scraperStorage) {
+          window.scraperStorage.updateJob(data.id, { score: data.score, status: data.status, justificativa: data.justificativa });
+        }
         updateRowScore(data.id, data.score, data.status, data.justificativa);
       }
 
@@ -563,35 +538,42 @@
         matchProgressText.textContent = 'Análise concluída! ' + data.processed + ' vaga(s) processada(s).';
         matchProgressText.className = 'status success';
         highlightRow(null);
-        evtSource.close();
         btnMatch.disabled = false;
-
-        fetch('/api/jobs')
-          .then((r) => r.json())
-          .then((jobs) => {
-            renderJobs(sortJobsByScore(jobs));
-          });
-
+        loadJobs();
         setTimeout(() => { matchProgress.style.display = 'none'; }, 4000);
       }
 
       if (data.type === 'error') {
         setStatus(matchStatus, data.error, true);
         highlightRow(null);
-        evtSource.close();
         btnMatch.disabled = false;
         matchProgress.style.display = 'none';
       }
-    };
+    }
 
-    evtSource.onerror = () => {
-      evtSource.close();
-      btnMatch.disabled = false;
-      matchProgress.style.display = 'none';
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const parts = buffer.split('\n\n');
+        buffer = parts.pop();
+        for (const part of parts) {
+          const line = part.trim();
+          if (line.startsWith('data: ')) {
+            try {
+              handleMatchEvent(JSON.parse(line.slice(6)));
+            } catch (_) {}
+          }
+        }
+      }
+    } catch (err) {
       setStatus(matchStatus, 'Conexão perdida durante a análise.', true);
       highlightRow(null);
+      btnMatch.disabled = false;
+      matchProgress.style.display = 'none';
       loadJobs();
-    };
+    }
   });
 
   function highlightRow(jobId) {

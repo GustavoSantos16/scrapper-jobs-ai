@@ -71,11 +71,14 @@
     }
     if (data.type === 'done') {
       bannerBar.style.width = '100%';
-      bannerText.textContent = 'Concluído! ' + data.collected + ' novas vagas coletadas.';
+      bannerText.textContent = 'Concluído! ' + data.collected + ' vagas coletadas.';
       banner.classList.add('scraper-banner-done');
       _running = false;
       closeSource();
       hideBanner();
+      if (data.jobs && data.jobs.length > 0 && window.scraperStorage) {
+        window.scraperStorage.saveJobs(data.jobs);
+      }
     }
     if (data.type === 'error') {
       bannerText.textContent = 'Erro: ' + data.error;

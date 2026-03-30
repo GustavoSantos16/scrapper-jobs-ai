@@ -1,9 +1,3 @@
-/**
- * Classificação local de compatibilidade vaga x currículo (sem IA externa).
- * Usa heurísticas de palavras-chave técnicas, senioridade e contexto.
- */
-const { readDatabase, writeDatabase } = require('./storageService');
-
 const STOP_WORDS = new Set([
   // EN
   'the','and','for','are','but','not','you','all','can','had','her','was','one','our','out',
@@ -68,11 +62,6 @@ function normalizeText(text) {
     .replace(/[^\w\s.#+\-]/g, ' ');
 }
 
-/**
- * Normaliza texto: lowercase, remove diacríticos e pontuação.
- * @param {string} text
- * @returns {string[]}
- */
 function extractWords(text) {
   if (!text || typeof text !== 'string') return [];
   return normalizeText(text)
@@ -91,11 +80,6 @@ function keywordSimilarity(resumeText, jobText) {
   return intersection / resumeWords.size;
 }
 
-/**
- * Retorna grupos tecnológicos encontrados no texto.
- * @param {string} text
- * @returns {Set<string>}
- */
 function detectTechGroups(text) {
   const normalized = normalizeText(text);
   const found = new Set();
@@ -168,15 +152,9 @@ function scoreJobMatch(job, resumeText) {
   const seniority = seniorityScore(jobLevel, resumeLevel);
 
   let penalty = 0;
-  if (jobTech.size >= 3 && techCoverage < 0.35) {
-    penalty += 8;
-  }
-  if (titleKeywords.size >= 2 && titleCoverage < 0.3) {
-    penalty += 5;
-  }
-  if (sim < 0.08) {
-    penalty += 7;
-  }
+  if (jobTech.size >= 3 && techCoverage < 0.35) penalty += 8;
+  if (titleKeywords.size >= 2 && titleCoverage < 0.3) penalty += 5;
+  if (sim < 0.08) penalty += 7;
 
   const raw = titlePoints + techPoints + keywordPoints + seniority.points - penalty;
   const score = Math.max(0, Math.min(100, raw));
@@ -188,17 +166,9 @@ function scoreJobMatch(job, resumeText) {
   reasons.push(`Senioridade: ${seniority.note}`);
   if (penalty > 0) reasons.push(`Penalidade aplicada: -${penalty}`);
 
-  return {
-    score,
-    justificativa: reasons.join(' | ')
-  };
+  return { score, justificativa: reasons.join(' | ') };
 }
 
-/**
- * Classifica uma vaga: >=70 aprovado, 50–69 talvez, <50 descartado.
- * @param {number} score
- * @returns {string}
- */
 function getStatus(score) {
   if (score >= 70) return 'aprovado';
   if (score >= 50) return 'talvez';
@@ -206,19 +176,16 @@ function getStatus(score) {
 }
 
 /**
- * Analisa todas as vagas ainda sem score com motor local de palavras-chave.
- * Atualiza database.json com score, justificativa e status.
+ * Analisa vagas sem score com motor local de palavras-chave.
  * @param {function} [onProgress] - callback(event) chamado a cada vaga processada
+ * @param {{ jobs: Array, resumeText: string }} data - dados enviados pelo cliente
  * @returns {Promise<{ processed: number, results: Array }>}
  */
-async function runMatch(onProgress) {
-  const db = await readDatabase();
-  const resumeText = (db.resume && db.resume.text) || '';
+async function runMatch(onProgress, { jobs = [], resumeText = '' } = {}) {
   if (!resumeText.trim()) {
     throw new Error('Nenhum currículo cadastrado. Faça upload do currículo primeiro.');
   }
 
-  const jobs = db.jobs || [];
   const toProcess = jobs.filter((j) => j.score == null);
   const results = [];
   const total = toProcess.length;
@@ -229,15 +196,12 @@ async function runMatch(onProgress) {
     const job = toProcess[i];
     emit({ type: 'analyzing', index: i, total, jobId: job.id, title: job.title, company: job.company });
     const { score, justificativa } = scoreJobMatch(job, resumeText);
-    job.score = score;
-    job.justificativa = justificativa;
-    job.status = getStatus(score);
-    const r = { id: job.id, score, status: job.status, justificativa };
+    const status = getStatus(score);
+    const r = { id: job.id, score, status, justificativa };
     results.push(r);
     emit({ type: 'result', index: i, total, ...r });
   }
 
-  await writeDatabase(db);
   return { processed: toProcess.length, results };
 }
 

@@ -1,21 +1,11 @@
-/**
- * Scraper de vagas do LinkedIn com Puppeteer.
- * - headless: true (navegador invisível)
- * - Reuso de sessão (cache/cookies) com userDataDir
- * - Scroll progressivo com delay aleatório 2–4s
- * - Coleta até esgotar resultados visíveis
- * - Emite eventos de progresso via callback (SSE)
- */
 const puppeteer = require('puppeteer');
 const fs = require('fs');
 const path = require('path');
-const { readDatabase, writeDatabase, normalizeJobLink } = require('./storageService');
 
 const MAX_JOBS = 1000;
 const LOGIN_WAIT_TIMEOUT_MS = 240000;
 const PROFILE_DIR = path.join(__dirname, '..', 'storage', 'browser-profile');
 
-/** Caminhos comuns do Chrome/Chromium no macOS (evita erro -86 no Apple Silicon com o Chromium bundled) */
 const MAC_CHROME_PATHS = [
   '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
   '/Applications/Chromium.app/Contents/MacOS/Chromium',
@@ -35,6 +25,29 @@ function getExecutablePath() {
 
 function randomDelay(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function normalizeJobLink(link) {
+  if (!link || typeof link !== 'string') return '';
+  const raw = link.trim();
+  if (!raw) return '';
+  try {
+    const parsed = new URL(raw);
+    const hostname = (parsed.hostname || '').toLowerCase();
+    const isLinkedIn = hostname.endsWith('linkedin.com');
+    parsed.search = '';
+    parsed.hash = '';
+    let pathname = (parsed.pathname || '').replace(/\/+$/g, '');
+    if (!pathname) pathname = '/';
+    if (isLinkedIn) {
+      const viewMatch = pathname.match(/\/jobs\/view\/(\d+)/);
+      if (viewMatch) return `https://www.linkedin.com/jobs/view/${viewMatch[1]}`;
+      return `https://www.linkedin.com${pathname}`;
+    }
+    return `${parsed.origin}${pathname}`;
+  } catch (_) {
+    return raw.replace(/\?.*$/, '').replace(/#.*$/, '').replace(/\/+$/g, '');
+  }
 }
 
 function isLinkedInJobsUrl(url) {
@@ -135,10 +148,6 @@ async function ensureLoggedIn(page, timeoutMs = LOGIN_WAIT_TIMEOUT_MS) {
   return false;
 }
 
-/**
- * Extrai dados dos cards visíveis em uma única avaliação (evita context destroyed).
- * Retorna array de { jobId, title, company, link }.
- */
 async function extractVisibleCardsData(page) {
   return page.evaluate(() => {
     const cards = document.querySelectorAll(
@@ -467,25 +476,7 @@ async function runScraper(searchUrl, options, onProgress) {
       }
     }
 
-    emit({ type: 'status', message: 'Salvando vagas no banco de dados...' });
-    const db = await readDatabase();
-    const existingIds = new Set(
-      (db.jobs || [])
-        .map((j) => normalizeJobLink(j.link))
-        .filter(Boolean)
-    );
-    const newJobs = jobs.filter((j) => {
-      const normalizedLink = normalizeJobLink(j.link);
-      if (!normalizedLink) return false;
-      if (existingIds.has(normalizedLink)) return false;
-      j.link = normalizedLink;
-      existingIds.add(normalizedLink);
-      return true;
-    });
-    db.jobs = (db.jobs || []).concat(newJobs);
-    await writeDatabase(db);
-
-    return { collected: newJobs.length, jobs: newJobs, total: db.jobs.length };
+    return { collected: jobs.length, jobs };
   } finally {
     await browser.close();
   }

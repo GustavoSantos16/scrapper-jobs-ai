@@ -49,16 +49,12 @@
     el.className = 'status' + (isError ? ' error' : ' success');
   }
 
-  // Carregar currículo salvo
-  fetch('/api/resume')
-    .then((r) => r.json())
-    .then((data) => {
-      if (data && data.updatedAt) {
-        resumeStatus.textContent = 'Currículo carregado em ' + new Date(data.updatedAt).toLocaleString();
-        resumeStatus.className = 'status success';
-      }
-    })
-    .catch(() => {});
+  // Carregar currículo salvo do localStorage
+  const savedResume = window.scraperStorage && window.scraperStorage.getResume();
+  if (savedResume && savedResume.updatedAt) {
+    resumeStatus.textContent = 'Currículo carregado em ' + new Date(savedResume.updatedAt).toLocaleString();
+    resumeStatus.className = 'status success';
+  }
 
   formResume.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -77,6 +73,9 @@
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Erro no upload');
+      if (data.resume && window.scraperStorage) {
+        window.scraperStorage.saveResume(data.resume);
+      }
       setStatus(resumeStatus, 'Currículo salvo com sucesso.', false);
       fileResume.value = '';
     } catch (err) {
@@ -118,7 +117,8 @@
 
     if (data.type === 'done') {
       scraperBar.style.width = '100%';
-      scraperProgressText.textContent = 'Concluído! ' + data.collected + ' novas vagas coletadas. Total no sistema: ' + data.total;
+      const totalLocal = window.scraperStorage ? window.scraperStorage.getJobs().length : data.collected;
+      scraperProgressText.textContent = 'Concluído! ' + data.collected + ' vagas coletadas. Total no sistema: ' + totalLocal;
       scraperProgressText.className = 'status success';
       btnScraper.disabled = false;
       updateScraperButtonState();

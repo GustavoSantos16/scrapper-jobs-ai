@@ -47,7 +47,7 @@ function start(searchUrl, maxPages) {
   scraperService
     .runScraper(searchUrl, { maxPages }, emit)
     .then((result) => {
-      emit({ type: 'done', collected: result.collected, total: result.total });
+      emit({ type: 'done', collected: result.collected, jobs: result.jobs || [] });
       state.running = false;
     })
     .catch((err) => {

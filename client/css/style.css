@@ -109,6 +109,7 @@ body.has-scraper-banner {
 /* ─── Header fixo ────────────────────────────────────── */
 header {
   position: fixed;
+  padding-left: 20px;
   top: 0; left: 0; right: 0;
   z-index: 300;
   height: var(--header-h);
