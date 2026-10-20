@@ -22,3 +22,14 @@ Cada linha: decisão — justificativa.
 - **Workday não implementado** — endpoint interno não documentado e datas apenas relativas ("Posted Yesterday"), o que conflita com a regra de datas honestas.
 - **Gupy via `__NEXT_DATA__` da página de busca** — não há API pública; `robots.txt` permite; validação Zod falha alto se a estrutura mudar.
 - **Fixtures são respostas reais reduzidas** — gravadas em 2026-10-20 a partir das chamadas de validação; testes de conectores rodam sem rede.
+
+## Modelo, normalização e dedup
+- **Vaga consolidada (`jobs`) + ocorrências por fonte (`job_listings`)** — `alternateSources[]` vem das listings; o status "possivelmente encerrada" é por listing e a vaga só fica encerrada quando todas ficam.
+- **Dados pessoais em `job_tracking` + `job_state_history`** — separados do que é capturado; reprocessar vagas nunca toca em notas/estados.
+- **Lógica de normalização, score e dedup como funções puras em `@ajh/job-sources`** — testável sem banco; o pipeline só orquestra.
+- **Score: cada componente vale peso × f, com f ∈ [-1, 1]; ausência = 0,5 (neutro)** — atende "ausência não penaliza, incompatibilidade explícita penaliza"; pesos são normalizados para 100.
+- **Elegibilidade geográfica: campos estruturados vs. texto livre** — um campo de local "USA" é restrição; no texto livre só frases explícitas ("US only", "must be located in…") contam, para não confundir menção de cidade com restrição.
+- **Vaga remota em português recebe a tag `brazil`** — o idioma é um sinal forte de público brasileiro; a regra fica isolada e testada.
+- **Dedup: camadas fuzzy (hash de identidade e similaridade) nunca unem duas listings da mesma fonte** — IDs distintos numa mesma fonte são vagas distintas (ex.: mesma vaga para vários times).
+- **Similaridade = 0,4 × Jaccard de trigramas do título + 0,6 × Jaccard de shingles (3 palavras) da descrição; auto-merge ≥ 0,88, revisão manual ≥ 0,65; sem descrição nunca há auto-merge** — títulos parecidos sozinhos nunca unem vagas.
+- **Datas sem fuso são lidas como UTC; datas antes de 2000 ou mais de 2 dias no futuro viram `null`** — evita datas inventadas; nunca usamos a data de captura como publicação.

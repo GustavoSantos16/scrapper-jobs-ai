@@ -1,1 +1,3 @@
-export const JOB_SOURCES_VERSION = 1;
+export * from './normalize/index.ts';
+export * from './scoring.ts';
+export * from './dedup.ts';
