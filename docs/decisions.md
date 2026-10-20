@@ -60,3 +60,10 @@ Cada linha: decisão — justificativa.
 - **Links de atribuição sem `nofollow`/`noreferrer`** — Remote OK (e outras) exigem link de volta "dofollow" que gere tráfego; links dentro da descrição continuam com `nofollow`.
 - **Cores dos gráficos lidas dos tokens CSS em runtime** — Recharts precisa de cores concretas; assim o tema escuro funciona.
 - **Merge manual preserva o registro da decisão (migração 0003)** — a revisão guarda um snapshot do título/empresa absorvidos, já que a vaga absorvida é removida.
+
+## Acompanhamento pessoal (fase 8)
+- **Histórico registra uma linha por campo que realmente mudou** — operações sem efeito não poluem o histórico; o texto das notas não é copiado para o histórico (só o fato de ter sido editado).
+- **Marcar "Candidatura enviada" preenche a data da candidatura uma vez** — só se você não informou outra.
+- **Ignoradas ficam ocultas por padrão, nunca apagadas** — o filtro "Ignoradas" permite vê-las.
+- **Exportação usa os mesmos filtros da busca, até 10.000 vagas; CSV com BOM (Excel) e células iniciadas por `= + - @` prefixadas com `'`** — evita injeção de fórmulas em planilhas.
+- **Filtros salvos guardam os parâmetros da URL** — a mesma representação da busca, sem formato paralelo.

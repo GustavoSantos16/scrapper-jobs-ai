@@ -1,9 +1,8 @@
-import type { JobDetail } from '@ajh/shared';
-import type { ReactNode } from 'react';
 import { Link, useNavigate, useParams } from 'react-router';
 import { useJob } from '../api/hooks.ts';
 import { Icon } from '../components/Icon.tsx';
 import { geoTone, SourceLink } from '../components/JobCard.tsx';
+import { TrackingPanel } from '../components/TrackingPanel.tsx';
 import { Badge, Card, ChipRow, EmptyState, ErrorState, Loading, ScoreBadge } from '../components/ui.tsx';
 import { formatDate, formatDateTime, formatRelative, formatSalary } from '../lib/format.ts';
 import { CONTRACT_LABEL, GEO_LABEL, LANGUAGE_LABEL, REMOTE_LABEL, SENIORITY_LABEL } from '../lib/labels.ts';
@@ -18,10 +17,7 @@ const MATCH_LABEL: Record<string, string> = {
   manual: 'Unida manualmente',
 };
 
-export type TrackingSlot = (job: JobDetail) => ReactNode;
-
-/** Personal tracking UI is injected (phase 8) so this page stays focused on the job itself. */
-export function JobDetailPage({ trackingPanel }: { trackingPanel?: TrackingSlot }) {
+export function JobDetailPage() {
   const id = Number(useParams().id);
   const navigate = useNavigate();
   const job = useJob(id);
@@ -97,7 +93,7 @@ export function JobDetailPage({ trackingPanel }: { trackingPanel?: TrackingSlot 
         </div>
 
         <aside className={s.stack}>
-          {trackingPanel?.(j)}
+          <TrackingPanel key={j.id} job={j} />
           <Card title="Datas">
             <dl className={s.dl}>
               <dt>Publicada</dt>

@@ -11,6 +11,7 @@ import { reviewRoutes } from './routes/reviews.ts';
 import { sourceRoutes } from './routes/sources.ts';
 import { settingsRoutes } from './routes/settings.ts';
 import { statsRoutes } from './routes/stats.ts';
+import { trackingRoutes } from './routes/tracking.ts';
 
 export interface AppDeps {
   database: Database;
@@ -37,6 +38,7 @@ export async function buildApp(deps: AppDeps, opts: FastifyServerOptions = {}) {
   await app.register(statsRoutes, { prefix: '/api' });
   await app.register(reviewRoutes, { prefix: '/api' });
   await app.register(settingsRoutes, { prefix: '/api' });
+  await app.register(trackingRoutes, { prefix: '/api' });
   return app;
 }
 

@@ -13,3 +13,5 @@ export * from './repos/detail.ts';
 export * from './repos/reviews.ts';
 export * from './repos/search.ts';
 export * from './repos/stats.ts';
+export * from './repos/saved-filters.ts';
+export * from './repos/tracking.ts';

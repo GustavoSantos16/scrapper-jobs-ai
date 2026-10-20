@@ -5,7 +5,10 @@ import { useSettings } from './api/settings.ts';
 import { Layout } from './components/Layout.tsx';
 import { EmptyState, Loading } from './components/ui.tsx';
 import { setDisplayTimeZone } from './lib/format.ts';
+import { SavedFilters } from './components/SavedFilters.tsx';
+import { ApplicationsPage } from './pages/ApplicationsPage.tsx';
 import { DashboardPage } from './pages/DashboardPage.tsx';
+import { ExportPage } from './pages/ExportPage.tsx';
 import { JobDetailPage } from './pages/JobDetailPage.tsx';
 import { JobsPage } from './pages/JobsPage.tsx';
 import { ReviewsPage } from './pages/ReviewsPage.tsx';
@@ -31,12 +34,14 @@ const router = createBrowserRouter([
     children: [
       { path: '/', element: <DashboardPage /> },
       { path: '/hoje', element: <TodayPage /> },
-      { path: '/vagas', element: <JobsPage title="Todas as vagas" /> },
+      { path: '/vagas', element: <JobsPage title="Todas as vagas" headerActions={<SavedFilters />} /> },
       { path: '/vagas/:id', element: <JobDetailPage /> },
       {
         path: '/favoritas',
         element: <JobsPage title="Favoritas" fixed={{ favorite: true, status: 'all' }} hide={['favorite']} emptyTitle="Nenhuma favorita ainda" emptyText="Marque vagas com a estrela para encontrá-las aqui." />,
       },
+      { path: '/candidaturas', element: <ApplicationsPage /> },
+      { path: '/exportar', element: <ExportPage /> },
       { path: '/fontes', element: <SourcesPage /> },
       { path: '/capturas', element: <RunsPage /> },
       { path: '/duplicatas', element: <ReviewsPage /> },
