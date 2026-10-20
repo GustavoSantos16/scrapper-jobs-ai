@@ -7,7 +7,10 @@ import { healthRoutes } from './routes/health.ts';
 import { jobRoutes } from './routes/jobs.ts';
 import { companyRoutes } from './routes/companies.ts';
 import { runRoutes } from './routes/runs.ts';
+import { reviewRoutes } from './routes/reviews.ts';
 import { sourceRoutes } from './routes/sources.ts';
+import { settingsRoutes } from './routes/settings.ts';
+import { statsRoutes } from './routes/stats.ts';
 
 export interface AppDeps {
   database: Database;
@@ -31,6 +34,9 @@ export async function buildApp(deps: AppDeps, opts: FastifyServerOptions = {}) {
   await app.register(runRoutes, { prefix: '/api' });
   await app.register(sourceRoutes, { prefix: '/api' });
   await app.register(companyRoutes, { prefix: '/api' });
+  await app.register(statsRoutes, { prefix: '/api' });
+  await app.register(reviewRoutes, { prefix: '/api' });
+  await app.register(settingsRoutes, { prefix: '/api' });
   return app;
 }
 

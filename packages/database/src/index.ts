@@ -9,3 +9,7 @@ export * from './repos/locks.ts';
 export * from './repos/runs.ts';
 export * from './repos/settings.ts';
 export * from './repos/sources.ts';
+export * from './repos/detail.ts';
+export * from './repos/reviews.ts';
+export * from './repos/search.ts';
+export * from './repos/stats.ts';

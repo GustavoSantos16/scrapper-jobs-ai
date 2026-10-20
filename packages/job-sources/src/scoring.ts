@@ -40,6 +40,14 @@ const RESTRICTION_LABEL: Record<string, string> = {
 };
 
 const list = (xs: string[]) => xs.join(', ');
+const PT: Record<string, string> = {
+  remote: 'remota', hybrid: 'híbrida', onsite: 'presencial',
+  worldwide: 'mundial', americas: 'Américas', latam: 'LATAM', brazil: 'Brasil',
+  clt: 'CLT', pj: 'PJ', contractor: 'contractor', full_time: 'tempo integral', part_time: 'meio período',
+  freelance: 'freelance', internship: 'estágio', temporary: 'temporário',
+  intern: 'estágio', junior: 'júnior', mid: 'pleno', senior: 'sênior', staff: 'staff', lead: 'lead', principal: 'principal',
+};
+const pt = (xs: string[]) => list(xs.map((x) => PT[x] ?? x));
 
 /**
  * Transparent weighted score (0–100). Each component contributes weight × f; missing
@@ -94,10 +102,10 @@ export function scoreJob(job: ScoreInput, profile: Profile, now: Date = new Date
     rt === 'unknown'
       ? { key: 'remote', label: 'Modalidade', f: NEUTRAL, reason: 'Modalidade não informada' }
       : profile.remoteTypes.includes(rt)
-        ? { key: 'remote', label: 'Modalidade', f: 1, reason: `Modalidade ${rt} desejada` }
+        ? { key: 'remote', label: 'Modalidade', f: 1, reason: `Modalidade ${pt([rt])} desejada` }
         : rt === 'onsite'
           ? { key: 'remote', label: 'Modalidade', f: -0.5, reason: 'Vaga presencial' }
-          : { key: 'remote', label: 'Modalidade', f: 0, reason: `Modalidade ${rt} fora da preferência` },
+          : { key: 'remote', label: 'Modalidade', f: 0, reason: `Modalidade ${pt([rt])} fora da preferência` },
   );
 
   // geographic eligibility
@@ -106,7 +114,7 @@ export function scoreJob(job: ScoreInput, profile: Profile, now: Date = new Date
   const restrictions = geo.filter((g) => !BRAZIL_ELIGIBLE_GEO.includes(g));
   c.push(
     accepted.length
-      ? { key: 'geo', label: 'Elegibilidade geográfica', f: 1, reason: `Aceita: ${list(accepted)}` }
+      ? { key: 'geo', label: 'Elegibilidade geográfica', f: 1, reason: `Aceita: ${pt(accepted)}` }
       : restrictions.length
         ? {
             key: 'geo',
@@ -123,8 +131,8 @@ export function scoreJob(job: ScoreInput, profile: Profile, now: Date = new Date
     !job.contractTypes.length
       ? { key: 'contract', label: 'Tipo de contrato', f: NEUTRAL, reason: 'Contrato não informado' }
       : contracts.length
-        ? { key: 'contract', label: 'Tipo de contrato', f: 1, reason: `Contrato: ${list(contracts)}` }
-        : { key: 'contract', label: 'Tipo de contrato', f: 0, reason: `Contrato fora da preferência: ${list(job.contractTypes)}` },
+        ? { key: 'contract', label: 'Tipo de contrato', f: 1, reason: `Contrato: ${pt(contracts)}` }
+        : { key: 'contract', label: 'Tipo de contrato', f: 0, reason: `Contrato fora da preferência: ${pt(job.contractTypes)}` },
   );
 
   // seniority
@@ -136,12 +144,12 @@ export function scoreJob(job: ScoreInput, profile: Profile, now: Date = new Date
     s === 'unknown'
       ? { key: 'seniority', label: 'Senioridade', f: NEUTRAL, reason: 'Senioridade não informada' }
       : profile.seniorities.includes(s)
-        ? { key: 'seniority', label: 'Senioridade', f: 1, reason: `Senioridade ${s}` }
+        ? { key: 'seniority', label: 'Senioridade', f: 1, reason: `Senioridade ${pt([s])}` }
         : s === 'intern'
           ? { key: 'seniority', label: 'Senioridade', f: -0.5, reason: 'Vaga de estágio' }
           : adjacent
-            ? { key: 'seniority', label: 'Senioridade', f: NEUTRAL, reason: `Senioridade próxima: ${s}` }
-            : { key: 'seniority', label: 'Senioridade', f: 0, reason: `Senioridade ${s} fora da preferência` },
+            ? { key: 'seniority', label: 'Senioridade', f: NEUTRAL, reason: `Senioridade próxima: ${pt([s])}` }
+            : { key: 'seniority', label: 'Senioridade', f: 0, reason: `Senioridade ${pt([s])} fora da preferência` },
   );
 
   // recency

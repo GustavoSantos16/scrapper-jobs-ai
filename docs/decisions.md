@@ -52,3 +52,11 @@ Cada linha: decisão — justificativa.
 - **Fixtures de Adzuna e Jooble montadas a partir da documentação** — sem chave não há como gravar uma resposta real; o campo `__note` de cada arquivo diz isso.
 - **A fila de revisão exige similaridade de título ≥ 0,5** — na primeira captura real, cargos diferentes da mesma empresa (boilerplate institucional idêntico) poluíam a fila.
 - **`pnpm reprocess` reconstrói a fila de revisão pendente** — a manutenção nunca faz merge automático; revisões já resolvidas são preservadas.
+
+## Interface (fase 7)
+- **Filtros, ordenação e página vivem na URL** — buscas são compartilháveis, sobrevivem a reload e viram "filtros salvos" sem estado extra.
+- **"Hoje" é calculado no fuso de exibição e convertido para UTC** — o banco guarda só UTC; a fronteira do dia depende do fuso configurado.
+- **Vagas de Hoje usam `publishedAt`; vagas sem data aparecem numa seção separada** — a data de captura nunca substitui a publicação.
+- **Links de atribuição sem `nofollow`/`noreferrer`** — Remote OK (e outras) exigem link de volta "dofollow" que gere tráfego; links dentro da descrição continuam com `nofollow`.
+- **Cores dos gráficos lidas dos tokens CSS em runtime** — Recharts precisa de cores concretas; assim o tema escuro funciona.
+- **Merge manual preserva o registro da decisão (migração 0003)** — a revisão guarda um snapshot do título/empresa absorvidos, já que a vaga absorvida é removida.

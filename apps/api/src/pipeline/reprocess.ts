@@ -1,6 +1,6 @@
 import { findListing, listRawListings, type Database } from '@ajh/database';
 import type { AnyConnector } from '@ajh/job-sources';
-import { NormalizedJob } from '@ajh/shared';
+import { BRAZIL_ELIGIBLE_GEO, NormalizedJob, type GeoTag } from '@ajh/shared';
 import { readSettings } from '../config/settings.ts';
 import { ingestJob, rebuildPendingReviews, rescoreAll } from './ingest.ts';
 
@@ -42,6 +42,16 @@ export function reprocessAll(database: Database, connectors: AnyConnector[], now
     if (r.kind === 'updated') stats.updated++;
     else stats.unchanged++;
   }
+  // eligibility merged from several listings follows the same rule as normalization
+  q.tx(() => {
+    for (const row of q.all(q.db.selectFrom('jobs').select(['id', 'geo_eligibility']))) {
+      const tags = JSON.parse(row.geo_eligibility) as GeoTag[];
+      const eligible = tags.filter((g) => BRAZIL_ELIGIBLE_GEO.includes(g));
+      if (eligible.length && eligible.length !== tags.length) {
+        q.run(q.db.updateTable('jobs').set({ geo_eligibility: JSON.stringify(eligible) }).where('id', '=', row.id));
+      }
+    }
+  });
   rescoreAll(q, profile, now);
   return { ...stats, pendingReviews: rebuildPendingReviews(q, now) };
 }

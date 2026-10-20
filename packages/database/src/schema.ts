@@ -81,13 +81,16 @@ export interface JobStateHistoryTable {
 
 export interface DedupReviewsTable {
   id: Generated<number>;
-  job_id: number;
-  candidate_job_id: number;
+  job_id: number | null;
+  candidate_job_id: number | null;
   confidence: number;
   method: string;
   status: Generated<string>;
   created_at: string;
   resolved_at: string | null;
+  kept_job_id: Generated<number | null>;
+  merged_title: Generated<string | null>;
+  merged_company: Generated<string | null>;
 }
 
 export interface RunsTable {

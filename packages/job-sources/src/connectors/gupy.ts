@@ -1,6 +1,6 @@
 import type { ContractType } from '@ajh/shared';
 import { z } from 'zod';
-import { buildJob, parseDate, remoteTypeFromStructured } from '../normalize/index.ts';
+import { buildJob, decodeEntities, parseDate, remoteTypeFromStructured } from '../normalize/index.ts';
 import type { Connector } from '../types.ts';
 
 const GupyJob = z.object({
@@ -78,7 +78,7 @@ export const gupy: Connector<GupyJob> = {
       title: j.name,
       url: j.jobUrl,
       company: j.careerPageName,
-      descriptionText: j.description ?? null,
+      descriptionText: j.description ? decodeEntities(j.description).replace(/\u00a0/g, ' ').trim() : null,
       locations: [[j.city, j.state].filter(Boolean).join(', ') || null],
       country: 'BR',
       city: j.city ?? null,

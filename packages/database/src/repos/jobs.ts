@@ -1,4 +1,4 @@
-import type { GeoTag, MatchMethod, NormalizedJob, ScoreReason } from '@ajh/shared';
+import { BRAZIL_ELIGIBLE_GEO, type GeoTag, type MatchMethod, type NormalizedJob, type ScoreReason } from '@ajh/shared';
 import { sql } from 'kysely';
 import type { Q } from '../exec.ts';
 import type { JobsTable } from '../schema.ts';
@@ -182,7 +182,10 @@ function fillJobGaps(q: Q, jobId: number, w: JobWrite, now: string, sighting = t
   const j = q.get(q.db.selectFrom('jobs').selectAll().where('id', '=', jobId));
   if (!j) return;
   const techs = [...new Set([...(JSON.parse(j.technologies) as string[]), ...w.technologies])];
-  const geo = [...new Set([...(JSON.parse(j.geo_eligibility) as GeoTag[]), ...w.geoEligibility])];
+  const union = [...new Set([...(JSON.parse(j.geo_eligibility) as GeoTag[]), ...w.geoEligibility])];
+  // same rule as normalization: once a candidate in Brazil is eligible, restrictions don't apply
+  const eligible = union.filter((g) => BRAZIL_ELIGIBLE_GEO.includes(g));
+  const geo = eligible.length ? eligible : union;
   const contracts = [...new Set([...(JSON.parse(j.contract_types) as string[]), ...w.contractTypes])];
   const noSalary = j.salary_min === null && j.salary_max === null;
   q.run(
