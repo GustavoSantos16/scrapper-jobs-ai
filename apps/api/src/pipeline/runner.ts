@@ -1,6 +1,7 @@
 import { randomUUID } from 'node:crypto';
 import {
   acquireLock,
+  applyRetention,
   createRun,
   createRunSource,
   failOrphanRuns,
@@ -192,6 +193,8 @@ export class CaptureRunner {
         });
       });
       rescoreAll(q, profile, this.now());
+      const removed = applyRetention(q, settings.retentionDays, this.now());
+      if (removed) this.deps.log.info({ removed, retentionDays: settings.retentionDays }, 'retention removed closed jobs');
     } catch (err) {
       this.deps.log.error({ err, runId }, 'capture run crashed');
     } finally {

@@ -339,3 +339,28 @@ export function listRawListings(q: Q, source?: string) {
   if (source) query = query.where('source', '=', source);
   return q.all(query.orderBy('id'));
 }
+
+/**
+ * Optional retention (off by default): deletes jobs that are possibly closed and were last
+ * seen more than `days` ago. Jobs with personal data (favorite, notes, non-new state) are kept.
+ */
+export function applyRetention(q: Q, days: number | null, now = new Date()): number {
+  if (days === null) return 0;
+  const cutoff = new Date(now.getTime() - days * 86_400_000).toISOString();
+  return q.run(
+    q.db
+      .deleteFrom('jobs')
+      .where('status', '=', 'possibly_closed')
+      .where('last_seen_at', '<', cutoff)
+      .where(({ not, exists, selectFrom }) =>
+        not(
+          exists(
+            selectFrom('job_tracking as t')
+              .select('t.job_id')
+              .whereRef('t.job_id', '=', 'jobs.id')
+              .where((eb) => eb.or([eb('t.favorite', '=', 1), eb('t.notes', '!=', ''), eb('t.state', '!=', 'new')])),
+          ),
+        ),
+      ),
+  ).changes;
+}
