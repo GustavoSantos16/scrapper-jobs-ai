@@ -1,0 +1,26 @@
+{
+  "name": "@ajh/database",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "typecheck": "tsc -p tsconfig.json",
+    "migrate": "tsx --env-file-if-exists=../../.env src/cli-migrate.ts",
+    "build": "echo \"(source package, bundled by consumers)\""
+  },
+  "dependencies": {
+    "@ajh/shared": "workspace:*",
+    "better-sqlite3": "^13.0.3",
+    "kysely": "^0.29.7",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/better-sqlite3": "^9.6.0",
+    "@types/node": "^24.19.2",
+    "tsx": "^4.23.15",
+    "typescript": "~6.0.3"
+  }
+}
