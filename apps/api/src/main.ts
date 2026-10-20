@@ -5,6 +5,7 @@ import { pino } from 'pino';
 import { buildApp } from './app.ts';
 import { readCompanies } from './config/companies.ts';
 import { CaptureRunner } from './pipeline/runner.ts';
+import { Scheduler } from './scheduler.ts';
 
 const HOST = '127.0.0.1'; // local-only by design; never bind to 0.0.0.0
 const port = Number(process.env.API_PORT ?? DEFAULT_API_PORT);
@@ -18,12 +19,14 @@ const logger = pino({
 });
 
 const runner = new CaptureRunner({ database, connectors: CONNECTORS, env, log: logger, loadCompanies: readCompanies });
-const app = await buildApp({ database, connectors: CONNECTORS, env, runner }, { loggerInstance: logger });
+const scheduler = new Scheduler({ database, runner, log: logger });
+const app = await buildApp({ database, connectors: CONNECTORS, env, runner, scheduler }, { loggerInstance: logger });
 const orphans = runner.recover();
 if (orphans) app.log.warn({ orphans }, 'marked interrupted runs as failed');
 
 const shutdown = async (signal: string) => {
   app.log.info({ signal }, 'shutting down');
+  scheduler.stop();
   if (runner.currentRunId) runner.cancel(runner.currentRunId);
   await runner.idle();
   await app.close();
@@ -34,3 +37,5 @@ process.on('SIGINT', () => void shutdown('SIGINT'));
 process.on('SIGTERM', () => void shutdown('SIGTERM'));
 
 await app.listen({ host: HOST, port });
+scheduler.start();
+app.log.info(scheduler.status(), 'scheduler');

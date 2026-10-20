@@ -67,3 +67,10 @@ Cada linha: decisão — justificativa.
 - **Ignoradas ficam ocultas por padrão, nunca apagadas** — o filtro "Ignoradas" permite vê-las.
 - **Exportação usa os mesmos filtros da busca, até 10.000 vagas; CSV com BOM (Excel) e células iniciadas por `= + - @` prefixadas com `'`** — evita injeção de fórmulas em planilhas.
 - **Filtros salvos guardam os parâmetros da URL** — a mesma representação da busca, sem formato paralelo.
+
+## Agendador (fase 9)
+- **Agendador dentro do processo da API, não `launchd`/cron** — sem instalação no sistema; o README deixa claro que nada roda com a API parada.
+- **Próxima execução = âncora (último disparo ou última reconfiguração) + intervalo, guardada em `settings.scheduler_state`** — sobrevive a reinícios.
+- **Execução perdida durante uma parada roda uma única vez, 60 s após a API subir** — sem rajada de execuções atrasadas.
+- **Slot que vence durante outra captura é pulado e registrado** — nunca há sobreposição; o lock persistente também protege contra outro processo.
+- **Retenção começa desligada e pede confirmação para ligar** — é a única ação que apaga dados capturados.

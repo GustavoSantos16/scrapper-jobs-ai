@@ -11,6 +11,8 @@ import { DashboardPage } from './pages/DashboardPage.tsx';
 import { ExportPage } from './pages/ExportPage.tsx';
 import { JobDetailPage } from './pages/JobDetailPage.tsx';
 import { JobsPage } from './pages/JobsPage.tsx';
+import { ProfilePage } from './pages/ProfilePage.tsx';
+import { SettingsPage } from './pages/SettingsPage.tsx';
 import { ReviewsPage } from './pages/ReviewsPage.tsx';
 import { RunsPage } from './pages/RunsPage.tsx';
 import { SourcesPage } from './pages/SourcesPage.tsx';
@@ -42,6 +44,8 @@ const router = createBrowserRouter([
       },
       { path: '/candidaturas', element: <ApplicationsPage /> },
       { path: '/exportar', element: <ExportPage /> },
+      { path: '/perfil', element: <ProfilePage /> },
+      { path: '/configuracoes', element: <SettingsPage /> },
       { path: '/fontes', element: <SourcesPage /> },
       { path: '/capturas', element: <RunsPage /> },
       { path: '/duplicatas', element: <ReviewsPage /> },

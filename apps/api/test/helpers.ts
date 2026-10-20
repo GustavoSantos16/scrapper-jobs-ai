@@ -2,12 +2,14 @@ import { openDatabase, type Database } from '@ajh/database';
 import type { AnyConnector, CompanyConfig, Transport } from '@ajh/job-sources';
 import { buildApp } from '../src/app.ts';
 import { CaptureRunner } from '../src/pipeline/runner.ts';
+import { Scheduler } from '../src/scheduler.ts';
 
 export const silentLog = { debug() {}, info() {}, warn() {}, error() {} };
 
 export interface TestEnv {
   database: Database;
   runner: CaptureRunner;
+  scheduler: Scheduler;
   app: Awaited<ReturnType<typeof buildApp>>;
   close(): Promise<void>;
 }
@@ -36,9 +38,11 @@ export async function createTestEnv(
     sleep: async () => undefined,
     ...(opts.now && { now: opts.now }),
   });
+  const scheduler = new Scheduler({ database, runner, log: silentLog, setTimer: () => null, clearTimer: () => undefined, ...(opts.now && { now: opts.now }) });
   const app = await buildApp({
     database,
     runner,
+    scheduler,
     connectors: opts.connectors,
     env,
     loadCompanies: () => companies,
@@ -47,8 +51,10 @@ export async function createTestEnv(
   return {
     database,
     runner,
+    scheduler,
     app,
     async close() {
+      scheduler.stop();
       await runner.idle();
       await app.close();
       await database.close();

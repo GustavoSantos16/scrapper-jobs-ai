@@ -3,10 +3,12 @@ import { serializerCompiler, validatorCompiler, type ZodTypeProvider } from 'fas
 import type { Database } from '@ajh/database';
 import type { AnyConnector, CompanyConfig, HttpClient } from '@ajh/job-sources';
 import type { CaptureRunner } from './pipeline/runner.ts';
+import type { Scheduler } from './scheduler.ts';
 import { healthRoutes } from './routes/health.ts';
 import { jobRoutes } from './routes/jobs.ts';
 import { companyRoutes } from './routes/companies.ts';
 import { runRoutes } from './routes/runs.ts';
+import { schedulerRoutes } from './routes/scheduler.ts';
 import { reviewRoutes } from './routes/reviews.ts';
 import { sourceRoutes } from './routes/sources.ts';
 import { settingsRoutes } from './routes/settings.ts';
@@ -16,6 +18,7 @@ import { trackingRoutes } from './routes/tracking.ts';
 export interface AppDeps {
   database: Database;
   runner: CaptureRunner;
+  scheduler: Scheduler;
   connectors: AnyConnector[];
   env: Record<string, string | undefined>;
   /** Overridable for tests; default to config/companies.json. */
@@ -39,6 +42,7 @@ export async function buildApp(deps: AppDeps, opts: FastifyServerOptions = {}) {
   await app.register(reviewRoutes, { prefix: '/api' });
   await app.register(settingsRoutes, { prefix: '/api' });
   await app.register(trackingRoutes, { prefix: '/api' });
+  await app.register(schedulerRoutes, { prefix: '/api' });
   return app;
 }
 
