@@ -21,5 +21,5 @@ export default tseslint.config(
     plugins: { 'react-hooks': reactHooks },
     rules: { ...reactHooks.configs.recommended.rules },
   },
-  { files: ['**/cli-*.ts', '**/scripts/**', '**/*.mjs'], rules: { 'no-console': 'off' } },
+  { files: ['**/cli-*.ts', '**/cli/**', '**/scripts/**', '**/*.mjs'], rules: { 'no-console': 'off' } },
 );

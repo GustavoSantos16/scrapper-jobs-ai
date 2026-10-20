@@ -8,6 +8,7 @@ import {
   detectTechnologies,
   geoFromLocation,
   geoFromText,
+  mergeGeo,
   remoteTypeFromStructured,
   techFromTag,
 } from '../src/index.ts';
@@ -51,12 +52,25 @@ describe('geoFromText (explicit phrases only)', () => {
     ['We hire from anywhere in the world', ['worldwide']],
     ['Remote (Worldwide)', ['worldwide']],
     ['Open to candidates in LATAM', ['latam']],
+    ['Remote - LATAM', ['latam']],
+    ['Senior Engineer (LATAM)', ['latam']],
+    ['We hire engineers across Latin America', ['latam']],
+    ['We are a leading LATAM nearshore company', []],
+    ['Our clients in Latin America love us', []],
     ['Vaga remota para residentes no Brasil', ['brazil']],
     ['Remote Brazil', ['brazil']],
     ['Our office is in New York and we love tacos', []],
     ['We have customers in Brazil and the US', []],
   ])('%s → %j', (text, tags) => {
     expect(geoFromText(text).sort()).toEqual([...tags].sort());
+  });
+});
+
+describe('mergeGeo', () => {
+  it('drops restrictions when an eligible tag exists', () => {
+    expect(mergeGeo(['us_only', 'eu_only'], ['brazil'])).toEqual(['brazil']);
+    expect(mergeGeo(['us_only'], ['eu_only'])).toEqual(['us_only', 'eu_only']);
+    expect(mergeGeo([], [])).toEqual([]);
   });
 });
 

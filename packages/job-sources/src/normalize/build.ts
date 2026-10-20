@@ -1,4 +1,4 @@
-import type { ContractType, GeoTag, NormalizedJob, RemoteType, SalaryPeriod, Seniority } from '@ajh/shared';
+import { BRAZIL_ELIGIBLE_GEO, type ContractType, type GeoTag, type NormalizedJob, type RemoteType, type SalaryPeriod, type Seniority } from '@ajh/shared';
 import {
   detectContractTypes,
   detectCountry,
@@ -61,10 +61,16 @@ export function buildJob(d: JobDraft): NormalizedJob {
   const remoteType =
     d.remoteType && d.remoteType !== 'unknown' ? d.remoteType : detectRemoteType(title, locationRaw, head);
   const language = d.language ?? detectLanguage(descriptionText ?? title);
+  const structured = mergeGeo(d.geoEligibility ?? [], ...locations.map(geoFromLocation));
+  let textual = geoFromText(`${title}\n${head}`);
+  // A structured restriction ("Mexico") is more specific than regional boilerplate in the text
+  // ("remote from Latin America"): then only an explicit Brazil statement can widen it.
+  if (structured.length && !structured.some((g) => BRAZIL_ELIGIBLE_GEO.includes(g))) {
+    textual = textual.filter((g) => g === 'brazil');
+  }
   const geo = mergeGeo(
-    d.geoEligibility ?? [],
-    ...locations.map(geoFromLocation),
-    geoFromText(`${title}\n${head}`),
+    structured,
+    textual,
     // a remote job written in Portuguese is aimed at people in Brazil
     remoteType === 'remote' && language === 'pt' ? ['brazil'] : [],
   );

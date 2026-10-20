@@ -1,4 +1,11 @@
 export * from './connection.ts';
+export * from './exec.ts';
 export * from './migrate.ts';
 export * from './paths.ts';
 export type * from './schema.ts';
+export * from './repos/http-cache.ts';
+export * from './repos/jobs.ts';
+export * from './repos/locks.ts';
+export * from './repos/runs.ts';
+export * from './repos/settings.ts';
+export * from './repos/sources.ts';

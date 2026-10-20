@@ -1,4 +1,4 @@
-import type { ContractType, GeoTag, RemoteType, Seniority } from '@ajh/shared';
+import { BRAZIL_ELIGIBLE_GEO, type ContractType, type GeoTag, type RemoteType, type Seniority } from '@ajh/shared';
 import { stripDiacritics } from './text.ts';
 
 /** Lowercase, diacritic-free text for rule matching. */
@@ -288,7 +288,15 @@ export function geoFromText(text: string | null | undefined): GeoTag[] {
   if (!t) return [];
   const tags = new Set<GeoTag>();
   if (/\b(work from anywhere|anywhere in the world|remote[- ]worldwide|worldwide remote|fully remote,? worldwide|globally remote|remote \(?(worldwide|global|anywhere)\)?|from any country|hire (from )?anywhere)\b/.test(t)) tags.add('worldwide');
-  if (/\b(latam|latin america|south america|america latina)\b/.test(t)) tags.add('latam');
+  const L = '(latam|latin america|south america|america latina)';
+  const latamPhrases = [
+    `\\b(open to|hiring|hire|candidates|talent|engineers|developers|professionals|people) (from |in |across |based in |located in )?(the )?${L}\\b`,
+    `\\b(remote|anywhere|located|based|work) (in|from|across|within) (the )?${L}\\b`,
+    `\\b${L}[- ](only|based|remote)\\b`,
+    `\\bremote\\s*[-–—,:/(]?\\s*${L}\\b`,
+    `\\(${L}\\)`,
+  ];
+  if (latamPhrases.some((p) => new RegExp(p).test(t))) tags.add('latam');
   if (/\b(remote[- ](brazil|brasil)|(brazil|brasil)[- ]remote|based in (brazil|brasil)|candidates in (brazil|brasil)|residir no brasil|residentes no brasil|todo o brasil)\b/.test(t)) tags.add('brazil');
   if (/\b(us[- ]only|usa[- ]only|u\.s\.[- ]only|united states only|(must|should) (be )?(located|based|reside|live) in the (us|u\.s\.|usa|united states)|(authorized|authorised|eligible|legally able) to work in the (us|u\.s\.|usa|united states)|us citizens? only|us[- ]based (candidates )?only|within the (us|united states) only)\b/.test(t)) tags.add('us_only');
   if (/\b(canada only|(must|should) (be )?(located|based|reside) in canada|eligible to work in canada)\b/.test(t)) tags.add('canada_only');
@@ -297,6 +305,12 @@ export function geoFromText(text: string | null | undefined): GeoTag[] {
   return [...tags];
 }
 
+/**
+ * Union of tags. When any tag makes a candidate in Brazil eligible, restriction tags are
+ * dropped: "US, Canada, Brazil" is not a restriction for this user.
+ */
 export function mergeGeo(...lists: GeoTag[][]): GeoTag[] {
-  return [...new Set(lists.flat())];
+  const all = [...new Set(lists.flat())];
+  const eligible = all.filter((g) => BRAZIL_ELIGIBLE_GEO.includes(g));
+  return eligible.length ? eligible : all;
 }

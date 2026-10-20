@@ -33,3 +33,12 @@ Cada linha: decisão — justificativa.
 - **Dedup: camadas fuzzy (hash de identidade e similaridade) nunca unem duas listings da mesma fonte** — IDs distintos numa mesma fonte são vagas distintas (ex.: mesma vaga para vários times).
 - **Similaridade = 0,4 × Jaccard de trigramas do título + 0,6 × Jaccard de shingles (3 palavras) da descrição; auto-merge ≥ 0,88, revisão manual ≥ 0,65; sem descrição nunca há auto-merge** — títulos parecidos sozinhos nunca unem vagas.
 - **Datas sem fuso são lidas como UTC; datas antes de 2000 ou mais de 2 dias no futuro viram `null`** — evita datas inventadas; nunca usamos a data de captura como publicação.
+
+## Pipeline e persistência
+- **Queries tipadas com Kysely, executadas de forma síncrona no better-sqlite3 (`Q.all/get/run/tx`)** — cada vaga é gravada numa transação síncrona e atômica, sem interleaving entre fontes concorrentes.
+- **Retry no nível da requisição HTTP (máx. 3 tentativas; backoff 1 s → 2 s, respeita `Retry-After` até 60 s)** — reexecutar a fonte inteira gastaria a cota de requisições à toa.
+- **O intervalo mínimo da fonte vale também para captura manual** — os limites são da fonte, não do gatilho; a UI mostra quando a próxima captura será permitida.
+- **Payload bruto guardado em `job_listings.raw` + `pnpm reprocess`** — correções de normalização são reaplicadas offline, sem gastar requisições nas fontes; reprocessar não conta como "vaga vista".
+- **Execução sem vagas nunca envelhece listings** — zero resultados indica falha de formato ou fora do ar, não "todas as vagas encerraram".
+- **Local estruturado com restrição prevalece sobre texto regional genérico** — vagas por país (ex.: "Truelogic | Mexico") trazem boilerplate "remote from Latin America"; só uma menção explícita ao Brasil amplia a elegibilidade.
+- **robots.txt checado em runtime só para feeds e páginas públicas** — APIs oficiais são oferecidas para uso programático; o robots.txt rege crawlers de páginas.

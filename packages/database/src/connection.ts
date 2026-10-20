@@ -2,6 +2,7 @@ import { mkdirSync } from 'node:fs';
 import { dirname } from 'node:path';
 import BetterSqlite3 from 'better-sqlite3';
 import { Kysely, SqliteDialect } from 'kysely';
+import { Q } from './exec.ts';
 import { migrate } from './migrate.ts';
 import { defaultDatabasePath } from './paths.ts';
 import type { DB } from './schema.ts';
@@ -9,6 +10,7 @@ import type { DB } from './schema.ts';
 export interface Database {
   sqlite: BetterSqlite3.Database;
   db: Kysely<DB>;
+  q: Q;
   close(): Promise<void>;
 }
 
@@ -32,6 +34,7 @@ export function openDatabase(opts: OpenOptions = {}): Database {
   return {
     sqlite,
     db,
+    q: new Q(sqlite, db),
     async close() {
       await db.destroy(); // also closes the sqlite handle
     },

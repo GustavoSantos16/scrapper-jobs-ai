@@ -55,6 +55,7 @@ export interface JobListingsTable {
   match_method: Generated<string>;
   match_confidence: Generated<number>;
   content_hash: string | null;
+  raw: string | null;
 }
 
 export interface JobTrackingTable {
