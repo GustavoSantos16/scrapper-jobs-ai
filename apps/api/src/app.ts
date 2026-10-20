@@ -5,6 +5,7 @@ import type { AnyConnector, CompanyConfig, HttpClient } from '@ajh/job-sources';
 import type { CaptureRunner } from './pipeline/runner.ts';
 import type { Scheduler } from './scheduler.ts';
 import { healthRoutes } from './routes/health.ts';
+import { securityHeaders, serveWeb } from './web.ts';
 import { jobRoutes } from './routes/jobs.ts';
 import { companyRoutes } from './routes/companies.ts';
 import { runRoutes } from './routes/runs.ts';
@@ -28,11 +29,12 @@ export interface AppDeps {
   httpFactory?: (allowedHosts: string[]) => HttpClient;
 }
 
-export async function buildApp(deps: AppDeps, opts: FastifyServerOptions = {}) {
+export async function buildApp(deps: AppDeps, opts: FastifyServerOptions = {}, { webDist }: { webDist?: string } = {}) {
   const app = Fastify(opts).withTypeProvider<ZodTypeProvider>();
   app.setValidatorCompiler(validatorCompiler);
   app.setSerializerCompiler(serializerCompiler);
   app.decorate('deps', deps);
+  securityHeaders(app);
   await app.register(healthRoutes, { prefix: '/api' });
   await app.register(jobRoutes, { prefix: '/api' });
   await app.register(runRoutes, { prefix: '/api' });
@@ -43,6 +45,7 @@ export async function buildApp(deps: AppDeps, opts: FastifyServerOptions = {}) {
   await app.register(settingsRoutes, { prefix: '/api' });
   await app.register(trackingRoutes, { prefix: '/api' });
   await app.register(schedulerRoutes, { prefix: '/api' });
+  if (webDist && !(await serveWeb(app, webDist))) app.log.warn({ webDist }, 'web build not found; run pnpm build');
   return app;
 }
 

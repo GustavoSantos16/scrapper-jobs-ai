@@ -21,15 +21,23 @@ export function CaptureButton() {
   const current = runs.data?.currentRunId ?? null;
   const watched = runId ?? current;
   const run = useRun(watched);
-  const wasRunning = useRef(false);
-
+  // refresh data once per watched run when it reaches a final status (even if it finished
+  // before the first poll ever saw it "running")
+  const refreshedFor = useRef<number | null>(null);
   useEffect(() => {
-    if (run.data?.status === 'running') wasRunning.current = true;
-    else if (wasRunning.current && run.data) {
-      wasRunning.current = false;
+    const d = run.data;
+    if (!d || d.status === 'running' || refreshedFor.current === d.id) return;
+    if (d.id === runId || d.id === current) {
+      refreshedFor.current = d.id;
       invalidate();
     }
-  }, [run.data, invalidate]);
+  }, [run.data, runId, current, invalidate]);
+  // a capture started elsewhere (scheduler, terminal) finished while this page was open
+  const previousCurrent = useRef<number | null>(null);
+  useEffect(() => {
+    if (previousCurrent.current !== null && current === null) invalidate();
+    previousCurrent.current = current;
+  }, [current, invalidate]);
 
   const running = run.data?.status === 'running';
   const done = run.data ? run.data.sources.filter((x) => !['pending', 'running'].includes(x.status)).length : 0;

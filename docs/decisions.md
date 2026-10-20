@@ -74,3 +74,9 @@ Cada linha: decisão — justificativa.
 - **Execução perdida durante uma parada roda uma única vez, 60 s após a API subir** — sem rajada de execuções atrasadas.
 - **Slot que vence durante outra captura é pulado e registrado** — nunca há sobreposição; o lock persistente também protege contra outro processo.
 - **Retenção começa desligada e pede confirmação para ligar** — é a única ação que apaga dados capturados.
+
+## Qualidade (fase 10)
+- **Em produção a API serve o build do web na mesma origem, com CSP restritiva** (`script-src 'self'`, sem scripts inline, `frame-ancestors 'none'`); em dev o Vite serve a UI e faz proxy de `/api`.
+- **E2E com Playwright contra um servidor isolado** (`apps/api/test/e2e-server.ts`): banco temporário e conectores reais lendo fixtures gravadas; o E2E nunca toca no seu banco nem na rede.
+- **Script `pnpm check`** (lint → typecheck → testes → build) — `pnpm ci` é um comando reservado do pnpm.
+- **Bug encontrado pelo E2E:** uma captura que terminava antes do primeiro polling não atualizava a UI; agora a atualização ocorre quando o run acompanhado chega a um status final.

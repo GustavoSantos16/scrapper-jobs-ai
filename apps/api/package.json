@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "tsx watch --env-file-if-exists=../../.env src/main.ts",
     "build": "node build.mjs",
-    "start": "node --env-file-if-exists=../../.env dist/main.js",
+    "start": "NODE_ENV=production node --env-file-if-exists=../../.env dist/main.js",
     "typecheck": "tsc -p tsconfig.json",
     "capture": "tsx --env-file-if-exists=../../.env src/cli/capture.ts",
     "reprocess": "tsx --env-file-if-exists=../../.env src/cli/reprocess.ts"

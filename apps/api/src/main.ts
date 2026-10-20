@@ -1,4 +1,5 @@
-import { openDatabase } from '@ajh/database';
+import { join } from 'node:path';
+import { findRepoRoot, openDatabase } from '@ajh/database';
 import { CONNECTORS } from '@ajh/job-sources';
 import { DEFAULT_API_PORT } from '@ajh/shared';
 import { pino } from 'pino';
@@ -20,7 +21,9 @@ const logger = pino({
 
 const runner = new CaptureRunner({ database, connectors: CONNECTORS, env, log: logger, loadCompanies: readCompanies });
 const scheduler = new Scheduler({ database, runner, log: logger });
-const app = await buildApp({ database, connectors: CONNECTORS, env, runner, scheduler }, { loggerInstance: logger });
+// production serves the built UI on the same origin; in dev Vite serves it and proxies /api
+const webDist = env.NODE_ENV === 'production' ? (env.WEB_DIST ?? join(findRepoRoot(), 'apps', 'web', 'dist')) : undefined;
+const app = await buildApp({ database, connectors: CONNECTORS, env, runner, scheduler }, { loggerInstance: logger }, { ...(webDist && { webDist }) });
 const orphans = runner.recover();
 if (orphans) app.log.warn({ orphans }, 'marked interrupted runs as failed');
 
