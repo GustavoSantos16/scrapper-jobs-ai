@@ -1,0 +1,22 @@
+{
+  "$comment": "Empresas monitoradas via ATS público. Edite pela tela Fontes ou aqui. ats: greenhouse | lever | ashby. Slugs validados em 2026-10-20.",
+  "companies": [
+    { "name": "GitLab", "ats": "greenhouse", "slug": "gitlab", "enabled": true },
+    { "name": "Vercel", "ats": "greenhouse", "slug": "vercel", "enabled": true },
+    { "name": "Grafana Labs", "ats": "greenhouse", "slug": "grafanalabs", "enabled": true },
+    { "name": "Automattic", "ats": "greenhouse", "slug": "automatticcareers", "enabled": true },
+    { "name": "EBANX", "ats": "greenhouse", "slug": "ebanx", "enabled": true },
+    { "name": "VTEX", "ats": "greenhouse", "slug": "vtex", "enabled": true },
+    { "name": "QuintoAndar", "ats": "greenhouse", "slug": "quintoandar", "enabled": true },
+    { "name": "Wildlife Studios", "ats": "greenhouse", "slug": "wildlifestudios", "enabled": true },
+    { "name": "CI&T", "ats": "lever", "slug": "ciandt", "enabled": true },
+    { "name": "Toptal", "ats": "lever", "slug": "toptal", "enabled": true },
+    { "name": "Outreach", "ats": "lever", "slug": "outreach", "enabled": true },
+    { "name": "Supabase", "ats": "ashby", "slug": "supabase", "enabled": true },
+    { "name": "n8n", "ats": "ashby", "slug": "n8n", "enabled": true },
+    { "name": "Linear", "ats": "ashby", "slug": "linear", "enabled": true },
+    { "name": "PostHog", "ats": "ashby", "slug": "posthog", "enabled": true },
+    { "name": "Oyster", "ats": "ashby", "slug": "oyster", "enabled": true },
+    { "name": "Zapier", "ats": "ashby", "slug": "zapier", "enabled": true }
+  ]
+}

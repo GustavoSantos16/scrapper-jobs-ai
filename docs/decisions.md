@@ -13,3 +13,12 @@ Cada linha: decisão — justificativa.
 - **API só em `127.0.0.1:4317`** — app pessoal; não deve ficar exposto na rede local.
 - **`.env` carregado via `--env-file-if-exists` do Node** — dispensa a dependência `dotenv`.
 - **Um único `vitest.config.ts` na raiz** — um comando roda todas as suítes de todos os pacotes.
+
+## Fontes
+- **Conectores consultam por termos do perfil, não o feed inteiro** (Himalayas, Remotive, Jobicy, Gupy) — os feeds completos têm dezenas de milhares de vagas fora do perfil; buscar por termo respeita os limites e mantém o acervo útil.
+- **Arbeitnow: só `remote: true`** — ~92% do feed é presencial na Alemanha; o perfil exige remoto. É um recorte de escopo da captura, não um descarte por pontuação.
+- **Remotive com intervalo mínimo de 12 h** — o aviso legal pede no máximo 4 chamadas/dia; 4 consultas a cada 12 h ficam em 8 requisições/dia, porque cada chamada devolve no máximo 10 vagas.
+- **HN Jobs (Firebase) adicionado como fonte** — API oficial que cobre vagas de empresas YC, já que o Work at a Startup não tem feed.
+- **Workday não implementado** — endpoint interno não documentado e datas apenas relativas ("Posted Yesterday"), o que conflita com a regra de datas honestas.
+- **Gupy via `__NEXT_DATA__` da página de busca** — não há API pública; `robots.txt` permite; validação Zod falha alto se a estrutura mudar.
+- **Fixtures são respostas reais reduzidas** — gravadas em 2026-10-20 a partir das chamadas de validação; testes de conectores rodam sem rede.

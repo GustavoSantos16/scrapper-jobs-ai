@@ -1,0 +1,82 @@
+{
+ "apiVersion": "2.2.19",
+ "documentationUrl": "https://jobi.cy/apidocs",
+ "friendlyNotice": "Thanks for using Jobicy API! Please ensure Jobicy is clearly credited with a direct link to the source, and all application buttons redirect to the original job URL provided in this feed. That’s all! You might be building something amazing, we wish you the best of luck!",
+ "jobCount": 3,
+ "lastUpdate": "2026-10-20T15:27:06+00:00",
+ "nextCursor": null,
+ "hasMore": false,
+ "appliedFilters": {
+  "count": 50,
+  "tag": "react"
+ },
+ "jobs": [
+  {
+   "id": 156024,
+   "url": "https://jobicy.com/jobs/156024-senior-creative-front-end-engineer-digital-agency-brazil",
+   "jobSlug": "156024-senior-creative-front-end-engineer-digital-agency-brazil",
+   "jobTitle": "Senior Creative Front-End Engineer – Digital Agency | Brazil",
+   "companyName": "Truelogic",
+   "companyLogo": "https://jobicy.com/data/server-nyc0409/galaxy/mercury/2025/06/e7ae6cb6-221-1.png",
+   "jobIndustry": [
+    "Software Engineering"
+   ],
+   "jobType": [
+    "Full-Time"
+   ],
+   "jobGeo": "Brazil",
+   "jobLevel": "Senior",
+   "jobExcerpt": "About Truelogic At Truelogic we are a leading provider of nearshore staff augmentation services headquartered in New York. For over two decades, we’ve been delivering top-tier technology solutions to companies of all sizes, from innovative startups to industry leaders, helping them achieve their digital transformation goals. Our team of 600+ highly skilled tech professionals, based&hellip;",
+   "jobDescription": "<h3><strong>About <a href=\"https://jobicy.com/company/truelogic\" target=\"_blank\" rel=\"noopener\">Truelogic</a></strong></h3>\n<p>At Truelogic we are a leading provider of nearshore staff augmentation services headquartered in New York. For over two decades, we’ve been delivering top-tier technology solutions to companies of all sizes, from innovative startups to industry leaders, helping them achieve their digital transformation goals.</p>\n<p>Our team of 600+ highly skilled tech professionals, based in Latin America, drives digital disruption by partnering with U.S. companies on their most impactful projects. Whether collaborating with Fortune 500 giants or scaling startups, we deliver results that make a difference.</p>\n<p>By applying for this position, you’re taking the first step in joining a dynamic team that values your expertise and aspirations. We aim to align your skills with opportunities that foster exceptional career growth and success while contributing to transformative projects that shape the future.</p>\n\n<h3><strong>Our Client</strong></h3>\n<p>A premier independent digital creative agency headquartered in New York, operating at the intersection of design, technology and strategy. They build world-class digital experiences for top global brands, and this role supports <strong>one of the most recognized Fortune 500 brands in the world</strong>. They are known for meticulous attention to design detail, high standards for code quality and a very collaborative work en",
+   "pubDate": "2026-10-20T15:27:06+00:00"
+  },
+  {
+   "id": 155988,
+   "url": "https://jobicy.com/jobs/155988-staff-software-engineer-full-stack-backend",
+   "jobSlug": "155988-staff-software-engineer-full-stack-backend",
+   "jobTitle": "Staff Software Engineer (Full-stack/Backend)",
+   "companyName": "hims &#038; hers",
+   "companyLogo": "https://jobicy.com/data/server-nyc0409/galaxy/mercury/2023/11/e7b9b920-221.jpeg",
+   "jobIndustry": [
+    "Software Engineering"
+   ],
+   "jobType": [
+    "Full-Time"
+   ],
+   "jobGeo": "USA",
+   "jobLevel": "Senior",
+   "jobExcerpt": "Hims &amp; Hers is the leading health and wellness platform, on a mission to help the world feel great through the power of better health. We are redefining healthcare by putting the customer first and delivering access to care that is affordable, accessible, and personal, from diagnosis to treatment to delivery. No two people are&hellip;",
+   "jobDescription": "<p><a href=\"https://jobicy.com/company/hims-hers\" target=\"_blank\" rel=\"noopener\">Hims &amp; Hers</a> is the leading health and wellness platform, on a mission to help the world feel great through the power of better health. We are redefining healthcare by putting the customer first and delivering access to care that is affordable, accessible, and personal, from diagnosis to treatment to delivery. No two people are the same, so we provide access to personalized care designed for results. By normalizing health &amp; wellness challenges and innovating on their solutions, we’re making better health outcomes easier to achieve. </p>\n\n<p>Hims &amp; Hers is a public company, traded on the NYSE under the ticker symbol “HIMS.” To learn more about the brand and offerings, you can visit <a href=\"http://hims.com/about\" rel=\"nofollow ugc noopener\" target=\"_blank\">hims.com/about</a> and <a href=\"http://hims.com/how-it-works\" rel=\"nofollow ugc noopener\" target=\"_blank\"><u>hims.com/how-it-works</u></a> . For information on the company’s outstanding benefits, culture, and its talent-first flexible/remote work approach, see below and visit <a href=\"http://www.hims.com/careers-professionals\" rel=\"nofollow ugc noopener\" target=\"_blank\"><u>www.hims.com/careers-professionals</u></a>.</p>\n\n<h3>About the Role:</h3>\n<p><strong>Hims &amp; Hers</strong> is on a mission to empower people to live healthier lives. We are looking for a <strong>Staff Software Engineer</strong> to join our <strong>Subscriptio",
+   "pubDate": "2026-10-20T15:22:39+00:00",
+   "salaryMin": 190000,
+   "salaryMax": 230000,
+   "salaryCurrency": "USD",
+   "salaryPeriod": "yearly"
+  },
+  {
+   "id": 155996,
+   "url": "https://jobicy.com/jobs/155996-sr-staff-engineer-fullstack-frontend",
+   "jobSlug": "155996-sr-staff-engineer-fullstack-frontend",
+   "jobTitle": "Sr. Staff Engineer (Fullstack/Frontend)",
+   "companyName": "hims &#038; hers",
+   "companyLogo": "https://jobicy.com/data/server-nyc0409/galaxy/mercury/2023/11/e7b9b920-221.jpeg",
+   "jobIndustry": [
+    "Software Engineering"
+   ],
+   "jobType": [
+    "Full-Time"
+   ],
+   "jobGeo": "USA",
+   "jobLevel": "Senior",
+   "jobExcerpt": "Hims &amp; Hers is the leading health and wellness platform, on a mission to help the world feel great through the power of better health. We are redefining healthcare by putting the customer first and delivering access to care that is affordable, accessible, and personal, from diagnosis to treatment to delivery. No two people are&hellip;",
+   "jobDescription": "<p><a href=\"https://jobicy.com/company/hims-hers\" target=\"_blank\" rel=\"noopener\">Hims &amp; Hers</a> is the leading health and wellness platform, on a mission to help the world feel great through the power of better health. We are redefining healthcare by putting the customer first and delivering access to care that is affordable, accessible, and personal, from diagnosis to treatment to delivery. No two people are the same, so we provide access to personalized care designed for results. By normalizing health &amp; wellness challenges and innovating on their solutions, we’re making better health outcomes easier to achieve. </p>\n\n<p>Hims &amp; Hers is a public company, traded on the NYSE under the ticker symbol “HIMS.” To learn more about the brand and offerings, you can visit <a href=\"http://hims.com/about\" rel=\"nofollow ugc noopener\" target=\"_blank\">hims.com/about</a> and <a href=\"http://hims.com/how-it-works\" rel=\"nofollow ugc noopener\" target=\"_blank\"><u>hims.com/how-it-works</u></a> . For information on the company’s outstanding benefits, culture, and its talent-first flexible/remote work approach, see below and visit <a href=\"http://www.hims.com/careers-professionals\" rel=\"nofollow ugc noopener\" target=\"_blank\"><u>www.hims.com/careers-professionals</u></a>.</p>\n\n<h3><strong>About the Role:</strong></h3>\n<p>We are seeking a visionary and technically exceptional Sr. Staff Engineer to lead architectural innovation and strategic technical direction. This individual will opera",
+   "pubDate": "2026-10-20T15:22:38+00:00",
+   "salaryMin": 240000,
+   "salaryMax": 280000,
+   "salaryCurrency": "USD",
+   "salaryPeriod": "yearly"
+  }
+ ],
+ "statusCode": 200,
+ "success": true
+}

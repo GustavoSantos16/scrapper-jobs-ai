@@ -1,0 +1,136 @@
+{
+ "jobs": [
+  {
+   "absolute_url": "https://job-boards.greenhouse.io/vtex/jobs/6218060004",
+   "data_compliance": [
+    {
+     "type": "gdpr",
+     "requires_consent": false,
+     "requires_processing_consent": false,
+     "requires_retention_consent": false,
+     "retention_period": null,
+     "demographic_data_consent_applies": true
+    }
+   ],
+   "internal_job_id": 4973801004,
+   "location": {
+    "name": "Brazil"
+   },
+   "metadata": [
+    {
+     "id": 4382224004,
+     "name": "Management Level",
+     "value": "Mid-Level",
+     "value_type": "single_select"
+    },
+    {
+     "id": 4568065004,
+     "name": "Job Emphasis",
+     "value": "Data",
+     "value_type": "single_select"
+    }
+   ],
+   "id": 6218060004,
+   "updated_at": "2026-10-06T09:32:25-04:00",
+   "requisition_id": "1967",
+   "title": "Analytics Engineer - Campaign Intelligence [Ads]",
+   "company_name": "VTEX",
+   "first_published": "2026-10-06T08:59:45-04:00",
+   "language": "en",
+   "application_deadline": null,
+   "content": "&lt;p&gt;&lt;span style=&quot;font-size: 14pt;&quot;&gt;&lt;strong&gt;ABOUT THE ROLE&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;\n&lt;p&gt;&lt;span style=&quot;font-size: 12pt;&quot;&gt;We are looking for a Senior Analytics Engineer to bring robust, integrated data models and products to life within the VTEX Ads platform. You will be the data modeling reference point across the entire Ads ecosystem—advertisers, publishers, events (clicks, views, impressions), and performance—translating these domains into reliable data for product, client, data science, and business teams. From requirements gathering to production pipelines in our Lakehouse, you will ensure scalability and reliability for decisions that sustain the platform&#39;s operations and revenue.&lt;/span&gt;&lt;/p&gt;\n&lt;p&gt;&amp;nbsp;&lt;/p&gt;\n&lt;p&gt;&lt;span style=&quot;font-size: 14pt;&quot;&gt;&lt;strong&gt;ABOUT THE TEAM&lt;/strong&gt;&lt;/span&gt;&lt;/p&gt;\n&lt;p&gt;&lt;span style=&quot;font-size: 12pt;&quot;&gt;You will join Campaign Intelligence, the newest team in our Data &amp;amp; Analytics organization, focused on the engine behind the VTEX Ads platform: pacing, target ROAS, budget forecasting, and auction optimization. We are responsible for structuring and serving this platform&#39;s data, giving product, data science, business teams, and clients reliable visibility into advertisers, publishers, and Ads performance—accelerating data-driven decisions on a global scale.&lt;/span&gt;&lt;/p&gt;\n&lt;p&gt;&amp;n",
+   "departments": [
+    {
+     "id": 4045366004,
+     "name": "Data",
+     "child_ids": [
+      4028769004,
+      4028774004
+     ],
+     "parent_id": 4028740004
+    }
+   ],
+   "offices": [
+    {
+     "id": 4014142004,
+     "name": "Brazil",
+     "location": null,
+     "child_ids": [
+      4039516004,
+      4014143004,
+      4014144004,
+      4014146004,
+      4024780004
+     ],
+     "parent_id": 4014121004
+    }
+   ],
+   "ai_disclaimer": null,
+   "include_ai_disclaimer": null,
+   "ai_opt_out_request_url": null
+  },
+  {
+   "absolute_url": "https://job-boards.greenhouse.io/vtex/jobs/6131839004",
+   "data_compliance": [
+    {
+     "type": "gdpr",
+     "requires_consent": false,
+     "requires_processing_consent": false,
+     "requires_retention_consent": false,
+     "retention_period": null,
+     "demographic_data_consent_applies": true
+    }
+   ],
+   "internal_job_id": 5194343004,
+   "location": {
+    "name": "Brazil"
+   },
+   "metadata": [
+    {
+     "id": 4382224004,
+     "name": "Management Level",
+     "value": "Senior",
+     "value_type": "single_select"
+    },
+    {
+     "id": 4568065004,
+     "name": "Job Emphasis",
+     "value": null,
+     "value_type": "single_select"
+    }
+   ],
+   "id": 6131839004,
+   "updated_at": "2026-09-30T08:26:20-04:00",
+   "requisition_id": "2172",
+   "title": "Associate Field Software Engineer",
+   "company_name": "VTEX",
+   "first_published": "2026-07-31T10:40:28-04:00",
+   "language": "pt",
+   "application_deadline": null,
+   "content": "&lt;h2&gt;About the Role&lt;/h2&gt;\n&lt;p&gt;&lt;span style=&quot;font-weight: 400;&quot;&gt;&amp;nbsp;&lt;/span&gt;&lt;/p&gt;\n&lt;p class=&quot;font-claude-response-body break-words whitespace-normal&quot;&gt;Most support engineers wait for the ticket. You won&#39;t.&lt;/p&gt;\n&lt;p class=&quot;font-claude-response-body break-words whitespace-normal&quot;&gt;As a Field Software Engineer at VTEX, you are the technical face of the platform for a portfolio of enterprise brands and retailers. You work inside a cell — a small, dedicated squad that pairs you with our commercial team — so you know your customers&#39; businesses, their architectures, and their roadmaps before problems ever reach a queue.&lt;/p&gt;\n&lt;p class=&quot;font-claude-response-body break-words whitespace-normal&quot;&gt;Your job is to unblock. When a customer hits a technical wall — a tricky integration, a performance bottleneck, a conflict between what they built and what the platform expects — you step in, diagnose it, and drive it to resolution. Sometimes that means writing code. Sometimes it means getting the right people in a room. Always, it means the customer moves forward.&lt;/p&gt;\n&lt;p class=&quot;font-claude-response-body break-words whitespace-normal&quot;&gt;This is a role for engineers who genuinely enjoy working with people. Deep VTEX technical knowledge is the entry ticket; a real vocation for service is what makes you great at it.&lt;/p&gt;\n&lt;p class=&quot;font-claude-response-body break",
+   "departments": [
+    {
+     "id": 4028755004,
+     "name": "Field Software Engineering",
+     "child_ids": [],
+     "parent_id": 4028738004
+    }
+   ],
+   "offices": [
+    {
+     "id": 4014144004,
+     "name": "São Paulo",
+     "location": null,
+     "child_ids": [],
+     "parent_id": 4014142004
+    }
+   ],
+   "ai_disclaimer": null,
+   "include_ai_disclaimer": null,
+   "ai_opt_out_request_url": null
+  }
+ ],
+ "meta": {
+  "total": 2
+ }
+}
