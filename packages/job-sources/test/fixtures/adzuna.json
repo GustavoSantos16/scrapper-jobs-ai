@@ -1,0 +1,32 @@
+{
+  "__note": "Test fixture built from the documented Adzuna response shape (developer.adzuna.com); no API key was available to record a real response.",
+  "count": 2,
+  "results": [
+    {
+      "id": "4000000001",
+      "title": "Desenvolvedor Front-end React Pleno",
+      "description": "Desenvolvimento de interfaces com React e TypeScript em regime remoto…",
+      "redirect_url": "https://www.adzuna.com.br/details/4000000001?utm_medium=api&utm_source=test",
+      "created": "2026-10-19T12:00:00Z",
+      "company": { "display_name": "Fixture Tech" },
+      "location": { "display_name": "São Paulo, SP", "area": ["Brasil", "São Paulo"] },
+      "salary_min": 96000,
+      "salary_max": 120000,
+      "salary_is_predicted": "0",
+      "contract_type": "permanent",
+      "contract_time": "full_time"
+    },
+    {
+      "id": "4000000002",
+      "title": "Angular Developer",
+      "description": "Angular, RxJS…",
+      "redirect_url": "https://www.adzuna.com.br/details/4000000002",
+      "created": "2026-10-18T08:00:00Z",
+      "company": { "display_name": "Fixture Labs" },
+      "location": { "display_name": "Brasil" },
+      "salary_min": 70000,
+      "salary_max": 70000,
+      "salary_is_predicted": "1"
+    }
+  ]
+}

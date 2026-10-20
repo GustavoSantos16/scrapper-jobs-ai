@@ -1,0 +1,18 @@
+{
+  "__note": "Test fixture built from the documented Jooble response shape (jooble.org/api/about); no API key was available to record a real response.",
+  "totalCount": 1,
+  "jobs": [
+    {
+      "id": -123456789,
+      "title": "Desenvolvedor React Native",
+      "location": "Remoto",
+      "snippet": "&nbsp;...vaga <b>remota</b> para React Native e Expo...",
+      "salary": "R$ 9.000 - R$ 12.000 por mês",
+      "source": "fixture.example",
+      "type": "Tempo integral",
+      "link": "https://br.jooble.org/desc/-123456789",
+      "company": "Fixture Mobile",
+      "updated": "2026-10-19T00:00:00.0000000"
+    }
+  ]
+}

@@ -24,18 +24,26 @@ export async function createTestEnv(
 ): Promise<TestEnv> {
   const database = openDatabase({ path: ':memory:' });
   const env = opts.env ?? {};
+  let companies: CompanyConfig[] = opts.companies ?? [];
   const runner = new CaptureRunner({
     database,
     connectors: opts.connectors,
     env,
     log: silentLog,
-    loadCompanies: () => opts.companies ?? [],
+    loadCompanies: () => companies,
     ...(opts.transport && { transport: opts.transport }),
     resolve: async () => ['93.184.215.14'],
     sleep: async () => undefined,
     ...(opts.now && { now: opts.now }),
   });
-  const app = await buildApp({ database, runner, connectors: opts.connectors, env });
+  const app = await buildApp({
+    database,
+    runner,
+    connectors: opts.connectors,
+    env,
+    loadCompanies: () => companies,
+    saveCompanies: (c) => (companies = c),
+  });
   return {
     database,
     runner,

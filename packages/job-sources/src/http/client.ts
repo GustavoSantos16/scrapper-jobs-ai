@@ -185,6 +185,11 @@ export class HttpClient {
     const maxAttempts = Math.max(1, this.opts.maxRetries);
 
     if (this.opts.respectRobots) await this.checkRobots(rawUrl);
+    // the budget counts logical requests; retries of the same request are bounded separately
+    if (this.requestCount >= this.opts.maxRequests) {
+      throw new RequestBudgetError(`Request budget of ${this.opts.maxRequests} per run exhausted`);
+    }
+    this.requestCount++;
 
     let lastError: unknown;
     for (let attempt = 1; attempt <= maxAttempts; attempt++) {
@@ -209,10 +214,6 @@ export class HttpClient {
 
   private async once(rawUrl: string, method: string, opts: RequestOptions, cached: CachedResponse | undefined): Promise<HttpResponse> {
     await this.throttle();
-    if (this.requestCount >= this.opts.maxRequests) {
-      throw new RequestBudgetError(`Request budget of ${this.opts.maxRequests} per run exhausted`);
-    }
-    this.requestCount++;
 
     const timeout = AbortSignal.timeout(opts.timeoutMs ?? this.opts.timeoutMs);
     const signal = this.opts.signal ? AbortSignal.any([this.opts.signal, timeout]) : timeout;

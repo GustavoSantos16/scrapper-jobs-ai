@@ -141,7 +141,8 @@ export function decideMatch(
     // auto-merge needs description evidence: similar titles alone are never enough
     if (sim.description !== null && sim.score >= AUTO_MERGE_THRESHOLD && sim.title >= 0.5) {
       if (!best || sim.score > best.score) best = { jobId: c.jobId, score: sim.score };
-    } else if (sim.score >= REVIEW_THRESHOLD) {
+    } else if (sim.score >= REVIEW_THRESHOLD && sim.title >= 0.5) {
+      // shared company boilerplate makes different roles look alike: titles must agree too
       reviews.push({ jobId: c.jobId, confidence: round2(sim.score), method: 'similarity' });
     }
   }

@@ -41,6 +41,29 @@ de 6 h é pulada (motivo registrado em `run_sources.skip_reason`) até seu inter
 
 ---
 
+## Primeira captura real (2026-10-20)
+
+| Fonte | Vagas capturadas | Unidas a vagas de outra fonte |
+|---|---|---|
+| Greenhouse (8 empresas) | 668 | 8 |
+| HN Who is hiring | 236 | 0 |
+| Lever (3 empresas) | 231 | 4 |
+| Ashby (6 empresas) | 166 | 3 |
+| Jobicy | 159 | 0 |
+| Himalayas | 108 | 0 |
+| Remote OK | 99 | 1 |
+| We Work Remotely | 86 | 5 |
+| Arbeitnow (só remotas) | 62 | 0 |
+| Gupy | 32 | 1 |
+| HN Jobs (YC) | 31 | 0 |
+| Remotive | 10 | 2 |
+| **Total** | **1 888 listings → 1 864 vagas consolidadas** | 24 |
+
+Adzuna e Jooble foram puladas com o motivo `missing_credentials`. Na primeira tentativa, a
+Gupy falhou com o erro explícito "`__NEXT_DATA__` not found": a página real traz um
+atributo `nonce` na tag. A regex foi corrigida e coberta por teste, e a captura seguinte
+trouxe 32 vagas.
+
 ## Camada A
 
 ### Remotive: API oficial

@@ -42,3 +42,13 @@ Cada linha: decisão — justificativa.
 - **Execução sem vagas nunca envelhece listings** — zero resultados indica falha de formato ou fora do ar, não "todas as vagas encerraram".
 - **Local estruturado com restrição prevalece sobre texto regional genérico** — vagas por país (ex.: "Truelogic | Mexico") trazem boilerplate "remote from Latin America"; só uma menção explícita ao Brasil amplia a elegibilidade.
 - **robots.txt checado em runtime só para feeds e páginas públicas** — APIs oficiais são oferecidas para uso programático; o robots.txt rege crawlers de páginas.
+
+## Conectores (fase 6)
+- **ATS por empresa: um board quebrado gera aviso; a fonte só falha se todos falharem** — um slug errado em `companies.json` não deve derrubar as demais empresas.
+- **O orçamento de requisições conta requisições lógicas; retries não contam** — os retries já são limitados a 3; senão uma fonte com orçamento 1 (Remote OK) nunca teria retry.
+- **Gupy recebe a tag `brazil` e `country = BR`** — o portal só lista vagas de empresas brasileiras; com o filtro remoto, a vaga é para quem está no Brasil.
+- **Jooble: `publishedAt = null`** — a API só expõe `updated` (última alteração), que não é a data de publicação.
+- **Adzuna: salários com `salary_is_predicted = 1` são ignorados** — são estimativas da Adzuna, não salários publicados.
+- **Fixtures de Adzuna e Jooble montadas a partir da documentação** — sem chave não há como gravar uma resposta real; o campo `__note` de cada arquivo diz isso.
+- **A fila de revisão exige similaridade de título ≥ 0,5** — na primeira captura real, cargos diferentes da mesma empresa (boilerplate institucional idêntico) poluíam a fila.
+- **`pnpm reprocess` reconstrói a fila de revisão pendente** — a manutenção nunca faz merge automático; revisões já resolvidas são preservadas.

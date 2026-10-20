@@ -100,3 +100,42 @@ export function rescoreAll(q: Q, profile: Profile, now: Date = new Date()): numb
   updateScores(q, scores);
   return scores.length;
 }
+
+/**
+ * Rebuilds the pending review queue with the current dedup rules (resolved reviews are kept).
+ * Maintenance never merges: a pair the rules would now auto-merge is queued for review instead.
+ */
+export function rebuildPendingReviews(q: Q, now: Date = new Date()): number {
+  const nowIso = now.toISOString();
+  return q.tx(() => {
+    q.run(q.db.deleteFrom('dedup_reviews').where('status', '=', 'pending'));
+    const resolved = new Set(
+      q.all(q.db.selectFrom('dedup_reviews').select(['job_id', 'candidate_job_id'])).map((r) => `${r.job_id}:${r.candidate_job_id}`),
+    );
+    const jobs = q.all(
+      q.db
+        .selectFrom('jobs')
+        .select(['id', 'title', 'company', 'description_text', 'canonical_url', 'identity_hash', 'company_normalized'])
+        .where('company_normalized', 'is not', null),
+    );
+    let created = 0;
+    for (const j of jobs) {
+      const sources = q.all(q.db.selectFrom('job_listings').select('source').where('job_id', '=', j.id)).map((r) => r.source);
+      const candidates = findCandidates(q, { canonicalUrl: null, atsKey: null, identityHash: null, companyNormalized: j.company_normalized })
+        .filter((c) => c.jobId > j.id && !c.sources.some((s) => sources.includes(s)));
+      for (const source of sources.slice(0, 1)) {
+        const d = decideMatch(
+          { source, title: j.title, company: j.company, descriptionText: j.description_text, canonicalUrl: null, atsKey: null, identityHash: null },
+          candidates,
+        );
+        const pairs = d.action === 'merge' ? [{ jobId: d.jobId, confidence: d.confidence, method: d.method }] : d.reviews;
+        for (const r of pairs) {
+          if (resolved.has(`${j.id}:${r.jobId}`)) continue;
+          addDedupReview(q, j.id, r.jobId, r.confidence, r.method, nowIso);
+          created++;
+        }
+      }
+    }
+    return created;
+  });
+}

@@ -2,7 +2,7 @@ import { findListing, listRawListings, type Database } from '@ajh/database';
 import type { AnyConnector } from '@ajh/job-sources';
 import { NormalizedJob } from '@ajh/shared';
 import { readSettings } from '../config/settings.ts';
-import { ingestJob, rescoreAll } from './ingest.ts';
+import { ingestJob, rebuildPendingReviews, rescoreAll } from './ingest.ts';
 
 /**
  * Re-normalizes every stored listing from its raw payload with the current connector code,
@@ -43,5 +43,5 @@ export function reprocessAll(database: Database, connectors: AnyConnector[], now
     else stats.unchanged++;
   }
   rescoreAll(q, profile, now);
-  return stats;
+  return { ...stats, pendingReviews: rebuildPendingReviews(q, now) };
 }

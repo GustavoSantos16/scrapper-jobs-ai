@@ -114,6 +114,11 @@ describe('decideMatch (layers 2–5)', () => {
     expect(d.action).toBe('new');
   });
 
+  it('does not queue different roles that only share company boilerplate', () => {
+    const d = decideMatch(incoming({ title: 'Forward Deployed Engineer - Software Engineering' }), [candidate({ title: 'Mobile Engineer - ElevenMusic' })]);
+    expect(d).toEqual({ action: 'new', reviews: [] });
+  });
+
   it('never compares across companies', () => {
     const d = decideMatch(incoming({ company: 'Globex' }), [candidate()]);
     expect(d).toEqual({ action: 'new', reviews: [] });
