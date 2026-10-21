@@ -47,6 +47,8 @@ export const JobsQuery = z.object({
   /** true = state other than "new"; false = still "new". */
   reviewed: bool.optional(),
   state: list(ApplicationState).optional(),
+  /** Excludes jobs in any of these states (a job without tracking counts as "new"). */
+  excludeState: list(ApplicationState).optional(),
   /** Ignored jobs are hidden unless asked for. */
   ignored: z.enum(['hide', 'only', 'include']).default('hide'),
   status: z.enum(['active', 'possibly_closed', 'all']).default('active'),

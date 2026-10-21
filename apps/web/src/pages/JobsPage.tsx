@@ -6,6 +6,10 @@ import { Filters } from '../components/Filters.tsx';
 import { JobCard } from '../components/JobCard.tsx';
 import { EmptyState, ErrorState, Loading, PageHeader, Pagination } from '../components/ui.tsx';
 import { paramsToQuery } from '../lib/jobQuery.ts';
+import s from './pages.module.css';
+
+/** States that mean the application was already sent. */
+const SENT_STATES = ['applied', 'interview', 'offer', 'rejected'] as const;
 
 export interface JobsPageProps {
   title: string;
@@ -15,16 +19,28 @@ export interface JobsPageProps {
   emptyTitle?: string;
   emptyText?: ReactNode;
   headerActions?: ReactNode;
+  /** Splits the list in two tabs: jobs still open vs. jobs with an application already sent. */
+  splitApplied?: boolean;
   filterExtra?: ReactNode;
   renderActions?: (job: JobSummary) => ReactNode;
 }
 
 /** Server-side search page: filters/sorting/page live in the URL. */
-export function JobsPage({ title, subtitle, fixed, hide, emptyTitle, emptyText, headerActions, filterExtra, renderActions }: JobsPageProps) {
+export function JobsPage({ title, subtitle, fixed, hide, emptyTitle, emptyText, headerActions, splitApplied, filterExtra, renderActions }: JobsPageProps) {
   const [params, setParams] = useSearchParams();
-  const query = paramsToQuery(params, fixed);
+  const sent = splitApplied && params.get('aba') === 'enviadas';
+  const tabFixed: JobsQueryInput = !splitApplied ? {} : sent ? { state: [...SENT_STATES], status: 'all', ignored: 'include' } : { excludeState: [...SENT_STATES] };
+  const query = paramsToQuery(params, { ...fixed, ...tabFixed });
   const jobs = useJobs(query);
   const page = Number(params.get('page') ?? 1);
+
+  const goTab = (aba: string) => {
+    const next = new URLSearchParams(params);
+    next.delete('page');
+    if (aba) next.set('aba', aba);
+    else next.delete('aba');
+    setParams(next);
+  };
 
   const goPage = (p: number) => {
     const next = new URLSearchParams(params);
@@ -40,6 +56,16 @@ export function JobsPage({ title, subtitle, fixed, hide, emptyTitle, emptyText, 
         subtitle={subtitle ?? (jobs.data ? `${jobs.data.total.toLocaleString('pt-BR')} vaga(s)` : undefined)}
         actions={headerActions}
       />
+      {splitApplied && (
+        <div className={s.tabs} role="tablist" style={{ marginBottom: 16 }}>
+          <button role="tab" aria-selected={!sent} className={`${s.tab} ${!sent ? s.tabOn : ''}`} onClick={() => goTab('')}>
+            Em aberto
+          </button>
+          <button role="tab" aria-selected={sent} className={`${s.tab} ${sent ? s.tabOn : ''}`} onClick={() => goTab('enviadas')}>
+            Candidatura enviada
+          </button>
+        </div>
+      )}
       <Filters hide={hide} extra={filterExtra} />
       <div style={{ marginTop: 16, opacity: jobs.isPlaceholderData ? 0.6 : 1, transition: 'opacity .15s' }} aria-busy={jobs.isFetching}>
         {jobs.isPending ? (

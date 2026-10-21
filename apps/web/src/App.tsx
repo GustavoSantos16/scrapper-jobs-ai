@@ -36,7 +36,7 @@ const router = createBrowserRouter([
     children: [
       { path: '/', element: <DashboardPage /> },
       { path: '/hoje', element: <TodayPage /> },
-      { path: '/vagas', element: <JobsPage title="Todas as vagas" headerActions={<SavedFilters />} /> },
+      { path: '/vagas', element: <JobsPage title="Todas as vagas" splitApplied headerActions={<SavedFilters />} /> },
       { path: '/vagas/:id', element: <JobDetailPage /> },
       {
         path: '/favoritas',

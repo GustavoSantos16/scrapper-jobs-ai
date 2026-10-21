@@ -64,6 +64,7 @@ export function applyFilters(base: Base, f: JobsQuery, fts: string | null): Base
   if (f.favorite !== undefined) qb = qb.where(sql<boolean>`COALESCE(t.favorite, 0) = ${f.favorite ? 1 : 0}`);
   if (f.reviewed !== undefined) qb = qb.where(sql<boolean>`COALESCE(t.state, 'new') ${f.reviewed ? sql`!=` : sql`=`} 'new'`);
   if (f.state?.length) qb = qb.where(sql<boolean>`COALESCE(t.state, 'new') IN (${sql.join(f.state)})`);
+  if (f.excludeState?.length) qb = qb.where(sql<boolean>`COALESCE(t.state, 'new') NOT IN (${sql.join(f.excludeState)})`);
   if (f.ignored === 'hide') qb = qb.where(sql<boolean>`COALESCE(t.ignored, 0) = 0`);
   if (f.ignored === 'only') qb = qb.where(sql<boolean>`COALESCE(t.ignored, 0) = 1`);
   if (f.status !== 'all') qb = qb.where('jobs.status', '=', f.status);

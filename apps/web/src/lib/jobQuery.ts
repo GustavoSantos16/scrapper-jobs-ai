@@ -40,7 +40,7 @@ export function periodRange(period: string, from?: string | null, to?: string | 
   }
 }
 
-const UI_ONLY = new Set(['period', 'from', 'to']);
+const UI_ONLY = new Set(['period', 'from', 'to', 'aba']);
 
 /** URLSearchParams → API query (period presets become publishedFrom/To). */
 export function paramsToQuery(params: URLSearchParams, fixed: JobsQueryInput = {}): JobsQueryInput {
