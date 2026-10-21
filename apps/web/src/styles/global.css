@@ -28,8 +28,9 @@
   color-scheme: light;
 }
 
+/* Dark tokens apply when the OS is dark (unless the user forced light) or when forced dark. */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme='light']) {
     --bg: #0f1115;
     --surface: #171a21;
     --surface-2: #1e222b;
@@ -53,6 +54,31 @@
     --shadow-lg: 0 10px 30px rgb(0 0 0 / 50%);
     color-scheme: dark;
   }
+}
+
+:root[data-theme='dark'] {
+  --bg: #0f1115;
+  --surface: #171a21;
+  --surface-2: #1e222b;
+  --border: #2a2f3a;
+  --border-strong: #394050;
+  --text: #e8eaee;
+  --text-2: #b4bac5;
+  --text-3: #8b93a1;
+  --accent: #818cf8;
+  --accent-2: #262a4a;
+  --accent-text: #0f1115;
+  --success: #4ade80;
+  --success-bg: #14301f;
+  --warning: #fbbf24;
+  --warning-bg: #33280f;
+  --danger: #f87171;
+  --danger-bg: #3a1717;
+  --info: #7dd3fc;
+  --info-bg: #10293a;
+  --shadow: 0 1px 2px rgb(0 0 0 / 40%);
+  --shadow-lg: 0 10px 30px rgb(0 0 0 / 50%);
+  color-scheme: dark;
 }
 
 * {

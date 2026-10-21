@@ -85,6 +85,7 @@
   position: relative;
   flex: 1;
   max-width: 560px;
+  margin-right: auto;
 }
 .search input {
   padding-left: 34px;

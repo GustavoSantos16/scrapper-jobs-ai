@@ -3,6 +3,7 @@ import { NavLink, Outlet, useNavigate, useSearchParams } from 'react-router';
 import { useStats } from '../api/hooks.ts';
 import { CaptureButton } from './CaptureButton.tsx';
 import { Icon, type IconName } from './Icon.tsx';
+import { ThemeToggle } from './ThemeToggle.tsx';
 import s from './Layout.module.css';
 
 const NAV: { group: string; items: { to: string; label: string; icon: IconName; count?: 'unreviewed' | 'favorites' | 'pendingReviews' }[] }[] = [
@@ -91,6 +92,7 @@ export function Layout() {
               onChange={(e) => setTerm(e.target.value)}
             />
           </form>
+          <ThemeToggle />
           <CaptureButton />
         </header>
         <main className={s.content}>
