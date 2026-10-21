@@ -293,6 +293,7 @@ export class CaptureRunner {
           continue;
         }
         const r = ingestJob(q, parsed.data, profile, this.now(), raw);
+        if (r.kind === 'deleted') continue; // deleted by the user: neither counted nor stored
         if (seen.has(r.listingId)) continue; // same posting returned by two queries
         seen.add(r.listingId);
         counts.found++;

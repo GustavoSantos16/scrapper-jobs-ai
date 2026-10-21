@@ -4,6 +4,7 @@ import {
   addListing,
   findCandidates,
   findListing,
+  isListingDeleted,
   insertJob,
   listJobsForScore,
   refreshListing,
@@ -14,7 +15,7 @@ import {
 import { decideMatch, identityHash, normalizeCompany, scoreJob } from '@ajh/job-sources';
 import type { ContractType, GeoTag, NormalizedJob, Profile, RemoteType, Seniority } from '@ajh/shared';
 
-export type IngestKind = 'new' | 'updated' | 'unchanged' | 'merged';
+export type IngestKind = 'new' | 'updated' | 'unchanged' | 'merged' | 'deleted';
 
 export interface IngestResult {
   kind: IngestKind;
@@ -59,6 +60,8 @@ export function ingestJob(
     scoreBreakdown: breakdown,
   };
   return q.tx(() => {
+    // the user deleted this posting: do not bring it back
+    if (isListingDeleted(q, job.source, job.sourceJobId)) return { kind: 'deleted', jobId: 0, listingId: 0, reviews: 0 };
     const existing = findListing(q, job.source, job.sourceJobId);
     if (existing) {
       return { kind: refreshListing(q, existing, w, nowIso, { sighting }), jobId: existing.job_id, listingId: existing.id, reviews: 0 };

@@ -61,3 +61,35 @@ test('search, open a job, track it and find it again after reload', async ({ pag
   expect(csv.status()).toBe(200);
   expect(await csv.text()).toContain(title.replace(/"/g, '""'));
 });
+
+test('delete a job: the modal asks first, cancel keeps it, confirm removes it', async ({ page }) => {
+  await page.goto('/vagas');
+  const cards = page.locator('article');
+  const before = await cards.count();
+  expect(before).toBeGreaterThan(2);
+  const title = (await cards.first().locator('a').first().textContent())!.trim();
+
+  // from the list: cancel keeps the job
+  await cards.first().getByRole('button', { name: /Excluir vaga/ }).click();
+  const modal = page.getByRole('dialog');
+  await expect(modal.getByText('Excluir esta vaga?')).toBeVisible();
+  await expect(modal.getByText(title)).toBeVisible();
+  await modal.getByRole('button', { name: 'Cancelar' }).click();
+  await expect(modal).toBeHidden();
+  await expect(cards).toHaveCount(before);
+
+  // confirm removes it
+  await cards.first().getByRole('button', { name: /Excluir vaga/ }).click();
+  await modal.getByRole('button', { name: 'Excluir vaga' }).click();
+  await expect(cards).toHaveCount(before - 1);
+  await expect(page.getByRole('link', { name: title, exact: true })).toHaveCount(0);
+
+  // from the detail page: deleting goes back to the list
+  const second = (await cards.first().locator('a').first().textContent())!.trim();
+  await cards.first().locator('a').first().click();
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(second);
+  await page.getByRole('button', { name: /Excluir vaga/ }).click();
+  await modal.getByRole('button', { name: 'Excluir vaga' }).click();
+  await expect(page).toHaveURL(/\/vagas$/);
+  await expect(cards).toHaveCount(before - 2);
+});

@@ -174,6 +174,14 @@ export interface LocksTable {
   expires_at: string;
 }
 
+export interface DeletedListingsTable {
+  source: string;
+  source_job_id: string;
+  title: string | null;
+  company: string | null;
+  deleted_at: string;
+}
+
 export interface DB {
   jobs: JobsTable;
   job_listings: JobListingsTable;
@@ -187,4 +195,5 @@ export interface DB {
   saved_filters: SavedFiltersTable;
   http_cache: HttpCacheTable;
   locks: LocksTable;
+  deleted_listings: DeletedListingsTable;
 }

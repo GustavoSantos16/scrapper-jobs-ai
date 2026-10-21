@@ -2,6 +2,7 @@ import type { JobSummary } from '@ajh/shared';
 import { Link } from 'react-router';
 import { formatDate, formatRelative, formatSalary } from '../lib/format.ts';
 import { CONTRACT_LABEL, GEO_LABEL, REMOTE_LABEL, SENIORITY_LABEL, STATE_LABEL } from '../lib/labels.ts';
+import { DeleteJobButton } from './DeleteJobButton.tsx';
 import { FavoriteButton } from './FavoriteButton.tsx';
 import { Icon } from './Icon.tsx';
 import { Badge, ChipRow, ScoreBadge } from './ui.tsx';
@@ -70,6 +71,11 @@ export function JobCard({ job, actions }: { job: JobSummary; actions?: ReactNode
       </div>
       <div className={s.actions}>
         <FavoriteButton id={job.id} favorite={job.tracking.favorite} />
+        <DeleteJobButton
+          id={job.id}
+          title={job.title}
+          personal={{ favorite: job.tracking.favorite, hasNotes: job.tracking.hasNotes, applied: job.tracking.state !== 'new' }}
+        />
         {actions}
         <a className="btn btn-sm" href={job.url} target="_blank" rel="noopener" title="Abrir a vaga no site de origem">
           <Icon name="external" size={14} /> Original

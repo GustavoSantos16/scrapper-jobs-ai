@@ -50,3 +50,14 @@ export function useDeleteSavedFilter() {
     onSuccess: () => void qc.invalidateQueries({ queryKey: ['saved-filters'] }),
   });
 }
+
+export function useDeleteJob() {
+  const qc = useQueryClient();
+  return useMutation({
+    mutationFn: (id: number) => api<{ ok: boolean; removedListings: number }>(`/jobs/${id}`, { method: 'DELETE' }),
+    onSuccess: (_d, id) => {
+      qc.removeQueries({ queryKey: ['job', id] });
+      for (const k of ['jobs', 'stats', 'facets', 'sources', 'reviews']) void qc.invalidateQueries({ queryKey: [k] });
+    },
+  });
+}

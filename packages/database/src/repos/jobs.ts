@@ -367,3 +367,35 @@ export function applyRetention(q: Q, days: number | null, now = new Date()): num
       ),
   ).changes;
 }
+
+export function isListingDeleted(q: Q, source: string, sourceJobId: string): boolean {
+  return Boolean(q.get(q.db.selectFrom('deleted_listings').select('source').where('source', '=', source).where('source_job_id', '=', sourceJobId)));
+}
+
+/**
+ * Deletes a job with everything attached to it (listings, notes, favorite, state, history,
+ * pending duplicate pairs) and remembers its source listings so captures skip them from now on.
+ */
+export function deleteJob(q: Q, jobId: number, now = new Date().toISOString()): { removedListings: number } | null {
+  return q.tx(() => {
+    const job = q.get(q.db.selectFrom('jobs').select(['id', 'title', 'company']).where('id', '=', jobId));
+    if (!job) return null;
+    const listings = q.all(q.db.selectFrom('job_listings').select(['source', 'source_job_id']).where('job_id', '=', jobId));
+    for (const l of listings) {
+      q.run(
+        q.db
+          .insertInto('deleted_listings')
+          .values({ source: l.source, source_job_id: l.source_job_id, title: job.title, company: job.company, deleted_at: now })
+          .onConflict((oc) => oc.columns(['source', 'source_job_id']).doNothing()),
+      );
+    }
+    q.run(
+      q.db
+        .deleteFrom('dedup_reviews')
+        .where('status', '=', 'pending')
+        .where((eb) => eb.or([eb('job_id', '=', jobId), eb('candidate_job_id', '=', jobId)])),
+    );
+    q.run(q.db.deleteFrom('jobs').where('id', '=', jobId)); // cascades listings, tracking and history
+    return { removedListings: listings.length };
+  });
+}

@@ -2,6 +2,7 @@ import { Link, useNavigate, useParams } from 'react-router';
 import { useJob } from '../api/hooks.ts';
 import { Icon } from '../components/Icon.tsx';
 import { geoTone, SourceLink } from '../components/JobCard.tsx';
+import { DeleteJobButton } from '../components/DeleteJobButton.tsx';
 import { TrackingPanel } from '../components/TrackingPanel.tsx';
 import { Badge, Card, ChipRow, EmptyState, ErrorState, Loading, ScoreBadge } from '../components/ui.tsx';
 import { formatDate, formatDateTime, formatRelative, formatSalary } from '../lib/format.ts';
@@ -62,9 +63,18 @@ export function JobDetailPage() {
             {salary && <Badge tone="success">{salary}</Badge>}
           </ChipRow>
         </div>
-        <a className="btn btn-primary" href={j.url} target="_blank" rel="noopener">
-          <Icon name="external" size={16} /> Abrir vaga original
-        </a>
+        <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+          <DeleteJobButton
+            id={j.id}
+            title={j.title}
+            label="Excluir"
+            personal={{ favorite: j.tracking.favorite, hasNotes: j.tracking.notes !== '', applied: j.tracking.state !== 'new' }}
+            onDeleted={() => navigate('/vagas', { replace: true })}
+          />
+          <a className="btn btn-primary" href={j.url} target="_blank" rel="noopener">
+            <Icon name="external" size={16} /> Abrir vaga original
+          </a>
+        </div>
       </header>
 
       <div className={s.twoCol}>

@@ -1,4 +1,4 @@
-import { getHistory, getJobRow, getListings, getReviewsForJob, getTracking, searchJobs } from '@ajh/database';
+import { deleteJob, getHistory, getJobRow, getListings, getReviewsForJob, getTracking, searchJobs } from '@ajh/database';
 import type {
   ApplicationState,
   ContractType,
@@ -98,5 +98,11 @@ export const jobRoutes: FastifyPluginAsyncZod = async (app) => {
       reviews: getReviewsForJob(q, job.id),
     };
     return detail;
+  });
+
+  app.delete('/jobs/:id', { schema: { params: z.object({ id: z.coerce.number().int() }) } }, async (req, reply) => {
+    const result = deleteJob(q, req.params.id);
+    if (!result) return reply.code(404).send({ error: 'not_found' });
+    return { ok: true, ...result };
   });
 };
