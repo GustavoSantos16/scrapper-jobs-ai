@@ -25,7 +25,7 @@ requer credencial · link manual · indisponível.
 | Greenhouse | ATS por empresa | ✅ `greenhouse` | 1 h | 1 por empresa |
 | Lever | ATS por empresa | ✅ `lever` | 1 h | 1 por empresa |
 | Ashby | ATS por empresa | ✅ `ashby` | 1 h | 1 por empresa |
-| Gupy | Página pública | ✅ `gupy` (frágil) | 6 h | até 4 |
+| Gupy | Página pública | ❌ removida | — | — |
 | Workday | ATS por empresa (não documentado) | ❌ baixa prioridade | — | — |
 | Adzuna | Requer credencial | ✅ `adzuna` (opcional) | 6 h | até 3 |
 | Jooble | Requer credencial | ✅ `jooble` (opcional) | 6 h | até 3 |
@@ -59,10 +59,8 @@ de 6 h é pulada (motivo registrado em `run_sources.skip_reason`) até seu inter
 | Remotive | 10 | 2 |
 | **Total** | **1 888 listings → 1 864 vagas consolidadas** | 24 |
 
-Adzuna e Jooble foram puladas com o motivo `missing_credentials`. Na primeira tentativa, a
-Gupy falhou com o erro explícito "`__NEXT_DATA__` not found": a página real traz um
-atributo `nonce` na tag. A regex foi corrigida e coberta por teste, e a captura seguinte
-trouxe 32 vagas.
+Adzuna e Jooble foram puladas com o motivo `missing_credentials`. A linha da Gupy é histórica:
+o conector foi removido (ver abaixo).
 
 ## Camada A
 
@@ -160,18 +158,10 @@ Lista de empresas em `config/companies.json` (`{ name, ats, slug }`), editável 
 - `GET https://api.ashbyhq.com/posting-api/job-board/{slug}?includeCompensation=true`
 - Campos: `id, title, location, secondaryLocations[], isRemote, workplaceType, employmentType, publishedAt, jobUrl, descriptionHtml, descriptionPlain, compensation{…}`.
 
-### Gupy: página pública (sem API pública)
-- O portal `portal.gupy.io` é um app Next.js. A página
-  `https://portal.gupy.io/job-search/term={termo}&workplaceTypes[]=remote` traz no HTML
-  (`<script id="__NEXT_DATA__">`) o objeto `props.pageProps.initialJobList` com
-  `{ data: [{ id, name, description, careerPageName, publishedDate, workplaceType, city, state, jobUrl, type }], pagination{ total, limit:12, offset } }`.
-- O `robots.txt` do portal é `Disallow:` vazio, ou seja, permite tudo.
-- O antigo `portal.api.gupy.io/api/job` responde **404**. O front usa `private-api.gupy.io`,
-  que é privado e **não é usado aqui**.
-- **Risco:** é a estrutura interna de uma página e pode mudar sem aviso. O conector valida
-  a forma com Zod e, se não bater, falha com erro explícito (não grava lixo).
-- **Implementação:** 4 termos (`react`, `angular`, `frontend`, `react native`), 1 página (12 vagas)
-  cada, filtro remoto, 2 s entre requisições, intervalo mínimo de 6 h.
+### Gupy: removida
+- O conector que lia o `__NEXT_DATA__` de `portal.gupy.io` foi removido: dependia da estrutura
+  interna da página. Links `*.gupy.io` vindos de outras fontes continuam deduplicados pela chave
+  ATS `gupy:<id>`.
 
 ### Workday: ATS por empresa (endpoint não documentado): não implementado
 - Cada tenant expõe `POST https://{tenant}.wd{N}.myworkdayjobs.com/wday/cxs/{tenant}/{site}/jobs`

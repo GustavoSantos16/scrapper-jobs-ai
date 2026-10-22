@@ -6,13 +6,11 @@ import {
   ashby,
   CONNECTORS,
   greenhouse,
-  gupy,
   hnJobs,
   hnWhoIsHiring,
   jooble,
   lever,
   MANUAL_SOURCES,
-  parseGupyPage,
   parseHiringComment,
   parseJobStoryTitle,
   remotive,
@@ -170,25 +168,6 @@ describe('ashby', () => {
     expect(transport.calls).toHaveLength(1);
     expect(jobs[0]).toMatchObject({ company: 'Supabase', contractTypes: ['full_time'], publishedAt: '2026-07-31T18:56:39.246Z' });
     expect(jobs[0]!.geoEligibility).toContain('worldwide'); // "Remote, Global"
-  });
-});
-
-describe('gupy', () => {
-  it('parses the server-rendered job list', async () => {
-    const { transport, jobs } = await run(gupy, [['portal.gupy.io/job-search', fx('gupy.html')]]);
-    expect(transport.calls).toHaveLength(4);
-    expect(transport.calls[0]).toContain('workplaceTypes[]=remote');
-    expect(jobs[0]).toMatchObject({ country: 'BR', language: 'pt', remoteType: 'remote', geoEligibility: ['brazil'] });
-    expect(jobs[0]!.atsKey).toMatch(/^gupy:\d+$/);
-  });
-  it('tolerates extra attributes on the data script (real page has a nonce)', async () => {
-    const { readFileSync } = await import('node:fs');
-    const html = readFileSync(fx('gupy.html'), 'utf8').replace('<script id="__NEXT_DATA__" type="application/json">', '<script id="__NEXT_DATA__" type="application/json" nonce="abc123">');
-    expect(parseGupyPage(html).length).toBeGreaterThan(0);
-  });
-  it('fails loudly when the page structure changes', () => {
-    expect(() => parseGupyPage('<html>no data</html>')).toThrow(/structure changed/);
-    expect(() => parseGupyPage('<script id="__NEXT_DATA__" type="application/json">{"props":{}}</script>')).toThrow(/unexpected/);
   });
 });
 

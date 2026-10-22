@@ -3,7 +3,6 @@ import { adzuna } from './adzuna.ts';
 import { arbeitnow } from './arbeitnow.ts';
 import { ashby } from './ashby.ts';
 import { greenhouse } from './greenhouse.ts';
-import { gupy } from './gupy.ts';
 import { himalayas } from './himalayas.ts';
 import { hnJobs, hnWhoIsHiring } from './hn.ts';
 import { jobicy } from './jobicy.ts';
@@ -26,7 +25,6 @@ export const CONNECTORS: AnyConnector[] = [
   greenhouse,
   lever,
   ashby,
-  gupy,
   adzuna,
   jooble,
 ];
@@ -37,8 +35,7 @@ export function getConnector(id: string): AnyConnector | undefined {
 
 export { MANUAL_SOURCES } from './manual.ts';
 export { parseHiringComment, parseJobStoryTitle } from './hn.ts';
-export { parseGupyPage } from './gupy.ts';
 export { parseWwrFeed } from './weworkremotely.ts';
 export {
-  adzuna, arbeitnow, ashby, greenhouse, gupy, himalayas, hnJobs, hnWhoIsHiring, jobicy, jooble, lever, remoteok, remotive, weworkremotely,
+  adzuna, arbeitnow, ashby, greenhouse, himalayas, hnJobs, hnWhoIsHiring, jobicy, jooble, lever, remoteok, remotive, weworkremotely,
 };

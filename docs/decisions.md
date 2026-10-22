@@ -15,12 +15,12 @@ Cada linha: decisão — justificativa.
 - **Um único `vitest.config.ts` na raiz** — um comando roda todas as suítes de todos os pacotes.
 
 ## Fontes
-- **Conectores consultam por termos do perfil, não o feed inteiro** (Himalayas, Remotive, Jobicy, Gupy) — os feeds completos têm dezenas de milhares de vagas fora do perfil; buscar por termo respeita os limites e mantém o acervo útil.
+- **Conectores consultam por termos do perfil, não o feed inteiro** (Himalayas, Remotive, Jobicy) — os feeds completos têm dezenas de milhares de vagas fora do perfil; buscar por termo respeita os limites e mantém o acervo útil.
 - **Arbeitnow: só `remote: true`** — ~92% do feed é presencial na Alemanha; o perfil exige remoto. É um recorte de escopo da captura, não um descarte por pontuação.
 - **Remotive com intervalo mínimo de 12 h** — o aviso legal pede no máximo 4 chamadas/dia; 4 consultas a cada 12 h ficam em 8 requisições/dia, porque cada chamada devolve no máximo 10 vagas.
 - **HN Jobs (Firebase) adicionado como fonte** — API oficial que cobre vagas de empresas YC, já que o Work at a Startup não tem feed.
 - **Workday não implementado** — endpoint interno não documentado e datas apenas relativas ("Posted Yesterday"), o que conflita com a regra de datas honestas.
-- **Gupy via `__NEXT_DATA__` da página de busca** — não há API pública; `robots.txt` permite; validação Zod falha alto se a estrutura mudar.
+- ~~**Gupy via `__NEXT_DATA__` da página de busca**~~ (conector removido) — não há API pública; `robots.txt` permite; validação Zod falha alto se a estrutura mudar.
 - **Fixtures são respostas reais reduzidas** — gravadas em 2026-10-20 a partir das chamadas de validação; testes de conectores rodam sem rede.
 
 ## Modelo, normalização e dedup
@@ -46,7 +46,7 @@ Cada linha: decisão — justificativa.
 ## Conectores (fase 6)
 - **ATS por empresa: um board quebrado gera aviso; a fonte só falha se todos falharem** — um slug errado em `companies.json` não deve derrubar as demais empresas.
 - **O orçamento de requisições conta requisições lógicas; retries não contam** — os retries já são limitados a 3; senão uma fonte com orçamento 1 (Remote OK) nunca teria retry.
-- **Gupy recebe a tag `brazil` e `country = BR`** — o portal só lista vagas de empresas brasileiras; com o filtro remoto, a vaga é para quem está no Brasil.
+- ~~**Gupy recebe a tag `brazil` e `country = BR`**~~ (conector removido) — o portal só lista vagas de empresas brasileiras; com o filtro remoto, a vaga é para quem está no Brasil.
 - **Jooble: `publishedAt = null`** — a API só expõe `updated` (última alteração), que não é a data de publicação.
 - **Adzuna: salários com `salary_is_predicted = 1` são ignorados** — são estimativas da Adzuna, não salários publicados.
 - **Fixtures de Adzuna e Jooble montadas a partir da documentação** — sem chave não há como gravar uma resposta real; o campo `__note` de cada arquivo diz isso.

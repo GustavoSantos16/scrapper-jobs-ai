@@ -86,7 +86,7 @@ permitida. Detalhes em [`docs/sources.md`](docs/sources.md).
 
 - **Funcionam automaticamente:** Remotive, Arbeitnow, Jobicy, Remote OK, Himalayas, We Work
   Remotely (RSS), Hacker News "Who is hiring?", Hacker News Jobs (YC), Greenhouse, Lever e Ashby
-  (por empresa) e Gupy (página pública).
+  (por empresa).
 - **Com chave gratuita:** Adzuna e Jooble.
 - **Link manual:** LinkedIn, Glassdoor, Indeed, Wellfound, Google Jobs, YC Work at a Startup e
   Workday. Aparecem em **Fontes** com o motivo e links de busca prontos para o seu perfil.
@@ -134,7 +134,7 @@ pnpm check       # lint + typecheck + testes + build
 | A UI mostra "A API local não está respondendo" | A API não está rodando. Use `pnpm dev` ou `pnpm start`. |
 | `EADDRINUSE: 4317` | Outra instância já está rodando: `lsof -i :4317` e encerre-a, ou mude `API_PORT`. |
 | Captura "Nada a executar" | Todas as fontes estão dentro do intervalo mínimo; veja a coluna de motivo em **Histórico de capturas**. |
-| Uma fonte aparece "Com falha" | A mensagem do erro está em **Fontes**. Fontes de terceiros mudam: veja `docs/sources.md`. A Gupy, em especial, depende da estrutura da página. |
+| Uma fonte aparece "Com falha" | A mensagem do erro está em **Fontes**. Fontes de terceiros mudam: veja `docs/sources.md`. |
 | "Já existe uma captura em andamento" depois de um crash | O lock expira sozinho em até 2 minutos; ao reiniciar, a API marca execuções interrompidas como falhas. |
 | Datas parecem deslocadas | Ajuste o fuso em **Configurações → Exibição** (padrão `America/Sao_Paulo`). |
 

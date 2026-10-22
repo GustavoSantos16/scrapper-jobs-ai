@@ -103,7 +103,7 @@ function ProfileForm({ initial }: { initial: Profile }) {
             {listField('roles', 'Cargos', 'Separados por vírgula. Termos genéricos (Software Engineer, Desenvolvedor) valem pontuação parcial.')}
             {listField('primaryTech', 'Tecnologias prioritárias', 'Duas ou mais na vaga = pontuação cheia.')}
             {listField('complementaryTech', 'Tecnologias complementares', 'Somam pontos extras.')}
-            {listField('searchTerms', 'Termos de busca nas fontes', 'Usados por fontes com busca (Himalayas, Gupy, Adzuna, Jooble). Máx. 20.')}
+            {listField('searchTerms', 'Termos de busca nas fontes', 'Usados por fontes com busca (Himalayas, Adzuna, Jooble). Máx. 20.')}
           </div>
         </Card>
         <Card title="Preferências">
